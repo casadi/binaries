@@ -12,72 +12,21 @@ env:
     - SNOPT=/home/travis/build/snopt7
     - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab
-    - compilerprefix=i686-w64-mingw32
-    - WINEENV=py27
-
-compiler:
-  - i686-w64-mingw32-gcc
 
 before_script:
   - set -e
 
 script:
   - pushd casadi
-  - mkdir build
-  - pushd build
-  - |
-    cat <<EOF >toolchain.cmake
-    # this one is important
-    SET(CMAKE_SYSTEM_NAME Windows)
-    #this one not so much
-    SET(CMAKE_SYSTEM_VERSION 1)
-
-    # specify the cross compiler
-    SET(CMAKE_C_COMPILER   $compilerprefix-gcc)
-    SET(CMAKE_CXX_COMPILER $compilerprefix-g++)
-    SET(CMAKE_Fortran_COMPILER $compilerprefix-gfortran)
-    set(CMAKE_RC_COMPILER $compilerprefix-windres)
-    
-    # where is the target environment 
-    SET(CMAKE_FIND_ROOT_PATH  /usr/$compilerprefix)
-    
-    # search for programs in the build host directories
-    SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-    # for libraries and headers in the target directories
-    SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
-    SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
-    EOF
-  - |
-    cat <<EOF >>patch.txt
-    find_library(PYTHON_LIBRARY
-      NAMES
-        python27
-      PATHS
-        /home/travis/.wine/drive_c/Python27/libs
-      NO_SYSTEM_ENVIRONMENT_PATH
-    )
-    
-    find_path(PYTHON_INCLUDE_DIR
-        NAMES Python.h
-    PATHS
-       /home/travis/.wine/drive_c/Python27/include
-      NO_SYSTEM_ENVIRONMENT_PATH
-    )
-    
-    set(PYTHON_EXECUTABLE /home/travis/.wine/drive_c/Python27/python.exe)
-    set(NUMPY_INCLUDE_DIR /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include)
-    set(NUMPY_INCLUDE_DIRS /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include)
-    set(NUMPY_PATH /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include/numpy)
-    EOF
-  - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
-  - mv CMakeLists.txt ../swig/python/CMakeLists.txt
-  - cmake -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=OFF -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-  - make -j2
-  - make install
-  - popd
-  - cp  /home/travis/build/testbot/id_rsa_travis ../../casadibot.key
-  - PYTHONPATH=$PYTHONPATH:/home/travis/build/testbot/ python /home/travis/build/testbot/helpers/publish_builds_win64.py 2.2.0+553.8abe60f
-        
+        - mkdir build
+        - pushd build
+        - cmake -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON ..
+        - make
+        - sudo make install
+        - popd
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test && make unittests_py examples_code_py && popd
+       
 branches:
   except:
     - /.*appveyor.*/
@@ -101,11 +50,5 @@ before_install:
   - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
   - sudo apt-get update -qq
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib coinor-libipopt-dev libmumps-seq-dev libblas-dev liblapack-dev libslicot-dev libxml2-dev
-  - sudo apt-get remove -qq -y mingw32
-  - sudo apt-get install -q -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
-  - wget https://raw.githubusercontent.com/WineAsCI/python-lib-template/master/.travis-setup.sh && chmod +x .travis-setup.sh
-  - "./.travis-setup.sh"
-  - wget -O numpy.exe https://github.com/casadi/testbot/releases/download/perpetual/numpy-1.9.1-sse2.exe
-  - /opt/wine-staging/bin/wine C:/Python27/Scripts/easy_install.exe numpy.exe
 
 language: cpp
