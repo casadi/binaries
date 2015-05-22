@@ -75,9 +75,35 @@ script:
   - make -j2
   - make install
   - popd
-  - cp  /home/travis/build/testbot/id_rsa_travis ../../casadibot.key
-  - PYTHONPATH=$PYTHONPATH:/home/travis/build/testbot/ python /home/travis/build/testbot/helpers/publish_builds_win64.py 2.2.0+553.8abe60f
-        
+  - cd python_install
+  - |
+    cat <<EOF > setup.py
+    from distutils.core import setup, Extension
+    from glob import glob
+    from shutil import copyfile
+    
+    setup(name="python-casadi",
+        version="%s",
+        description="CasADi is a symbolic framework for automatic differentation and numeric optimization",
+        maintainer="Joris Gillis",
+        author="Joel Andersson",
+        url="casadi.org",
+        packages=["casadi","casadi.tools","casadi.tools.graph"],
+        package_data={"casadi": ["_*.pyd","*.dll"]}
+    )
+    EOF
+  - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_wininst --target-version=2.7 --title=CasADi
+  - python setup.py bdist --format=zip
+  - alias sfcasadiupload="sftp -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi"
+  - |
+    sfcasadiupload <<EOF
+    mkdir tested
+    EOF
+  - sfcasadiupload <<EOF
+    cd tested
+    put python_dist/*
+    EOF
+   
 branches:
   except:
     - /.*appveyor.*/
