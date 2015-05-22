@@ -109,6 +109,7 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - sudo apt-get update -qq
   - sudo apt-get install update-manager-core
   - sudo do-release-upgrade -y
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
