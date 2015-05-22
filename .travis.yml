@@ -134,7 +134,7 @@ before_install:
   - sudo apt-get remove -qq -y mingw32
   - sudo apt-get install -q -y mingw-w64
   - wget http://downloads.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win32/Personal%20Builds/dongsheng-daily/4.7/gcc-4.7-win32_4.7.4-20140612.7z?r=&ts=1432328794
-  - sudo 7z x gcc-4.7-win32_4.7.4-20140612.7z -x /usr
+  - sudo 7z x gcc-4.7-win32_4.7.4-20140612.7z -o /usr -y
   - wget https://raw.githubusercontent.com/WineAsCI/python-lib-template/master/.travis-setup.sh && chmod +x .travis-setup.sh
   - "./.travis-setup.sh"
   - wget -O numpy.exe https://github.com/casadi/testbot/releases/download/perpetual/numpy-1.9.1-sse2.exe
