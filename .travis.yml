@@ -109,8 +109,8 @@ branches:
     - /.*appveyor.*/
 
 before_install:
-  - sudo aptitude install update-manager-core
-  - sudo do-release-upgrade
+  - sudo apt-get install update-manager-core
+  - sudo do-release-upgrade -y
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
