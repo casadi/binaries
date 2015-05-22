@@ -108,4 +108,3 @@ before_install:
   - /opt/wine-staging/bin/wine C:/Python27/Scripts/easy_install.exe numpy.exe
 
 language: cpp
-
