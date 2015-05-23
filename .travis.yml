@@ -95,12 +95,11 @@ script:
     EOF
   - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_wininst --target-version=2.7 --title=CasADi
   - python setup.py bdist --format=zip
-  - alias sfcasadiupload="sftp -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi"
   - |
-    sfcasadiupload <<EOF
+    sftp -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF
     mkdir tested
     EOF
-  - sfcasadiupload <<EOF
+  - sftp -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF
     cd tested
     put python_dist/*
     EOF
