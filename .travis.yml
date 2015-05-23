@@ -99,7 +99,7 @@ script:
     sftp -oStrictHostKeyChecking=no -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF || true
     mkdir tested
     EOF
-  - sftp -oStrictHostKeyChecking=no -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF || true
+  - sftp -oStrictHostKeyChecking=no -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF
     cd tested
     put python_dist/*
     EOF
