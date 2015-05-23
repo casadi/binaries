@@ -96,10 +96,10 @@ script:
   - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_wininst --target-version=2.7 --title=CasADi
   - python setup.py bdist --format=zip
   - |
-    sftp -oStrictHostKeyChecking=no -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF
+    sftp -oStrictHostKeyChecking=no -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF || true
     mkdir tested
     EOF
-  - sftp -oStrictHostKeyChecking=no -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF
+  - sftp -oStrictHostKeyChecking=no -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF || true
     cd tested
     put python_dist/*
     EOF
