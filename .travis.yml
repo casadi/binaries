@@ -97,7 +97,9 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh ipopt.tar.gz && mkdir ipopt && tar -xvf ipopt.tar.gz -C ipopt
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/ipopt  ipopt-install  && popd
   - pwd
+  - ls
   - ls ipopt
+  - ls ipopt/lib
   - ls $PKG_CONFIG_PATH
   - travis_retry testbot/recipes/fetch.sh swig_matlab.tar.gz && mkdir swig_matlab && tar -xvf swig_matlab.tar.gz -C swig_matlab
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig_matlab  swig-matlab-install  && popd
