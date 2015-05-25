@@ -28,13 +28,15 @@ script:
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd test && make unittests_py examples_code_py && popd
   - pushd python_install
+  - pwd
+  - ls
   - |
     cat <<EOF > setup.py
     from distutils.core import setup, Extension
     from glob import glob
     from shutil import copyfile
     setup(name="python-casadi",
-        version="%s",
+        version="test",
         description="CasADi is a symbolic framework for automatic differentation and numeric optimization",
         maintainer="Joris Gillis",
         author="Joel Andersson",
