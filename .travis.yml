@@ -78,7 +78,6 @@ script:
   - make install
   - popd
   - cd python_install
-  - ls
   - |
     cat <<EOF > setup.py
     from distutils.core import setup, Extension
@@ -97,10 +96,23 @@ script:
     EOF
   - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_wininst --target-version=2.7 --title=CasADi
   - python setup.py bdist --format=zip
-  - ls
-  - ls dist
+  - pushd dist
+  - export RESULT_EXE=`ls *.exe`
+  - popd
   - |
-    sftp -o StrictHostKeyChecking=no -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF || true
+    cat <<EOF > upload.py
+    import pysftp
+    
+    sftp = pysftp.Connection('web.sourceforge.net', 
+                          username='casaditestbot,casadi',
+                          private_key='/home/jg/casadi/build/testbot/id_rsa_travis')
+                          
+    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+      print sftp.listdir()
+    EOF
+  - python upload.py
+  - |
+    sftp -b - -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@web.sourceforge.net:/home/pfs/project/c/ca/casadi/CasADi <<EOF || true
     mkdir tested
     EOF
   - |
@@ -140,5 +152,7 @@ before_install:
   - "./.travis-setup.sh"
   - wget -O numpy.exe https://github.com/casadi/testbot/releases/download/perpetual/numpy-1.9.1-sse2.exe
   - /opt/wine-staging/bin/wine C:/Python27/Scripts/easy_install.exe numpy.exe
+  - pip install pysftp
+  - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
 
 language: cpp
