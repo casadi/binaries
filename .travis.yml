@@ -115,7 +115,7 @@ before_install:
   - ls $PKG_CONFIG_PATH
   - pkg-config --cflags ipopt
   - pkg-config --libs ipopt
-  - ls /home/travis/ipopt_install/include/coin
+  - ls /home/travis/ipopt-install/include/coin
   - travis_retry testbot/recipes/fetch.sh swig_matlab.tar.gz && mkdir swig_matlab && tar -xvf swig_matlab.tar.gz -C swig_matlab
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig_matlab  swig-matlab-install  && popd
   - export PATH=/home/travis/build/swig/bin:$PATH
