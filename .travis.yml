@@ -22,7 +22,7 @@ script:
   - pushd build
   - cmake -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - make
-  - sudo make install
+  - make install
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
