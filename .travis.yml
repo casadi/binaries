@@ -78,6 +78,7 @@ script:
   - make install
   - popd
   - cd python_install
+  - ls
   - |
     cat <<EOF > setup.py
     from distutils.core import setup, Extension
@@ -85,7 +86,7 @@ script:
     from shutil import copyfile
     
     setup(name="python-casadi",
-        version="%s",
+        version="test",
         description="CasADi is a symbolic framework for automatic differentation and numeric optimization",
         maintainer="Joris Gillis",
         author="Joel Andersson",
