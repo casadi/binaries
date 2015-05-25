@@ -23,7 +23,7 @@ script:
   - pushd build
   - cmake -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - grep -i ipopt CMakeCache.txt
-  - make
+  - make VERBOSE=1
   - make install
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
@@ -104,6 +104,7 @@ before_install:
   - ls $PKG_CONFIG_PATH
   - pkg-config --cflags ipopt
   - pkg-config --libs ipopt
+  - ls /home/travis/ipopt_install/include/coin
   - travis_retry testbot/recipes/fetch.sh swig_matlab.tar.gz && mkdir swig_matlab && tar -xvf swig_matlab.tar.gz -C swig_matlab
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig_matlab  swig-matlab-install  && popd
   - export PATH=/home/travis/build/swig/bin:$PATH
