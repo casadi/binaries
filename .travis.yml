@@ -105,7 +105,7 @@ script:
     
     sftp = pysftp.Connection('web.sourceforge.net', 
                           username='casaditestbot,casadi',
-                          private_key='/home/jg/casadi/build/testbot/id_rsa_travis')
+                          private_key='/home/travis/casadi/build/testbot/id_rsa_travis')
                           
     with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
       print sftp.listdir()
@@ -152,7 +152,7 @@ before_install:
   - "./.travis-setup.sh"
   - wget -O numpy.exe https://github.com/casadi/testbot/releases/download/perpetual/numpy-1.9.1-sse2.exe
   - /opt/wine-staging/bin/wine C:/Python27/Scripts/easy_install.exe numpy.exe
-  - pip install pysftp
+  - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
 
 language: cpp
