@@ -20,13 +20,63 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON ..
+  - cmake -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - make
   - sudo make install
   - popd
+  - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd test && make unittests_py examples_code_py && popd
-   
+  - pushd python_install
+  - |
+    cat <<EOF > setup.py
+    from distutils.core import setup, Extension
+    from glob import glob
+    from shutil import copyfile
+    setup(name="python-casadi",
+        version="%s",
+        description="CasADi is a symbolic framework for automatic differentation and numeric optimization",
+        maintainer="Joris Gillis",
+        author="Joel Andersson",
+        url="casadi.org",
+        packages=["casadi","casadi.tools","casadi.tools.graph"],
+        package_data={"casadi": ["*.so"]},
+        data_files=[('/usr/lib',glob("lib/*.so")),('/usr/lib',glob("lib/casadi/*.so"))]
+    EOF
+  - python setup.py bdist_rpm --force-arch='x86_64'
+  - pushd dist && fakeroot alien `*.rpm` && popd
+  - RESULT_DEB = `dist/*.deb`
+  - |
+    cat <<EOF > upload.py
+    import pysftp
+    import os
+    sftp = pysftp.Connection('web.sourceforge.net', 
+                          username='casaditestbot,casadi',
+                          private_key='/home/travis/build/testbot/id_rsa_travis')
+                          
+    import subprocess
+    
+    binaries_dir = '/home/jg/binaries'
+    
+    out , _ = subprocess.Popen(['git','branch','-r','--contains'],
+                  cwd='/home/travis/build/casadi/binaries/casadi',
+                  stdout=subprocess.PIPE).communicate()
+    
+    branches = map(lambda x : x.rstrip().split("/")[1], out.split("\n")[:-1])
+    print branches
+    
+    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+      sftp.makedirs('branches')
+      with sftp.cd('branches'):
+        for branch in branches:
+          sftp.makedirs(branch)
+          with sftp.cd(branch):
+            sftp.makedirs('linux')
+            with sftp.cd('linux'):
+              sftp.put("$RESULT_DEB","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.deb")
+    EOF
+  - python upload.py
+  
 branches:
   except:
     - /.*appveyor.*/
@@ -50,5 +100,8 @@ before_install:
   - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
   - sudo apt-get update -qq
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib coinor-libipopt-dev libmumps-seq-dev libblas-dev liblapack-dev libslicot-dev libxml2-dev
-
+  - sudo apt-get install fakeroot
+  - sudo pip install pysftp
+  - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
+  
 language: cpp
