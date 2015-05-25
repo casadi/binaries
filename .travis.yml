@@ -105,7 +105,7 @@ script:
     
     sftp = pysftp.Connection('web.sourceforge.net', 
                           username='casaditestbot,casadi',
-                          private_key='/home/travis/casadi/build/testbot/id_rsa_travis')
+                          private_key='/home/travis/build/testbot/id_rsa_travis')
                           
     with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
       print sftp.listdir()
