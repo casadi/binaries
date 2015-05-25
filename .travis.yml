@@ -44,6 +44,7 @@ script:
         packages=["casadi","casadi.tools","casadi.tools.graph"],
         package_data={"casadi": ["*.so"]},
         data_files=[('/usr/lib',glob("lib/*.so")),('/usr/lib',glob("lib/casadi/*.so"))]
+    )
     EOF
   - python setup.py bdist_rpm --force-arch='x86_64'
   - pushd dist && fakeroot alien `*.rpm` && popd
