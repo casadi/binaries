@@ -33,6 +33,17 @@ script:
   - pwd
   - ls
   - |
+    cat <<EOF > preprocess.py
+    import os
+    import shutil
+    for i in glob("lib/*.so"):
+      if os.path.islink(i):
+      	ir = os.path.realpath(i)
+      	os.unlink(i)
+      	shutil.copyfile(ir,i)
+    EOF
+  - python preprocess.py
+  - |
     cat <<EOF > setup.py
     from distutils.core import setup, Extension
     from glob import glob
