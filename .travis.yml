@@ -16,7 +16,7 @@ env:
     - WINEENV=py27
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
-    - PKG_CONFIG_PATH=/home/travis/build/ipopt-install/lib/pkgconfig
+    - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
 
 compiler:
   - i686-w64-mingw32-gcc
@@ -150,7 +150,7 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
   - travis_retry testbot/recipes/fetch.sh ipopt_mingw32.tar.gz && mkdir ipopt && tar -xvf ipopt_mingw32.tar.gz -C ipopt
-  - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/ipopt ipopt-install  && popd
+  - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
   - ls ipopt
   - ls $PKG_CONFIG_PATH
   - travis_retry testbot/recipes/fetch.sh swig_matlab.tar.gz && mkdir swig_matlab && tar -xvf swig_matlab.tar.gz -C swig_matlab
