@@ -17,7 +17,7 @@ install:
   - "powershell testbot/helpers/install.ps1"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install requests
-  - set PYTHONPATH=%PYTHONPATH%;C:\projects\casadi\testbot\helpers
+  - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - python -c "from restricted import *; download('prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip')"
   - 7z x -y "prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip" > nul
   - xcopy /Y /i /E tmp C:\tmp
