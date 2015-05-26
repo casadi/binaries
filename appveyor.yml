@@ -1,0 +1,86 @@
+environment:
+  global:
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\misc\\run_with_env.cmd"
+    PYTHON: "C:\\Python27"
+    PYTHON_VERSION: "2.7.8"
+    PYTHON_ARCH: "32"
+    keyA:
+      secure: 44jgfY+doJx9eHLCweOl6Mf7qoeeRlA2Dch0cLUGbvRorXaqr6bs8tVsJ/KXGPVIA4DrXLlpaEeb2eJ5LM4Mdeq5Ux2txHsQpTAnBDSihWQ=
+
+install:
+  - git clone https://github.com/casadi/testbot.git
+  - openssl aes-256-cbc -k "%keyA%" -in testbot/id_rsa_travis.enc -out id_rsa_travis -d
+  - openssl aes-256-cbc -k "%keyA%" -in testbot/testbotcredentials.py.enc -out testbotcredentials.py -d
+  - "powershell testbot/helpers/install.ps1"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - pip install requests
+  - set PYTHONPATH=%PYTHONPATH%;C:\projects\casadi\testbot\helpers
+  - python -c "from restricted import *; download('prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip')"
+  - 7z x -y "prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip" > nul
+  - xcopy /Y /i /E tmp C:\tmp
+  
+  - ECHO "Installed SDKs:"
+  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
+
+  # Install Python (from the official .msi of http://python.org) and pip when
+  # not already installed.
+  - "powershell testbot/helpers/install.ps1"
+
+  # Prepend newly installed Python to the PATH of this build (this cannot be
+  # done from inside the powershell script as it would require to restart
+  # the parent CMD process).
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+
+  # Check that we have the expected version and architecture for Python
+  - "python --version"
+  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+
+  - "%CMD_IN_ENV% pip install wheel"
+
+  # Now that wheel has been installed, check to see if a numpy wheel has been
+  # made yet. If it hasn't, compile it and put it in C:\tmp.
+  - "powershell testbot/helpers/install_numpy.ps1"
+  
+  # This is where I install numpy from the pre-built wheel I compiled either
+  # earlier in this session, or in a previous session.
+  - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
+
+  - pip install pysftp
+  - |
+    echo <<EOF > download.py
+    import pysftp
+    import os
+    sftp = pysftp.Connection('web.sourceforge.net', 
+                          username='casaditestbot,casadi',
+                          private_key='testbot/id_rsa_travis')
+                          
+    import subprocess
+    
+    out , _ = subprocess.Popen(['git','branch','-r','--contains'],
+                  cwd='casadi',
+                  stdout=subprocess.PIPE).communicate()
+    
+    branches = map(lambda x : x.rstrip().split("/")[1], out.split("\n")[:-1])
+    
+    # Workaround for SourceForge issue
+    branches = map(lambda x: "develop-branch" if x=='develop' else x, branches)
+    
+    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+      with sftp.cd('branches'):
+        branch = branches[0]
+        with sftp.cd(branch):
+          with sftp.cd('linux'):
+            sftp.get("casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe")
+    EOF
+  - python download.py
+
+branches: 
+  except:
+    - /.*travis.*/
+
+build_script:
+  - echo "foo"
+
