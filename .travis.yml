@@ -80,6 +80,7 @@ script:
                   stdout=subprocess.PIPE).communicate()
     
     branches = map(lambda x : x.rstrip().split("/")[1], out.split("\n")[:-1])
+    branches = map(lambda x: "develop-branch" if x=='develop' else x, branches)
     print branches
     
     with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
