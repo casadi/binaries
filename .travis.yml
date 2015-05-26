@@ -38,7 +38,7 @@ script:
             sftp.get("casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.deb")
     EOF
   - python download.py
-  - sudo dpkg -i casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe
+  - sudo dpkg -i casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.deb
    
 branches:
   except:
