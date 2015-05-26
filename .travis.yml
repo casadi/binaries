@@ -61,8 +61,7 @@ script:
     )
     EOF
   - python setup.py bdist_rpm --force-arch='x86_64'
-  - pushd dist && ls * && popd
-  - pushd dist && fakeroot alien `*64.rpm` && popd
+  - pushd dist && fakeroot alien `ls *64.rpm` && popd
   - RESULT_DEB = `dist/*.deb`
   - |
     cat <<EOF > upload.py
