@@ -36,6 +36,7 @@ script:
     cat <<EOF > preprocess.py
     import os
     import shutil
+    from glob import glob
     for i in glob("lib/*.so"):
       if os.path.islink(i):
       	ir = os.path.realpath(i)
