@@ -75,7 +75,9 @@ install:
               with sftp.cd('linux'):
                 sftp.get("casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe")
         "@
-        python -c $a
+        $a > download.py
+        python download.py
+        python -c "$a"
 
 branches: 
   except:
