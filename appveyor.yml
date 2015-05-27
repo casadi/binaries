@@ -72,7 +72,7 @@ install:
           with sftp.cd('branches'):
             branch = branches[0]
             with sftp.cd(branch):
-              with sftp.cd('linux'):
+              with sftp.cd('windows'):
                 sftp.get("casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe")
         "@
         $a | out-file -Encoding ascii -FilePath download.py
