@@ -55,7 +55,7 @@ install:
         import os
         sftp = pysftp.Connection('web.sourceforge.net', 
                               username='casaditestbot,casadi',
-                              private_key='testbot/id_rsa_travis')
+                              private_key='id_rsa_travis')
                               
         import subprocess
         
