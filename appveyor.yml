@@ -49,8 +49,8 @@ install:
   - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
 
   - pip install pysftp
-  - |
-    echo <<EOF > download.py
+  - ps: |
+    $a = @"
     import pysftp
     import os
     sftp = pysftp.Connection('web.sourceforge.net', 
@@ -74,8 +74,8 @@ install:
         with sftp.cd(branch):
           with sftp.cd('linux'):
             sftp.get("casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe")
-    EOF
-  - python download.py
+    "@
+    python -c $a
 
 branches: 
   except:
