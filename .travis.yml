@@ -122,7 +122,8 @@ before_install:
   - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
   - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
   - sudo apt-get update -qq
-  - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libslicot-dev libxml2-dev
+  # Not available on 12.04: libslicot-dev
+  - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
   - sudo apt-get install fakeroot rpm alien
   - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
