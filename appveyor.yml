@@ -82,6 +82,8 @@ install:
         "@
         $a | out-file -Encoding ascii -FilePath download.py
   - python download.py
+  - 7za x casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe
+  - ls
 
 branches: 
   except:
