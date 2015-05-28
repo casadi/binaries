@@ -23,6 +23,7 @@ compiler:
 
 before_script:
   - set -e
+  - ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr
   - more /proc/meminfo
   - free -t -m
   - vmstat
