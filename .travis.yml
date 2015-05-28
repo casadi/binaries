@@ -27,10 +27,11 @@ before_script:
   - more /proc/meminfo
   - free -t -m
   - vmstat
-  #- sudo dd if=/dev/zero of=/home/travis/swapfile bs=64K count=64
-  #- sudo mkswap /home/travis/swapfile
-  #- sudo chmod 600 /home/travis/swapfile
-  #- sudo swapon /home/travis/swapfile
+  - sudo dd if=/dev/zero of=/home/travis/swapfile bs=64K count=64
+  - sudo mkswap /home/travis/swapfile
+  - sudo chmod 600 /home/travis/swapfile
+  - sudo swapoff -a
+  - sudo swapon -a /home/travis/swapfile
   - sudo bash fakeswap.sh 2048
   - more /proc/meminfo
   - free -t -m
