@@ -102,7 +102,7 @@ script:
     from shutil import copyfile
     
     setup(name="python-casadi",
-        version="test",
+        version="2.3.0",
         description="CasADi is a symbolic framework for automatic differentation and numeric optimization",
         maintainer="Joris Gillis",
         author="Joel Andersson",
