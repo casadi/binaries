@@ -19,8 +19,9 @@ before_script:
 
 script:
   - set -e
-  - mkdir casadi/build
-  - pushd casadi/build
+  - pushd casadi
+  - mkdir build
+  - pushd build
   - cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
   - make -j2
   - sudo make -j2 install
@@ -34,6 +35,7 @@ script:
   - sudo apt-get install python-lxml python-ipdb python-docutils texlive-science latex2html doxygen texlive-font-utils texlive-latex-recommended texlive-fonts-recommended etoolbox graphviz -y
   - "mkdir -p ~/.matplotlib && echo 'backend : Agg' > ~/.matplotlib/matplotlibrc"
   - pushd docs/api && make full | grep -v "file loc from" && popd
+  - popd
   #- pushd docs/api; python /home/travis/build/casadi/testbot/helpers/publish_doc.py; popd
    
 branches:
