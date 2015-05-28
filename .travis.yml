@@ -111,7 +111,7 @@ script:
         package_data={"casadi": ["_*.pyd","*.dll"]}
     )
     EOF
-  - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_msi --target-version=2.7 --title=CasADi
+  - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_msi --target-version=2.7
   - python setup.py bdist --format=zip
   - pushd dist
   - export RESULT_EXE=`ls *.msi`
