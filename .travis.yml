@@ -30,7 +30,7 @@ before_script:
   #- sudo mkswap /home/travis/swapfile
   #- sudo chmod 600 /home/travis/swapfile
   #- sudo swapon /home/travis/swapfile
-  - sudo sh fakeswap.sh 2048
+  - sudo bash fakeswap.sh 2048
   - more /proc/meminfo
   - free -t -m
   - vmstat
