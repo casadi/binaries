@@ -23,6 +23,9 @@ compiler:
 
 before_script:
   - set -e
+  - sudo dd if=/dev/zero of=/swapfile bs=64M count=64
+  - sudo mkswap /swapfile
+  - sudo swapon /swapfile
 
 script:
   - pushd casadi
@@ -75,7 +78,7 @@ script:
     EOF
   - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
-  - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - ulimit -S -s 1000000
   - make -j2
   - ls lib
