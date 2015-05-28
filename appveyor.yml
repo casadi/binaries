@@ -69,6 +69,7 @@ install:
         # Workaround for SourceForge issue
         branches = map(lambda x: "develop-branch" if x=='develop' else x, branches)
         print branches
+        branches=['develop-branch']
         
         with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
           with sftp.cd('branches'):
@@ -78,11 +79,12 @@ install:
                 with sftp.cd('windows'):
                   sftp.get("casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe")
             except:
+              print "skipped", branch
               pass
         "@
         $a | out-file -Encoding ascii -FilePath download.py
   - python download.py
-  - 7za x casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe
+  - 7z x casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe
   - ls
 
 branches: 
