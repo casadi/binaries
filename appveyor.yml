@@ -93,7 +93,7 @@ install:
   - type download.py
   - python download.py
   - 7z x %EXEFILE%
-  - "SET PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\PURELIB"
+  - "SET PYTHONPATH=%PYTHONPATH%;C:\\projects\\binaries\\PURELIB"
   - pushd casadi/test/python
   - ls
   - python alltests.py
