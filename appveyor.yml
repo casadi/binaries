@@ -16,6 +16,7 @@ install:
   - git submodule init
   - git submodule update
   - git clone https://github.com/casadi/testbot.git
+  - git clone https://github.com/casadi/casadi.git
   - openssl aes-256-cbc -k "%keyA%" -in testbot/id_rsa_travis.enc -out id_rsa_travis -d
   - openssl aes-256-cbc -k "%keyA%" -in testbot/testbotcredentials.py.enc -out testbotcredentials.py -d
   - "powershell testbot/helpers/install.ps1"
@@ -52,6 +53,7 @@ install:
   # earlier in this session, or in a previous session.
   - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
 
+ - "SET EXEFILE=casadi-python%PYTHONVERSION%-numpy%NUMPYVERSION%.exe"
   - pip install pysftp
   - ps: |
         $a = @"
@@ -80,7 +82,7 @@ install:
               try:
                 with sftp.cd(branch):
                   with sftp.cd('windows'):
-                    sftp.get("casadi-python$Env:PYTHONVERSION-numpy$Env:NUMPYVERSION.exe")
+                    sftp.get("$Env:EXEFILE")
                 break
               except Exception as e:
                 print "skipped", branch
@@ -90,9 +92,15 @@ install:
         $a | out-file -Encoding ascii -FilePath download.py
   - type download.py
   - python download.py
+  - 7z x %EXEFILE%
+  - "SET PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\PURELIB"
+  - pushd casadi/test/python
   - ls
-  - 7z x casadi-python%PYTHONVERSION%-numpy%NUMPYVERSION%.exe
-  - ls
+  - python alltests.py
+  - popd
+  - pushd casadi/test
+  - make examples_code_py
+  - popd
 
 branches: 
   except:
