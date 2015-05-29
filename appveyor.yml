@@ -7,10 +7,14 @@ environment:
     PYTHON: "C:\\Python27"
     PYTHON_VERSION: "2.7.8"
     PYTHON_ARCH: "32"
+    PYTHONVERSION: "27"
+    NUMPYVERSION: "1.9"
     keyA:
       secure: 44jgfY+doJx9eHLCweOl6Mf7qoeeRlA2Dch0cLUGbvRorXaqr6bs8tVsJ/KXGPVIA4DrXLlpaEeb2eJ5LM4Mdeq5Ux2txHsQpTAnBDSihWQ=
 
 install:
+  - git submodule init
+  - git submodule update
   - git clone https://github.com/casadi/testbot.git
   - openssl aes-256-cbc -k "%keyA%" -in testbot/id_rsa_travis.enc -out id_rsa_travis -d
   - openssl aes-256-cbc -k "%keyA%" -in testbot/testbotcredentials.py.enc -out testbotcredentials.py -d
