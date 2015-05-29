@@ -39,6 +39,7 @@ script:
     EOF
   - python download.py
   - sudo dpkg -i casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.deb
+  - pushd /home/travis/build/casadi/binaries/casadi && make unittests_pyexamples_code_py && popd
    
 branches:
   except:
