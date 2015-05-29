@@ -8,7 +8,7 @@ environment:
     PYTHON_VERSION: "2.7.8"
     PYTHON_ARCH: "32"
     PYTHONVERSION: "27"
-    NUMPYVERSION: "1.9"
+    NUMPYVERSION: "1.9.1"
     keyA:
       secure: 44jgfY+doJx9eHLCweOl6Mf7qoeeRlA2Dch0cLUGbvRorXaqr6bs8tVsJ/KXGPVIA4DrXLlpaEeb2eJ5LM4Mdeq5Ux2txHsQpTAnBDSihWQ=
 
