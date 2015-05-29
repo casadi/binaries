@@ -35,14 +35,14 @@ script:
   - sudo apt-get install python-lxml python-ipdb python-docutils texlive-science latex2html doxygen texlive-font-utils texlive-latex-recommended texlive-fonts-recommended etoolbox graphviz -y
   - "mkdir -p ~/.matplotlib && echo 'backend : Agg' > ~/.matplotlib/matplotlibrc"
   - pushd docs/api && make full | grep -v "file loc from" && popd
-  - popd
-  #- pushd docs/api; python /home/travis/build/casadi/testbot/helpers/publish_doc.py; popd
-   
+  - pushd docs && python /home/travis/build/casadi/binaries/upload_docs.py $TRAVIS_COMMIT && popd
+ 
 branches:
   except:
     - /.*appveyor.*/
 
 before_install:
+  - pwd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
