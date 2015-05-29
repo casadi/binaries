@@ -16,7 +16,6 @@ install:
   - git submodule init
   - git submodule update
   - git clone https://github.com/casadi/testbot.git
-  - git clone https://github.com/casadi/casadi.git
   - openssl aes-256-cbc -k "%keyA%" -in testbot/id_rsa_travis.enc -out id_rsa_travis -d
   - openssl aes-256-cbc -k "%keyA%" -in testbot/testbotcredentials.py.enc -out testbotcredentials.py -d
   - "powershell testbot/helpers/install.ps1"
