@@ -156,6 +156,10 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr
+  - more /proc/meminfo
+  - free -t -m
+  - vmstat
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
