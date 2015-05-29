@@ -53,7 +53,7 @@ install:
   # earlier in this session, or in a previous session.
   - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
 
- - "SET EXEFILE=casadi-python%PYTHONVERSION%-numpy%NUMPYVERSION%.exe"
+  - "SET EXEFILE=casadi-python%PYTHONVERSION%-numpy%NUMPYVERSION%.exe"
   - pip install pysftp
   - ps: |
         $a = @"
