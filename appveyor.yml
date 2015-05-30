@@ -93,7 +93,6 @@ install:
   - python download.py
   - 7z x %EXEFILE%
   - "SET PYTHONPATH=%PYTHONPATH%;C:\\projects\\binaries\\PURELIB"
-  - rm C:\projects\binaries\casadi\test\python\control.py # requires on scipy.linalg
   - pushd casadi\\test
   - make unittests_py examples_code_py
   - popd
