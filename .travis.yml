@@ -67,7 +67,7 @@ script:
         sftp.makedirs(commit)
         sftp.put_r('docs/api/export',commit)
     EOF
-  - python upload.py
+  - travis_wait python upload.py
  
 branches:
   except:
