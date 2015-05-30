@@ -54,6 +54,8 @@ script:
                   stdout=subprocess.PIPE).communicate()
                   
     commit = out.rstrip()
+    
+    import sys
     for line in fileinput.input("docs/api/html/search/search.js", inplace = True):
       sys.stdout.write(line.replace("dbLocation", "\"../htdocs/commits/%s/api/html/doxysearch.db\"" % commit))
     for line in fileinput.input("docs/api/internal/search/search.js", inplace = True):
