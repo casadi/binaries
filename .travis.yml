@@ -9,31 +9,20 @@ before_script:
   - set -e
 
 script:
+  - ls
+  - pushd casadi
+  - export COMMIT=`git rev-parse HEAD`
+  - popd
   - |
     cat <<EOF > download.py
     import pysftp
-    import os
     sftp = pysftp.Connection('web.sourceforge.net', 
                           username='casaditestbot,casadi',
                           private_key='/home/travis/build/testbot/id_rsa_travis')
                           
-    import subprocess
-    
-    binaries_dir = '/home/jg/binaries'
-    
-    out , _ = subprocess.Popen(['git','branch','-r','--contains'],
-                  cwd='/home/travis/build/casadi/binaries/casadi',
-                  stdout=subprocess.PIPE).communicate()
-    
-    branches = map(lambda x : x.rstrip().split("/")[1], out.split("\n")[:-1])
-    
-    # Workaround for SourceForge issue
-    branches = map(lambda x: "develop-branch" if x=='develop' else x, branches)
-    
     with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      with sftp.cd('branches'):
-        branch = branches[0]
-        with sftp.cd(branch):
+      with sftp.cd('commits'):
+        with sftp.cd("$COMMIT"):
           with sftp.cd('linux'):
             sftp.get("casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.deb")
     EOF

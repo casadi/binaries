@@ -64,29 +64,21 @@ install:
                               
         import subprocess
         
-        out , _ = subprocess.Popen(['git','branch','-r','--contains'],
+        out , _ = subprocess.Popen(['git','rev-parse','HEAD'],
                       cwd='casadi',
                       stdout=subprocess.PIPE).communicate()
         
-        branches = map(lambda x : x.rstrip().split("/")[1], out.split("\n")[:-1])
-        print branches
+        commit = out.rstrip()
         
         # Workaround for SourceForge issue
         branches = map(lambda x: "develop-branch" if x=='develop' else x, branches)
         print branches
         
         with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-          with sftp.cd('branches'):
-            for branch in branches:
-              try:
-                with sftp.cd(branch):
-                  with sftp.cd('windows'):
-                    sftp.get("$Env:EXEFILE")
-                break
-              except Exception as e:
-                print "skipped", branch
-                print str(e)
-                pass
+          with sftp.cd('commits'):
+            with sftp.cd("commit):
+              with sftp.cd('windows'):
+                sftp.get("$Env:EXEFILE")
         "@
         $a | out-file -Encoding ascii -FilePath download.py
   - type download.py
