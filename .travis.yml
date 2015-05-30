@@ -113,41 +113,29 @@ script:
         package_data={"casadi": ["_*.pyd","*.dll"]}
     )
     EOF
-  - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_msi --target-version=2.7
+  - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_wininst --target-version=2.7
   - python setup.py bdist --format=zip
   - pushd dist
-  - export RESULT_EXE=`ls *.msi`
+  - export RESULT_EXE=`ls *.exe`
+  - export RESULT_ZIP=`ls *.zip`
   - popd
+  - export COMMIT=`git rev-parse HEAD`
   - |
     cat <<EOF > upload.py
     import pysftp
-    import os
     sftp = pysftp.Connection('web.sourceforge.net', 
                           username='casaditestbot,casadi',
                           private_key='/home/travis/build/testbot/id_rsa_travis')
                           
-    import subprocess
-    
-    binaries_dir = '/home/jg/binaries'
-    
-    out , _ = subprocess.Popen(['git','branch','-r','--contains'],
-                  cwd='/home/travis/build/casadi/binaries/casadi',
-                  stdout=subprocess.PIPE).communicate()
-    
-    branches = map(lambda x : x.rstrip().split("/")[1], out.split("\n")[:-1])
-    
-    # Workaround for SourceForge issue
-    branches = map(lambda x: "develop-branch" if x=='develop' else x, branches)
-    
     with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('branches')
-      with sftp.cd('branches'):
-        for branch in branches:
-          sftp.makedirs(branch)
-          with sftp.cd(branch):
-            sftp.makedirs('windows')
-            with sftp.cd('windows'):
-              sftp.put("dist/$RESULT_EXE","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.msi")
+      sftp.makedirs('commits')
+      with sftp.cd('commits'):
+        sftp.makedirs("$COMMIT")
+        with sftp.cd("$COMMIT"):
+          sftp.makedirs('windows')
+          with sftp.cd('windows'):
+            sftp.put("dist/$RESULT_EXE","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe")
+            sftp.put("dist/$RESULT_ZIP","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.zip")
     EOF
   - python upload.py
    
