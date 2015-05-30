@@ -36,6 +36,7 @@ script:
   - "mkdir -p ~/.matplotlib && echo 'backend : Agg' > ~/.matplotlib/matplotlibrc"
   - pushd docs/api && cp /home/travis/build/testbot/docs.Makefile  Makefile && make full | grep -v "file loc from" && make export && popd
   - echo "Options + Indexes" > docs/api/export/tutorials/.htaccess
+  - sudo pip install pysftp
   - |
     cat <<EOF > upload.py
     import fileinput
