@@ -49,11 +49,8 @@ script:
                           
     import subprocess
     
-    out , _ = subprocess.Popen(['git','rev-parse','HEAD'],
-                  cwd='/home/travis/build/casadi/binaries/casadi',
-                  stdout=subprocess.PIPE).communicate()
                   
-out , _ = subprocess.Popen(['git','branch','-r','--contains'],
+    out , _ = subprocess.Popen(['git','branch','-r','--contains'],
                   cwd='/home/travis/build/casadi/binaries/casadi',
                   stdout=subprocess.PIPE).communicate()
     
