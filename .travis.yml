@@ -65,35 +65,25 @@ script:
   - python setup.py bdist_rpm --force-arch='x86_64'
   - pushd dist && fakeroot alien `ls *64.rpm` && popd
   - export RESULT_DEB=`ls dist/*.deb`
+  - export COMMIT=`git rev-parse HEAD`
   - |
     cat <<EOF > upload.py
     import pysftp
-    import os
     sftp = pysftp.Connection('web.sourceforge.net', 
                           username='casaditestbot,casadi',
                           private_key='/home/travis/build/testbot/id_rsa_travis')
-                          
-    import subprocess
     
     binaries_dir = '/home/jg/binaries'
     
-    out , _ = subprocess.Popen(['git','branch','-r','--contains'],
-                  cwd='/home/travis/build/casadi/binaries/casadi',
-                  stdout=subprocess.PIPE).communicate()
-    
-    branches = map(lambda x : x.rstrip().split("/")[1], out.split("\n")[:-1])
-    branches = map(lambda x: "develop-branch" if x=='develop' else x, branches)
-    print branches
     
     with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('branches')
-      with sftp.cd('branches'):
-        for branch in branches:
-          sftp.makedirs(branch)
-          with sftp.cd(branch):
-            sftp.makedirs('linux')
-            with sftp.cd('linux'):
-              sftp.put("$RESULT_DEB","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.deb")
+      sftp.makedirs('commits')
+      with sftp.cd('commits'):
+        sftp.makedirs("$COMMIT")
+        with sftp.cd("$COMMIT"):
+          sftp.makedirs('linux')
+          with sftp.cd('linux'):
+            sftp.put("$RESULT_DEB","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.deb")
     EOF
   - python upload.py
   
