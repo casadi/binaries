@@ -51,7 +51,7 @@ install:
   # This is where I install numpy from the pre-built wheel I compiled either
   # earlier in this session, or in a previous session.
   - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
-
+  - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
   - "SET EXEFILE=casadi-python%PYTHONVERSION%-numpy%NUMPYVERSION%.exe"
   - pip install pysftp
   - ps: |
