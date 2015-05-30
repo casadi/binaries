@@ -34,12 +34,12 @@ script:
   - sudo pip install --allow-unverified pydot pydot==1.0.28
   - sudo apt-get install python-lxml python-ipdb python-docutils texlive-science latex2html doxygen texlive-font-utils texlive-latex-recommended texlive-fonts-recommended etoolbox graphviz -y
   - "mkdir -p ~/.matplotlib && echo 'backend : Agg' > ~/.matplotlib/matplotlibrc"
-  - pushd docs/api && cp /home/travis/build/testbot/docs.Makefile  Makefile && make full | grep -v "file loc from" && make export && popd
-  - echo "Options + Indexes" > docs/api/export/tutorials/.htaccess
+  - pushd docs/api && cp /home/travis/build/testbot/docs.Makefile  Makefile && make fulllocal | grep -v "file loc from" && make export && popd
   - sudo pip install pysftp
+  - sudo apt-get install zip
+  - pushd docs/api/export && zip -r9 ../../docs.zip . && popd
   - |
     cat <<EOF > upload.py
-    import fileinput
 
     import pysftp
     import os
@@ -53,17 +53,24 @@ script:
                   cwd='/home/travis/build/casadi/binaries/casadi',
                   stdout=subprocess.PIPE).communicate()
                   
-    commit = out.rstrip()
-    for line in fileinput.input("docs/api/html/search/search.js", inplace = True):
-      sys.stdout.write(line.replace("dbLocation", "\"../htdocs/commits/%s/api/html/doxysearch.db\"" % commit))
-    for line in fileinput.input("docs/api/internal/search/search.js", inplace = True):
-      sys.stdout.write(line.replace("dbLocation", "\"../htdocs/commits/%s/api/internal/doxysearch.db\"" % commit))
+out , _ = subprocess.Popen(['git','branch','-r','--contains'],
+                  cwd='/home/travis/build/casadi/binaries/casadi',
+                  stdout=subprocess.PIPE).communicate()
+    
+    branches = map(lambda x : x.rstrip().split("/")[1], out.split("\n")[:-1])
+    
+    # Workaround for SourceForge issue
+    branches = map(lambda x: "develop-branch" if x=='develop' else x, branches)
+    
+    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+      sftp.makedirs('branches')
+      with sftp.cd('branches'):
+        for branch in branches:
+          sftp.makedirs(branch)
+          with sftp.cd(branch):
+            sftp.put("docs/docs.zip","docs.zip")
+            sftp.put("docs/example_pack/example_pack.zip","example_pack.zip")
           
-    with sftp.cd('/home/groups/c/ca/casadi/htdocs'):
-      sftp.makedirs('commits')
-      with sftp.cd('commits'):
-        sftp.makedirs(commit)
-        sftp.put_r('docs/api/export',commit)
     EOF
   - python upload.py
  
