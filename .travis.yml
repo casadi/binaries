@@ -20,6 +20,7 @@ before_script:
   - set -e
 
 script:
+  - sudo apt-get install python-lxml
   - pushd casadi
   - mkdir build
   - pushd build
@@ -28,7 +29,29 @@ script:
   - make json
   - make package
   - popd
-  
+  - ls
+  - export RESULT_DEB=`ls *.deb`
+  - export COMMIT=`git rev-parse HEAD`
+  - |
+    cat <<EOF > upload.py
+    import pysftp
+    sftp = pysftp.Connection('web.sourceforge.net', 
+                          username='casaditestbot,casadi',
+                          private_key='/home/travis/build/testbot/id_rsa_travis')
+    
+    binaries_dir = '/home/jg/binaries'
+    
+    
+    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+      sftp.makedirs('commits')
+      with sftp.cd('commits'):
+        sftp.makedirs("$COMMIT")
+        with sftp.cd("$COMMIT"):
+          sftp.makedirs('linux')
+          with sftp.cd('linux'):
+            sftp.put("$RESULT_DEB","libcasadi.deb")
+    EOF
+  - python upload.py
   
 branches:
   except:
