@@ -34,11 +34,42 @@ script:
   - sudo pip install --allow-unverified pydot pydot==1.0.28
   - sudo apt-get install python-lxml python-ipdb python-docutils texlive-science latex2html doxygen texlive-font-utils texlive-latex-recommended texlive-fonts-recommended etoolbox graphviz -y
   - "mkdir -p ~/.matplotlib && echo 'backend : Agg' > ~/.matplotlib/matplotlibrc"
-  - pushd docs/api && make full | grep -v "file loc from" && popd
-  - pushd docs && python /home/travis/build/casadi/binaries/upload_docs.py $TRAVIS_COMMIT && popd
+  - pushd docs/api && cp /home/travis/build/testbot/docs.Makefile  Makefile && make full | grep -v "file loc from" && make export && popd
+  - echo "Options + Indexes" > docs/api/export/tutorials/.htaccess
+  - |
+    cat <<EOF > upload.py
+    import fileinput
+
+    import pysftp
+    import os
+    sftp = pysftp.Connection('web.sourceforge.net', 
+                          username='casaditestbot,casadi',
+                          private_key='/home/travis/build/testbot/id_rsa_travis')
+                          
+    import subprocess
+    
+    out , _ = subprocess.Popen(['git','rev-parse','HEAD'],
+                  cwd='/home/travis/build/casadi/binaries/casadi',
+                  stdout=subprocess.PIPE).communicate()
+                  
+    commit = out.rstrip()
+    for line in fileinput.input("docs/api/html/search/search.js", inplace = True):
+      sys.stdout.write(line.replace("dbLocation", "\"../htdocs/commits/%s/api/html/doxysearch.db\"" % commit))
+    for line in fileinput.input("docs/api/internal/search/search.js", inplace = True):
+      sys.stdout.write(line.replace("dbLocation", "\"../htdocs/commits/%s/api/internal/doxysearch.db\"" % commit))
+          
+    with sftp.cd('/home/groups/c/ca/casadi/htdocs'):
+      sftp.makedirs('commits')
+      with sftp.cd('commits'):
+        sftp.makedirs(commit)
+        sftp.put_r('docs/api/export',commit)
+    EOF
+  - python upload.py
  
 branches:
   except:
+  
+  
     - /.*appveyor.*/
 
 before_install:
