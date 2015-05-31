@@ -56,7 +56,6 @@ install:
   # earlier in this session, or in a previous session.
   - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
   - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
-  - python -c "import subprocess; out , _ = subprocess.Popen(['git','rev-parse','--short','HEAD'],"
   - "SET EXEFILE=casadi-python%PYTHONVERSION%-numpy%NUMPYVERSION%-%COMMIT%.exe"
   - pip install pysftp
   - ps: |
