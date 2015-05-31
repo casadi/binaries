@@ -27,8 +27,10 @@ script:
     EOF
   - python download.py
   - sudo dpkg -i casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.deb
-  - pushd /home/travis/build/casadi/binaries/casadi/test && make unittests_py examples_code_py && popd
-   
+  - pushd /home/travis/build/casadi/binaries/casadi/test && make unittests_py && popd
+  - sudo apt-get install python-scipy python-matplotlib
+  - pushd /home/travis/build/casadi/binaries/casadi/test && examples_code_py && popd
+  
 branches:
   except:
     - /.*appveyor.*/
