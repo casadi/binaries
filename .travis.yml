@@ -50,9 +50,9 @@ script:
     import subprocess
     
     import sys
-    for line in fileinput.input("docs/api/html/search/search.js", inplace = True):
+    for line in fileinput.input("docs/api/export/api/html/search/search.js", inplace = True):
       sys.stdout.write(line.replace("dbLocation", "\"../htdocs/commits/$COMMIT/api/html/doxysearch.db\"" ))
-    for line in fileinput.input("docs/api/internal/search/search.js", inplace = True):
+    for line in fileinput.input("docs/api/export/api/internal/search/search.js", inplace = True):
       sys.stdout.write(line.replace("dbLocation", "\"../htdocs/commits/$COMMIT/api/internal/doxysearch.db\""))
           
     with sftp.cd('/home/groups/c/ca/casadi/htdocs'):
