@@ -15,10 +15,10 @@ environment:
 install:
   - git submodule init
   - git submodule update
-  - pushd casadi
+  - cd casadi
   - for /f "delims=" %%a in ('git rev-parse --short HEAD') do @set COMMIT=%%a
   - ECHO "%COMMIT%"
-  - popd
+  - cd ..
   - git clone https://github.com/casadi/testbot.git
   - openssl aes-256-cbc -k "%keyA%" -in testbot/id_rsa_travis.enc -out id_rsa_travis -d
   - openssl aes-256-cbc -k "%keyA%" -in testbot/testbotcredentials.py.enc -out testbotcredentials.py -d
