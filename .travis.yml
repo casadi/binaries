@@ -121,7 +121,6 @@ script:
   - export RESULT_EXE=`ls *.exe`
   - export RESULT_ZIP=`ls *.zip`
   - popd
-  - export COMMIT=`git rev-parse HEAD`
   - |
     cat <<EOF > upload.py
     import pysftp
@@ -136,8 +135,8 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('windows')
           with sftp.cd('windows'):
-            sftp.put("dist/$RESULT_EXE","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.exe")
-            sftp.put("dist/$RESULT_ZIP","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.zip")
+            sftp.put("dist/$RESULT_EXE","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.exe")
+            sftp.put("dist/$RESULT_ZIP","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.zip")
     EOF
   - python upload.py
    
@@ -146,6 +145,7 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr
   - more /proc/meminfo
   - free -t -m
