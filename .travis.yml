@@ -31,7 +31,6 @@ script:
   - popd
   - ls
   - export RESULT_DEB=`ls build/*.deb`
-  - export COMMIT=`git rev-parse HEAD`
   - |
     cat <<EOF > upload.py
     import pysftp
@@ -49,7 +48,7 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('linux')
           with sftp.cd('linux'):
-            sftp.put("$RESULT_DEB","libcasadi.deb")
+            sftp.put("$RESULT_DEB","libcasadi-$COMMIT.deb")
     EOF
   - python upload.py
   
@@ -58,6 +57,7 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
