@@ -23,7 +23,7 @@ script:
       with sftp.cd('commits'):
         with sftp.cd("$COMMIT"):
           with sftp.cd('linux'):
-            sftp.get("casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.deb")
+            sftp.get("casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.deb")
     EOF
   - python download.py
   - sudo dpkg -i casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.deb

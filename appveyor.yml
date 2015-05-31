@@ -15,6 +15,10 @@ environment:
 install:
   - git submodule init
   - git submodule update
+  - pushd casadi
+  - "for /f "delims=" %%a in ('git rev-parse --short HEAD') do @set COMMIT=%%a"
+  - ECHO "%COMMIT%"
+  - popd
   - git clone https://github.com/casadi/testbot.git
   - openssl aes-256-cbc -k "%keyA%" -in testbot/id_rsa_travis.enc -out id_rsa_travis -d
   - openssl aes-256-cbc -k "%keyA%" -in testbot/testbotcredentials.py.enc -out testbotcredentials.py -d
@@ -52,7 +56,8 @@ install:
   # earlier in this session, or in a previous session.
   - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
   - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
-  - "SET EXEFILE=casadi-python%PYTHONVERSION%-numpy%NUMPYVERSION%.exe"
+  - python -c "import subprocess; out , _ = subprocess.Popen(['git','rev-parse','--short','HEAD'],"
+  - "SET EXEFILE=casadi-python%PYTHONVERSION%-numpy%NUMPYVERSION%-%COMMIT%.exe"
   - pip install pysftp
   - ps: |
         $a = @"
@@ -61,14 +66,6 @@ install:
         sftp = pysftp.Connection('web.sourceforge.net', 
                               username='casaditestbot,casadi',
                               private_key='id_rsa_travis')
-                              
-        import subprocess
-        
-        out , _ = subprocess.Popen(['git','rev-parse','HEAD'],
-                      cwd='casadi',
-                      stdout=subprocess.PIPE).communicate()
-        
-        commit = out.rstrip()
         
         with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
           with sftp.cd('commits'):
