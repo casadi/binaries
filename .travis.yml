@@ -34,7 +34,7 @@ branches:
     - /.*appveyor.*/
 
 before_install:
-  - pushd casadi && export COMMIT=`git rev-parse HEAD` && popd
+  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install python-numpy
