@@ -22,7 +22,7 @@ compiler:
   - i686-w64-mingw32-gcc
 
 before_script:
-  - tail -n +1 /proc/sys/vm/*
+  - tail -n +1 /proc/sys/vm/* || true
   - set -e
   - sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr
   - more /proc/meminfo
@@ -91,7 +91,7 @@ script:
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
   - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - ulimit -S -s 1000000
-  - tail -n +1 /proc/sys/vm/*
+  - tail -n +1 /proc/sys/vm/* || true
   - make -j2
   - ls lib
   - make install
