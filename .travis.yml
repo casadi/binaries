@@ -37,7 +37,6 @@ script:
   - pushd docs/api && cp /home/travis/build/testbot/docs.Makefile  Makefile && make full | grep -v "file loc from" && make export && popd
   - echo "Options + Indexes" > docs/api/export/tutorials/.htaccess
   - sudo pip install pysftp
-  - export COMMIT=`git rev-parse HEAD`
   - |
     cat <<EOF > upload.py
     import fileinput
@@ -71,6 +70,7 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pwd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
