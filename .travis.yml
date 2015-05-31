@@ -42,31 +42,17 @@ script:
     cat <<EOF > upload.py
 
     import pysftp
-    import os
     sftp = pysftp.Connection('web.sourceforge.net', 
                           username='casaditestbot,casadi',
                           private_key='/home/travis/build/testbot/id_rsa_travis')
                           
-    import subprocess
-    
-                  
-    out , _ = subprocess.Popen(['git','branch','-r','--contains'],
-                  cwd='/home/travis/build/casadi/binaries/casadi',
-                  stdout=subprocess.PIPE).communicate()
-    
-    branches = map(lambda x : x.rstrip().split("/")[1], out.split("\n")[:-1])
-    
-    # Workaround for SourceForge issue
-    branches = map(lambda x: "develop-branch" if x=='develop' else x, branches)
-    
     with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('branches')
-      with sftp.cd('branches'):
-        for branch in branches:
-          sftp.makedirs(branch)
-          with sftp.cd(branch):
-            sftp.put("docs/docs.zip","docs.zip")
-            sftp.put("docs/example_pack/example_pack.zip","example_pack.zip")
+      sftp.makedirs('commits')
+      with sftp.cd('commits'):
+          sftp.makedirs("$COMMIT")
+          with sftp.cd("$COMMIT"):
+            sftp.put("docs/docs.zip","docs-$COMMIT.zip")
+            sftp.put("docs/example_pack/example_pack.zip","example_pack-$COMMIT.zip")
           
     EOF
   - python upload.py
@@ -78,6 +64,7 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pwd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
