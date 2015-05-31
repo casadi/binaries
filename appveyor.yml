@@ -76,7 +76,7 @@ install:
         
         with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
           with sftp.cd('commits'):
-            with sftp.cd("commit):
+            with sftp.cd(commit):
               with sftp.cd('windows'):
                 sftp.get("$Env:EXEFILE")
         "@
