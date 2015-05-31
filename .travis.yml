@@ -30,7 +30,7 @@ script:
   - make package
   - popd
   - ls
-  - export RESULT_DEB=`ls *.deb`
+  - export RESULT_DEB=`ls build/*.deb`
   - export COMMIT=`git rev-parse HEAD`
   - |
     cat <<EOF > upload.py
