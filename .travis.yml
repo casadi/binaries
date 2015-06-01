@@ -2,15 +2,29 @@
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
+    - secure: KvMG4VORV7Ja09shvmsMpiaRMoWqupR76dKxOd7W28I//F4YDIn5ZZefM4aoXsmRgs4G9YqloU8JjVpHutZARmKn2drUwHVMA+96iKb9eDODwZaKXgFYsrQIX5c/OgO8ZpsXynD2daqH3bMK8Mjz1+4fjbFToPFXHggxqQuHm1U=
+    - RUN="windows debian debian-standalone docs docs-local"
 
 script:
-  - pushd casadi
-  - mkdir build
+  - |
+    for i in `echo A BSS C`;
+      do echo "$i" && echo "12";
+    done
+  - |
+    for i in `echo $RUN`;
+      do echo "$i" && echo "12";
+    done
+  - |
+    for i in `echo $RUN`;
+      git checkout $i
+      git commit -a -m "automatic runner commit"
+      echo git push git@github.com:casadi/binaries.git $i
+    done
+
 
 before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - popd
-  
 
 language: cpp
