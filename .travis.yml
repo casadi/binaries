@@ -23,6 +23,7 @@ script:
 
 
 before_install:
+  - git fetch
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - popd
