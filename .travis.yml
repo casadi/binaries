@@ -12,9 +12,13 @@ before_script:
 script:
   - |
     for i in `echo $RUN`; do
+      echo $i;
+    done
+  - |
+    for i in `echo $RUN`; do
       git checkout $i;
       git commit -a -m "automatic runner commit";
-      echo git push git@github.com:casadi/binaries.git $i;
+      git push git@github.com:casadi/binaries.git $i;
     done
 
 
