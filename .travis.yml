@@ -18,7 +18,7 @@ script:
     popd
     pushd /home/frs/project/casadi/CasADi/commits/$COMMIT
     find . -type f -name '*' -exec bash -c "install -D \\\$1 /home/frs/project/casadi/misc/v$VERSION/\\\$(sed "s/$COMMIT/v$VERSION/" <<< "\\\$1") " _ {}  \;
-    echo "Link: [online documentation](http://docs.casadi.org/v$VERSION/api/html)" > /home/frs/project/casadi/misc/v$COMMIT/README.md
+    echo "Link: [online documentation](http://docs.casadi.org/v$VERSION/api/html)" > /home/frs/project/casadi/misc/v$VERSION/README.md
     EOF
 
 language: cpp
