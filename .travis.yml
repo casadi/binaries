@@ -51,8 +51,8 @@ script:
       with sftp.cd('commits'):
           sftp.makedirs("$COMMIT")
           with sftp.cd("$COMMIT"):
-            sftp.put("docs/docs.zip","docs-$COMMIT.zip")
-            sftp.put("docs/example_pack/example_pack.zip","example_pack-$COMMIT.zip")
+            sftp.put("docs/docs.zip","casadi-docs-$COMMIT.zip")
+            sftp.put("docs/example_pack/example_pack.zip","casadi-example_pack-$COMMIT.zip")
           
     EOF
   - python upload.py
