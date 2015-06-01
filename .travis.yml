@@ -65,6 +65,7 @@ script:
   - python setup.py bdist_rpm --force-arch='x86_64'
   - pushd dist && fakeroot alien `ls *64.rpm` && popd
   - export RESULT_DEB=`ls dist/*.deb`
+  - export RESULT_TAR=`ls dist/*.tar.gz`
   - |
     cat <<EOF > upload.py
     import pysftp
@@ -83,6 +84,7 @@ script:
           sftp.makedirs('linux')
           with sftp.cd('linux'):
             sftp.put("$RESULT_DEB","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.deb")
+            sftp.put("$RESULT_TAR","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.tar.gz")
     EOF
   - python upload.py
   
