@@ -14,7 +14,7 @@ script:
     ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net <<EOF
     pushd /home/project-web/casadi/htdocs/
     mkdir -p v$COMMIT
-    cp -r commits/$COMMIT v$COMMIT/
+    cp -r commits/$COMMIT v$VERSION/
     echo "Link: [online documentation](http://docs.casadi.org/v$VERSION/api/html)" > v$COMMIT/README.md
     popd
     pushd /home/frs/project/casadi/CasADi/commits/$COMMIT
