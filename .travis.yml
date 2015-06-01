@@ -11,17 +11,9 @@ before_script:
 
 script:
   - |
-    for i in `echo A BSS C`;
-      do echo "$i" && echo "12";
-    done
-  - |
     for i in `echo $RUN`;
-      do echo "$i" && echo "12";
-    done
-  - |
-    for i in `echo $RUN`;
-      git checkout $i
-      git commit -a -m "automatic runner commit"
+      git checkout $i;
+      git commit -a -m "automatic runner commit";
       echo git push git@github.com:casadi/binaries.git $i
     done
 
