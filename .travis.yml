@@ -1,196 +1,23 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 env: 
   global: 
-    - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - LD_LIBRARY_PATH=/home/travis/build/libhsl
     - secure: "Bu8uBe0emUQyEYWCVnEvH8uvJISDPrCTa7KXVzJnR7GUFKLLnq31Uhjg33VG8/88Is4TP4Volp3QcJadI30D0zfTkI7mZTIwF3JqG7/GjwG5LXSsR2uQM+Rt+hssALubRAlua/5Ml4O8w+tm8IZfvgM3Z2QPiVQ2lMM5DUwFXGatumesKb3SaKj96tSiOIswLqYr/NWEnBaWqm4DUuTUEwN/X6mkS13Lq/3/YqB4r+FwFuyQMWNqV8+/OD2/C+uEBMJCw3vJOPtKlP7+vzrbKobP1t44opPL33HRAhKxJg2Z99OL61QygazX2DoadIapAbrE2y6lnk42o9973C8pIG8TEN0xH0fWtPQDpXzzsgTqtx/Xlw+S0j51wUViLP86OcrVgvTRO2Bt7RAOgWYnOBvPvPfUOdnzSrAL/gh8vg2QsB3FeCuTr31Cf+81FOZy2yDQhTsaWOKUwqmJdV2PL0eatzMPinl0lod7pXBRIDwryv8iVzW3oA9AEwpeXMBx/AibX9/ZEu1BSjxYAVMHCKlR+k2/sGsYVOu9QzPthN7T5S/d/reF/RY19wjIm3L3Hvp7ygEV/xGpvOR8F5dTUxtWLb7+DrNgy3g7texU7YcGJS88atre2BAeZWE1a0GbXQHbB9sgjprVahEXZLVVOiyLOdBqaBspUaIfsmOMcRg="
-    - CMAKE_INCLUDE_PATH=/home/travis/build/testbot/restricted/cplex/cplex/include:/home/travis/build/testbot/restricted/cplex/concert/include
-    - CMAKE_LIBRARY_PATH=/home/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/home/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
-    - ILOG_LICENSE_FILE=/home/travis/build/testbot/restricted/cplex/access.ilm
-    - WORHP=/home/travis/build/testbot/restricted/worhp
-    - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
-    - SNOPT=/home/travis/build/snopt7
-    - MATLABPATH=/home/travis/build/matlab-install
-    - MATLAB_ROOT=/home/travis/build/matlab
-    - compilerprefix=i686-w64-mingw32
-    - WINEENV=py27
-    - PYTHONVERSION=27
-    - NUMPYVERSION=1.9.1
-    - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
-
-compiler:
-  - i686-w64-mingw32-gcc
-
-before_script:
-  - set -e
-  - sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr
-  - more /proc/meminfo
-  - free -t -m
-  - vmstat
-  #- sudo dd if=/dev/zero of=/home/travis/swapfile bs=64K count=64
-  #- sudo mkswap /home/travis/swapfile
-  #- sudo chmod 600 /home/travis/swapfile
-  #- sudo swapoff -a
-  #- sudo swapon -a /home/travis/swapfile
-  - sudo bash fakeswap.sh 2048
-  - more /proc/meminfo
-  - free -t -m
-  - vmstat
-
 script:
-  - pushd casadi
-  - mkdir build
-  - pushd build
-  - |
-    cat <<EOF >toolchain.cmake
-    # this one is important
-    SET(CMAKE_SYSTEM_NAME Windows)
-    #this one not so much
-    SET(CMAKE_SYSTEM_VERSION 1)
-
-    # specify the cross compiler
-    SET(CMAKE_C_COMPILER   $compilerprefix-gcc)
-    SET(CMAKE_CXX_COMPILER $compilerprefix-g++)
-    SET(CMAKE_Fortran_COMPILER $compilerprefix-gfortran)
-    set(CMAKE_RC_COMPILER $compilerprefix-windres)
-    
-    # where is the target environment 
-    SET(CMAKE_FIND_ROOT_PATH  /usr/$compilerprefix)
-    SET(CMAKE_CXX_FLAGS "-ftime-report")
-    
-    # search for programs in the build host directories
-    SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-    # for libraries and headers in the target directories
-    SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
-    SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
-    EOF
-  - |
-    cat <<EOF >>patch.txt
-    find_library(PYTHON_LIBRARY
-      NAMES
-        python27
-      PATHS
-        /home/travis/.wine/drive_c/Python27/libs
-      NO_SYSTEM_ENVIRONMENT_PATH
-    )
-    
-    find_path(PYTHON_INCLUDE_DIR
-        NAMES Python.h
-    PATHS
-       /home/travis/.wine/drive_c/Python27/include
-      NO_SYSTEM_ENVIRONMENT_PATH
-    )
-    
-    set(PYTHON_EXECUTABLE /home/travis/.wine/drive_c/Python27/python.exe)
-    set(NUMPY_INCLUDE_DIR /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include)
-    set(NUMPY_INCLUDED_DIRS /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include/numpy)
-    set(NUMPY_PATH /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include/numpy)
-    EOF
-  - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
-  - mv CMakeLists.txt ../swig/python/CMakeLists.txt
-  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-  - ulimit -S -s 1000000
-  - make -j2
-  - ls lib
-  - make install
-  - cp lib/*.dll ../python_install/casadi
-  - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../python_install/casadi
-  - popd
-  - cd python_install
-  - |
-    cat <<EOF > setup.py
-    from distutils.core import setup, Extension
-    from glob import glob
-    from shutil import copyfile
-    
-    setup(name="python-casadi",
-        version="2.3.0",
-        description="CasADi is a symbolic framework for automatic differentation and numeric optimization",
-        maintainer="Joris Gillis",
-        author="Joel Andersson",
-        url="casadi.org",
-        packages=["casadi","casadi.tools","casadi.tools.graph"],
-        package_data={"casadi": ["_*.pyd","*.dll"]}
-    )
-    EOF
-  - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_msi --target-version=2.7
-  - python setup.py bdist --format=zip
-  - pushd dist
-  - export RESULT_EXE=`ls *.msi`
-  - popd
-  - |
-    cat <<EOF > upload.py
-    import pysftp
-    import os
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/home/travis/build/testbot/id_rsa_travis')
-                          
-    import subprocess
-    
-    binaries_dir = '/home/jg/binaries'
-    
-    out , _ = subprocess.Popen(['git','branch','-r','--contains'],
-                  cwd='/home/travis/build/casadi/binaries/casadi',
-                  stdout=subprocess.PIPE).communicate()
-    
-    branches = map(lambda x : x.rstrip().split("/")[1], out.split("\n")[:-1])
-    
-    # Workaround for SourceForge issue
-    branches = map(lambda x: "develop-branch" if x=='develop' else x, branches)
-    
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('branches')
-      with sftp.cd('branches'):
-        for branch in branches:
-          sftp.makedirs(branch)
-          with sftp.cd(branch):
-            sftp.makedirs('windows')
-            with sftp.cd('windows'):
-              sftp.put("dist/$RESULT_EXE","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION.msi")
-    EOF
-  - python upload.py
-   
-branches:
-  except:
-    - /.*appveyor.*/
+  - ssh -i /home/jgillis/moinette/home_jg/jg/.ssh/id_rsa_travis casaditestbot,casadi@web.sourceforge.net create
+  - VERSION=2.3.0
 
 before_install:
-  - sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr
-  - more /proc/meminfo
-  - free -t -m
-  - vmstat
+  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
-  - sudo apt-get install p7zip-full -y
-  - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
-  - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
-  - mkdir -p /home/travis/build/casadi/testbot
-  - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
-  - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
-  - travis_retry testbot/recipes/fetch.sh ipopt_mingw32.tar.gz && mkdir ipopt && tar -xvf ipopt_mingw32.tar.gz -C ipopt
-  - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
-  - ls ipopt
-  - ls $PKG_CONFIG_PATH
-  - travis_retry testbot/recipes/fetch.sh swig_matlab.tar.gz && mkdir swig_matlab && tar -xvf swig_matlab.tar.gz -C swig_matlab
-  - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig_matlab  swig-matlab-install  && popd
-  - export PATH=/home/travis/build/swig/bin:$PATH
-  - pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
-  - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
-  - popd
-  - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
-  - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
-  - sudo add-apt-repository ppa:tkelman/mingw-backport -y
-  - sudo apt-get update -qq
-  - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib coinor-libipopt-dev libmumps-seq-dev libblas-dev liblapack-dev libslicot-dev libxml2-dev
-  - sudo apt-get remove -qq -y mingw32
-  - sudo apt-get install -q -y mingw-w64
-  - sudo apt-get install -q -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
-  - wget https://raw.githubusercontent.com/WineAsCI/python-lib-template/master/.travis-setup.sh && chmod +x .travis-setup.sh
-  - "./.travis-setup.sh"
-  - wget -O numpy.exe https://github.com/casadi/testbot/releases/download/perpetual/numpy-$NUMPYVERSION-sse2.exe
-  - /opt/wine-staging/bin/wine C:/Python27/Scripts/easy_install.exe numpy.exe
-  - sudo pip install pysftp
-  - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
+  - ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net create
+  - ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net <<EOF
+    pushd /home/project-web/casadi/htdocs/
+    mkdir -p v$COMMIT
+    cp -r commits/$COMMIT v$COMMIT/
+    popd
+    pushd /home/frs/project/casadi/CasADi/commits/$COMMIT
+    find . -type f -name '*' -exec bash -c "install -D \$1 /home/frs/project/casadi/misc/v$VERSION/\$(sed "s/$COMMIT/v$VERSION/" <<< "\$1") " _ {}  \;    EOF
+    EOF
 
 language: cpp
