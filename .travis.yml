@@ -16,7 +16,7 @@ script:
     cp -r commits/$COMMIT v$COMMIT/
     popd
     pushd /home/frs/project/casadi/CasADi/commits/$COMMIT
-    find . -type f -name '*' -exec bash -c "install -D \$1 /home/frs/project/casadi/misc/v$VERSION/\$(sed "s/$COMMIT/v$VERSION/" <<< "\$1") " _ {}  \;    EOF
+    find . -type f -name '*' -exec bash -c "install -D \$1 /home/frs/project/casadi/misc/v$VERSION/\$(sed "s/$COMMIT/v$VERSION/" <<< "\$1") " _ {}  \;
     EOF
 
 language: cpp
