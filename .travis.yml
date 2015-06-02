@@ -89,6 +89,14 @@ script:
             sftp.put("$RESULT_TAR","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.tar.gz")
     EOF
   - python upload.py
+
+after_success:
+  - cd /home/travis/build/casadi/binaries
+  - git remote add github git@github.com:casadi/binaries.git
+  - git fetch github
+  - git checkout tests-debian
+  - git commit -a -m "automatic runner commit $TRAVIS_COMMIT"
+  - git push origin tests-debian
   
 branches:
   except:
