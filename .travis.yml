@@ -96,7 +96,7 @@ after_success:
   - git fetch github
   - git checkout tests-debian
   - git commit -a -m "automatic runner commit $TRAVIS_COMMIT"
-  - git push origin tests-debian
+  - git push github tests-debian
   
 branches:
   except:
