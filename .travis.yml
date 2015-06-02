@@ -146,7 +146,7 @@ after_success:
   - git fetch github
   - git checkout tests-windows
   - git commit -a -m "automatic runner commit $TRAVIS_COMMIT"
-  - git push origin tests-windows
+  - git push github tests-windows
 
 branches:
   except:
