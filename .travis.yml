@@ -10,10 +10,11 @@ before_script:
   - set -e
 
 script:
+  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - |
     for i in `echo $RUN`; do
       git checkout $i;
-      git commit -a -m "automatic runner commit";
+      git commit -a -m "automatic runner commit $COMMIT";
       git push git@github.com:casadi/binaries.git $i;
     done
 
