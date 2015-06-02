@@ -37,7 +37,7 @@ script:
   - pushd docs/api && cp /home/travis/build/testbot/docs.Makefile  Makefile && make fulllocal | grep -v "file loc from" && make export && popd
   - sudo pip install pysftp
   - sudo apt-get install zip
-  - echo "Link: [online documentation](http://docs.casadi.org/commits/$COMMIT/api/html)" > README.md
+  - echo "See also [online documentation](http://docs.casadi.org/commits/$COMMIT/api/html)" > README.md
   - pushd docs/api/export && zip -r9 ../../docs.zip . && popd
   - |
     cat <<EOF > upload.py
@@ -58,12 +58,6 @@ script:
           
     EOF
   - python upload.py
- 
-branches:
-  except:
-  
-  
-    - /.*appveyor.*/
 
 before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
