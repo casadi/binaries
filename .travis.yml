@@ -19,12 +19,12 @@ script:
 
 
 before_install:
+  - pushd ../../ && git clone https://github.com/casadi/testbot.git
+  - pushd testbot && recipes/setup.sh && popd
+  - popd
   # It is remarkably difficult to fetch all branches
   # Seems like .git/config change is in order; this is an easy workaround
   - git remote add github git@github.com:casadi/binaries.git
   - git fetch github
-  - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && recipes/setup.sh && popd
-  - popd
 
 language: cpp
