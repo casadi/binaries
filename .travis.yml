@@ -58,7 +58,7 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('linux')
           with sftp.cd('linux'):
-            sftp.put("$RESULT_DEB","casadi-matlab2014b-$COMMIT.tar.gz")
+            sftp.put("$RESULT_TAR","casadi-matlab2014b-$COMMIT.tar.gz")
     EOF
   - python upload.py
   
