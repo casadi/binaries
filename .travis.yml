@@ -139,7 +139,15 @@ script:
             sftp.put("dist/$RESULT_ZIP","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.zip")
     EOF
   - python upload.py
-   
+
+after_success:
+  - cd /home/travis/build/casadi/binaries
+  - git remote add github git@github.com:casadi/binaries.git
+  - git fetch github
+  - git checkout tests-windows
+  - git commit -a -m "automatic runner commit $TRAVIS_COMMIT"
+  - git push origin tests-windows
+
 branches:
   except:
     - /.*appveyor.*/
