@@ -44,7 +44,9 @@ script:
   - sleep 3
   - pushd test && PATH=/home/travis/build/matlab/bin/:$PATH make unittests_matlab && popd
   - tar -czf matlab.tar.gz /home/travis/build/matlab-install
+  - ls
   - export RESULT_TAR=`ls *.tar.gz`
+  - echo "$RESULT_TAR"
   - |
     cat <<EOF > upload.py
     import pysftp
