@@ -44,8 +44,10 @@ script:
   - sleep 3
   - pushd test && PATH=/home/travis/build/matlab/bin/:$PATH make unittests_matlab && popd
   - tar -czf matlab.tar.gz /home/travis/build/matlab-install
-  - ls
-  - export RESULT_TAR=`ls *.tar.gz`
+  - cp /home/travis/build/matlab-install/lib/* /home/travis/build/matlab-install/matlab_tb
+  - cp /home/travis/build/matlab-install/lib/casadi/* /home/travis/build/matlab-install/matlab_tb
+  - pushd /home/travis/build/matlab-install/matlab_tb && tar -czf ../matlab.tar.gz .  && popd
+  - export RESULT_TAR=`ls /home/travis/build/matlab-install/*.tar.gz`
   - echo "$RESULT_TAR"
   - |
     cat <<EOF > upload.py
