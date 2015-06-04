@@ -40,9 +40,10 @@ before_script:
   - vmstat
 
 script:
-  - sudo apt-get install locate
-  - sudo updatedb
-  - locate FindLAPACK.cmake
+  # We will use ipopt's lapack, which doesnt come with the cheev symbols
+  - sudo sed -i.bak s/cheev/dgesvd/ /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
+  - sudo sed -i.bak s/CHEEV/DGESVD/ /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
+  
   - cp /home/travis/build/ipopt/lib/libcoinblas.a /home/travis/build/ipopt/lib/libblas.a
   - cp /home/travis/build/ipopt/lib/libcoinblas.la /home/travis/build/ipopt/lib/libblas.la
   - cp /home/travis/build/ipopt/lib/libcoinlapack.a /home/travis/build/ipopt/lib/liblapack.a
