@@ -6,6 +6,9 @@ environment:
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\testbot\\helpers\\run_with_env.cmd"
     keyA:
       secure: 44jgfY+doJx9eHLCweOl6Mf7qoeeRlA2Dch0cLUGbvRorXaqr6bs8tVsJ/KXGPVIA4DrXLlpaEeb2eJ5LM4Mdeq5Ux2txHsQpTAnBDSihWQ=
+    PYTHON: "C:\\Python27"
+    PYTHON_VERSION: "2.7.8"
+    PYTHON_ARCH: "32"
 
 install:
   - git submodule init
@@ -21,6 +24,8 @@ install:
   - env.bat
 
   - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
+  - "powershell testbot/helpers/install.ps1"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install pysftp
   - echo "127.0.0.1 %FLEX_SERVER%" >> c:\Windows\System32\Drivers\etc\hosts
   - echo '127.0.0.1 %FLEX_HOSTNAME%' >> c:\Windows\System32\Drivers\etc\hosts
