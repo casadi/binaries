@@ -11,7 +11,7 @@ env:
     - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
     - SNOPT=/home/travis/build/snopt7
     - MATLABPATH=/home/travis/build/matlab-install
-    - MATLAB_ROOT=/home/travis/build/matlab/R2014b
+    - MATLAB_ROOT=/home/travis/build/matlab
     - compilerprefix=x86_64-w64-mingw32
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - MATLABRELEASE=R2014b
@@ -49,9 +49,9 @@ script:
   # Displace find_package(MATLAB)
   - |
     cat <<EOF > CMakeLists2.txt
-    set(MATLAB_LIBRARIES /home/travis/build/matlab/$MATLABRELEASE/bin/win64/libmex.dll /home/travis/build/matlab/$MATLABRELEASE/bin/win64/libmx.dll /home/travis/build/matlab/$MATLABRELEASE/bin/win64/libeng.dll)
+    set(MATLAB_LIBRARIES $MATLAB_ROOT/bin/win64/libmex.dll $MATLAB_ROOT/bin/win64/libmx.dll $MATLAB_ROOT/bin/win64/libeng.dll)
     
-    set(MATLAB_INCLUDE_DIR "/home/travis/build/matlab/$MATLABRELEASE/extern/include")
+    set(MATLAB_INCLUDE_DIR "$MATLAB_ROOT/extern/include")
     set(MATLAB_EXTRA_CXXFLAGS "-D__STDC_UTF_16__")
     set(MATLAB_MEX_EXT "mexw64")
     EOF
