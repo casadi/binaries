@@ -40,6 +40,9 @@ before_script:
   - vmstat
 
 script:
+  - sudo apt-get install locate
+  - sudo updatedb
+  - locate FindLAPACK.cmake
   - cp /home/travis/build/ipopt/lib/libcoinblas.a /home/travis/build/ipopt/lib/libblas.a
   - cp /home/travis/build/ipopt/lib/libcoinblas.la /home/travis/build/ipopt/lib/libblas.la
   - cp /home/travis/build/ipopt/lib/libcoinlapack.a /home/travis/build/ipopt/lib/liblapack.a
