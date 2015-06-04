@@ -98,6 +98,10 @@ script:
     EOF
   - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
+  
+  # Unresolved dependency of our coinlapack
+  - cat "casadi_plugin_link_libraries(QpSolver qpoases gfortran)" >> ../casadi/interfaces/qpoases/CMakeLists.txt
+  
   - cmake -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - ulimit -S -s 1000000
   - tail -n +1 /proc/sys/vm/* || true
