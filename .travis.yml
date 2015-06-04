@@ -48,6 +48,7 @@ script:
   - pushd casadi
   
   # Displace find_package(MATLAB)
+  - pushd swig/matlab
   - |
     cat <<EOF > CMakeLists2.txt
     set(MATLAB_LIBRARIES $MATLAB_ROOT/bin/win64/libmex.dll $MATLAB_ROOT/bin/win64/libmx.dll $MATLAB_ROOT/bin/win64/libeng.dll)
@@ -56,7 +57,7 @@ script:
     set(MATLAB_EXTRA_CXXFLAGS "-D__STDC_UTF_16__")
     set(MATLAB_MEX_EXT "mexw64")
     EOF
-  - pushd swig/matlab && grep -v "find_package(MATLAB" CMakeLists.txt >> CMakeLists2.txt
+  - grep -v "find_package(MATLAB" CMakeLists.txt >> CMakeLists2.txt
   - rm CMakeLists.txt && mv CMakeLists2.txt CMakeLists.txt
   - cat CMakeLists.txt
   - popd
