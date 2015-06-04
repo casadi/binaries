@@ -22,7 +22,8 @@ install:
   - openssl aes-256-cbc -k "%keyA%" -in testbot/testbotcredentials.py.enc -out testbotcredentials.py -d
   - openssl aes-256-cbc -k "%keyA%" -in testbot/env.bat.enc -out env.bat -d
   - env.bat
-
+  - dir C:\MinGW\msys\1.0
+  - tree C:\MinGW\msys\1.0
   - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
   - "powershell testbot/helpers/install.ps1"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
