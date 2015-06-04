@@ -58,7 +58,8 @@ script:
   - pushd swig/matlab && grep -v "find_package(MATLAB" CMakeLists.txt >> CMakeLists2.txt
   - rm CMakeLists.txt && mv CMakeLists2.txt CMakeLists.txt 
   - popd
-  
+  - ls $MATLAB_ROOT
+  - ls $MATLAB_ROOT/extern/include
   - mkdir build
   - pushd build
   - |
