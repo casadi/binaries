@@ -13,8 +13,8 @@ env:
     - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab/R2014b
     - compilerprefix=x86_64-w64-mingw32
-    - WINEENV=py27
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
+    - MATLABRELEASE=R2014b
 
 compiler:
   - x86_64-w64-mingw32-gcc
@@ -38,8 +38,8 @@ before_script:
 
 script:
   - pushd /home/travis/build/
-  - testbot/recipes/fetch.sh matlabR2014b-win-dev.zip
-  - mkdir matlab && unzip matlab2014b.tar.gz -d matlab > /dev/null
+  - testbot/recipes/fetch.sh matlab$MATLABRELEASE-win-dev.zip
+  - mkdir matlab && unzip matlab$MATLABRELEASE.tar.gz -d matlab > /dev/null
   - ls -al /home/travis/build/
   - popd
   - export PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH
@@ -93,7 +93,7 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('windows')
           with sftp.cd('windows'):
-            sftp.put("$RESULT_ZIP","casadi-matlab-$COMMIT.zip")
+            sftp.put("$RESULT_ZIP","casadi-matlab$MATLABRELEASE-$COMMIT.zip")
     EOF
   - python upload.py
 
@@ -129,15 +129,12 @@ before_install:
   - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
   - sudo add-apt-repository ppa:tkelman/mingw-backport -y
   - sudo apt-get update -qq
-  - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib coinor-libipopt-dev libmumps-seq-dev libblas-dev liblapack-dev libslicot-dev libxml2-dev
+  - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev libxml2-dev
   - sudo apt-get remove -qq -y mingw32
   - sudo apt-get install -q -y mingw-w64
   - sudo apt-get install -q -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
   - wget https://raw.githubusercontent.com/WineAsCI/python-lib-template/master/.travis-setup.sh && chmod +x .travis-setup.sh
   - "./.travis-setup.sh"
-  - wget -O numpy.exe https://github.com/casadi/testbot/releases/download/perpetual/numpy-$NUMPYVERSION-sse2.exe
-  - /opt/wine-staging/bin/wine C:/Python27/Scripts/easy_install.exe numpy.exe
   - sudo pip install pysftp
-  - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
 
 language: cpp
