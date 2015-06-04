@@ -11,15 +11,13 @@ env:
     - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
     - SNOPT=/home/travis/build/snopt7
     - MATLABPATH=/home/travis/build/matlab-install
-    - MATLAB_ROOT=/home/travis/build/matlab
-    - compilerprefix=i686-w64-mingw32
+    - MATLAB_ROOT=/home/travis/build/matlab/R2014b
+    - compilerprefix=x86_64-w64-mingw32
     - WINEENV=py27
-    - PYTHONVERSION=27
-    - NUMPYVERSION=1.9.1
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
 
 compiler:
-  - i686-w64-mingw32-gcc
+  - x86_64-w64-mingw32-gcc
 
 before_script:
   - tail -n +1 /proc/sys/vm/* || true
@@ -39,6 +37,12 @@ before_script:
   - vmstat
 
 script:
+  - pushd /home/travis/build/
+  - testbot/recipes/fetch.sh matlabR2014b-win-dev.zip
+  - mkdir matlab && unzip matlab2014b.tar.gz -d matlab > /dev/null
+  - ls -al /home/travis/build/
+  - popd
+  - export PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH
   - pushd casadi
   - mkdir build
   - pushd build
@@ -57,7 +61,7 @@ script:
     
     # where is the target environment 
     SET(CMAKE_FIND_ROOT_PATH  /usr/$compilerprefix)
-    SET(CMAKE_CXX_FLAGS "-ftime-report")
+    SET(CMAKE_CXX_FLAGS "-ftime-report -fpermissive")
     
     # search for programs in the build host directories
     SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
@@ -65,60 +69,14 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     EOF
-  - |
-    cat <<EOF >>patch.txt
-    find_library(PYTHON_LIBRARY
-      NAMES
-        python27
-      PATHS
-        /home/travis/.wine/drive_c/Python27/libs
-      NO_SYSTEM_ENVIRONMENT_PATH
-    )
-    
-    find_path(PYTHON_INCLUDE_DIR
-        NAMES Python.h
-    PATHS
-       /home/travis/.wine/drive_c/Python27/include
-      NO_SYSTEM_ENVIRONMENT_PATH
-    )
-    
-    set(PYTHON_EXECUTABLE /home/travis/.wine/drive_c/Python27/python.exe)
-    set(NUMPY_INCLUDE_DIR /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include)
-    set(NUMPY_INCLUDED_DIRS /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include/numpy)
-    set(NUMPY_PATH /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include/numpy)
-    EOF
-  - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
-  - mv CMakeLists.txt ../swig/python/CMakeLists.txt
-  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-  - ulimit -S -s 1000000
-  - tail -n +1 /proc/sys/vm/* || true
+  - cmake -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DMATLAB_EXTRA_CXXFLAGS="-D__STDC_UTF_16__" -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install ..
   - make -j2
   - ls lib
   - make install
-  - cp lib/*.dll ../python_install/casadi
-  - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../python_install/casadi
+  - cp lib/*.dll ../matlab_install/casadi
+  - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../matlab_install/casadi
   - popd
-  - cd python_install
-  - |
-    cat <<EOF > setup.py
-    from distutils.core import setup, Extension
-    from glob import glob
-    from shutil import copyfile
-    
-    setup(name="python-casadi",
-        version="2.3.0",
-        description="CasADi is a symbolic framework for automatic differentation and numeric optimization",
-        maintainer="Joris Gillis",
-        author="Joel Andersson",
-        url="casadi.org",
-        packages=["casadi","casadi.tools","casadi.tools.graph"],
-        package_data={"casadi": ["_*.pyd","*.dll"]}
-    )
-    EOF
-  - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_wininst --target-version=2.7
-  - python setup.py bdist --format=zip
-  - pushd dist
-  - export RESULT_EXE=`ls *.exe`
+  - pushd matlab_install && zip -r ../matlab.zip . && popd
   - export RESULT_ZIP=`ls *.zip`
   - popd
   - |
@@ -135,18 +93,9 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('windows')
           with sftp.cd('windows'):
-            sftp.put("dist/$RESULT_EXE","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.exe")
-            sftp.put("dist/$RESULT_ZIP","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.zip")
+            sftp.put("$RESULT_ZIP","casadi-matlab-$COMMIT.zip")
     EOF
   - python upload.py
-
-after_success:
-  - cd /home/travis/build/casadi/binaries
-  - git remote add github git@github.com:casadi/binaries.git
-  - git fetch github
-  - git checkout tests-windows
-  - git commit -a -m "automatic runner commit $TRAVIS_COMMIT"
-  - git push github tests-windows
 
 branches:
   except:
