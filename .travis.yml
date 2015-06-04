@@ -17,6 +17,7 @@ env:
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
+    - LIB=/home/travis/build/ipopt/lib
 
 compiler:
   - i686-w64-mingw32-gcc
@@ -39,6 +40,10 @@ before_script:
   - vmstat
 
 script:
+  - cp /home/travis/build/ipopt/lib/libcoinblas.a /home/travis/build/ipopt/lib/libblas.a
+  - cp /home/travis/build/ipopt/lib/libcoinblas.la /home/travis/build/ipopt/lib/libblas.la
+  - cp /home/travis/build/ipopt/lib/libcoinlapack.a /home/travis/build/ipopt/lib/liblapack.a
+  - cp /home/travis/build/ipopt/lib/libcoinlapack.la /home/travis/build/ipopt/lib/liblapack.la
   - pushd casadi
   - mkdir build
   - pushd build
@@ -89,7 +94,7 @@ script:
     EOF
   - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
-  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - ulimit -S -s 1000000
   - tail -n +1 /proc/sys/vm/* || true
   - make -j2
