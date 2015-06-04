@@ -148,14 +148,6 @@ before_install:
   - sudo apt-get remove -qq -y mingw32
   - sudo apt-get install -q -y mingw-w64
   - sudo apt-get install -q -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
-  - sudo add-apt-repository -y ppa:pipelight/daily
-  - sudo apt-get -qy update
-  - sudo apt-get install -y wine-staging winbind
-  - export PATH="/opt/wine-staging/bin:$PATH"
-  - WINEARCH=win32 wineboot
-  - wget http://winetricks.org/winetricks
-  - chmod +x winetricks
-  - ./winetricks nocrashdialog
   - sudo pip install pysftp
 
 language: cpp
