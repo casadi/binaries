@@ -93,10 +93,10 @@ script:
   - make -j2 VERBOSE=1
   - ls lib
   - make install
-  - cp lib/*.dll ../matlab_install/casadi
-  - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../matlab_install/casadi
+  - cp lib/*.dll ../matlab_install/matlab_tb
+  - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../matlab_install/matlab_tb
   - popd
-  - pushd matlab_install && zip -r ../matlab.zip . && popd
+  - pushd matlab_install/matlab_tb && zip -r ../../matlab.zip . && popd
   - export RESULT_ZIP=`ls *.zip`
   - popd
   - |
