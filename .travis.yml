@@ -57,7 +57,8 @@ script:
     set(MATLAB_MEX_EXT "mexw64")
     EOF
   - pushd swig/matlab && grep -v "find_package(MATLAB" CMakeLists.txt >> CMakeLists2.txt
-  - rm CMakeLists.txt && mv CMakeLists2.txt CMakeLists.txt 
+  - rm CMakeLists.txt && mv CMakeLists2.txt CMakeLists.txt
+  - cat CMakeLists.txt
   - popd
   - ls $MATLAB_ROOT
   - ls $MATLAB_ROOT/extern/include
@@ -87,6 +88,7 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     EOF
   - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install ..
+  - cat swig/matlab/CMakeFiles/casadiMATLAB_wrap.dir/includes_CXX.rsp
   - make -j2 VERBOSE=1
   - ls lib
   - make install
