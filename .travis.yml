@@ -98,7 +98,6 @@ script:
   - popd
   - pushd matlab_install/matlab_tb && zip -r ../../matlab.zip . && popd
   - export RESULT_ZIP=`ls *.zip`
-  - popd
   - |
     cat <<EOF > upload.py
     import pysftp
