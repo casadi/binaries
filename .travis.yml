@@ -52,7 +52,9 @@ script:
             sftp.get("casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz","matlab.tar.gz")
     EOF
   - python download.py
-  - mkdir matlab && tar -xvf "matlab.tar.gz" -C matlab.tar.gz
+  - ls
+  - echo "casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz"
+  - mkdir matlab && tar -xvf matlab.tar.gz -C matlab
   - ls matlab.tar.gz
   - matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/home/travis/build/casadi/testbot/matlab'),savepath,exit"
   - pushd casadi/test && make unittests_matlab && popd
