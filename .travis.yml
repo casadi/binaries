@@ -104,8 +104,9 @@ script:
   - ls /usr/lib/gcc/$compilerprefix
   - export COMPILERLIBS=`ls /usr/lib/gcc/$compilerprefix/*win32`
   - echo "link_directories($COMPILERLIBS)" >> new.txt
-  - echo "casadi_plugin_link_libraries(QpSolver qpoases gfortran \${QPOASES_LIBRARIES})" >> new.txt
+  - echo "casadi_plugin_link_libraries(QpSolver qpoases \${QPOASES_LIBRARIES} gfortran)" >> new.txt
   - cp new.txt ../casadi/interfaces/qpoases/CMakeLists.txt
+  - cat  ../casadi/interfaces/qpoases/CMakeLists.txt
   - cmake -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - ulimit -S -s 1000000
   - tail -n +1 /proc/sys/vm/* || true
