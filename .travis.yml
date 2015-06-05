@@ -44,7 +44,7 @@ script:
   - sudo sed -i.bak s/cheev/dgesvd/ /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
   - sudo sed -i.bak s/CHEEV/DGESVD/ /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
   # Out lapack needs gfortran symbols
-  - sudo echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" >> /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
+  - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
   
   - cp /home/travis/build/ipopt/lib/libcoinblas.a /home/travis/build/ipopt/lib/libblas.a
   - cp /home/travis/build/ipopt/lib/libcoinblas.la /home/travis/build/ipopt/lib/libblas.la
