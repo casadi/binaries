@@ -88,13 +88,28 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     EOF
-  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install ..
+  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install ..
   - cat swig/matlab/CMakeFiles/casadiMATLAB_wrap.dir/includes_CXX.rsp
   - make -j2 VERBOSE=1
   - ls lib
   - make install
   - cp lib/*.dll ../matlab_install/matlab_tb
   - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../matlab_install/matlab_tb
+  
+  # Insert an automatic setenv for plugin directories
+  - cat <<EOF > patch.txt
+      % Insert an automatic setenv for plugin directories
+      persistent casadi_plugin_path_loaded;
+      if isempty(casadi_plugin_path_loaded)
+           disect_path = strsplit(mfilename('fullpath'),filesep);
+           libpath = strjoin(disect_path(1:end-2),filesep);
+           setenv('PATH',[getenv('PATH') ';' libpath ';'])
+           casadi_plugin_path_loaded = 1; 
+      end
+    EOF
+    
+  - sed -i '/function self = Function(varargin)/r patch.txt' ../matlab_install/matlab_tb/+casadi/Function.m
+  
   - popd
   - pushd matlab_install/matlab_tb && zip -r ../../matlab.zip . && popd
   - export RESULT_ZIP=`ls *.zip`
