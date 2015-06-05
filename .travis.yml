@@ -17,6 +17,7 @@ env:
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
+    - LIB=/home/travis/build/lapack
 
 compiler:
   - i686-w64-mingw32-gcc
@@ -90,7 +91,7 @@ script:
   - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
   
-  - cmake -DBLA_STATIC=ON -DBLAS_DIR=/home/travis/build/lapack -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - ulimit -S -s 1000000
   - tail -n +1 /proc/sys/vm/* || true
   - make -j2 VERBOSE=1
