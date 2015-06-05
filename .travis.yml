@@ -43,6 +43,8 @@ script:
   # We will use ipopt's lapack, which doesnt come with the cheev symbols
   - sudo sed -i.bak s/cheev/dgesvd/ /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
   - sudo sed -i.bak s/CHEEV/DGESVD/ /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
+  # Out lapack needs gfortran symbols
+  - sudo echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" >> /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
   
   - cp /home/travis/build/ipopt/lib/libcoinblas.a /home/travis/build/ipopt/lib/libblas.a
   - cp /home/travis/build/ipopt/lib/libcoinblas.la /home/travis/build/ipopt/lib/libblas.la
@@ -99,12 +101,6 @@ script:
   - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
   
-  # Unresolved dependency of our coinlapack
-  - grep -v QPOASES_LIBRARIES ../casadi/interfaces/qpoases/CMakeLists.txt > new.txt
-  - echo "link_directories(/usr/lib/gcc/$compilerprefix/4.6/)" >> new.txt
-  - echo "casadi_plugin_link_libraries(QpSolver qpoases \${QPOASES_LIBRARIES} gfortran)" >> new.txt
-  - cp new.txt ../casadi/interfaces/qpoases/CMakeLists.txt
-  - cat  ../casadi/interfaces/qpoases/CMakeLists.txt
   - cmake -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - ulimit -S -s 1000000
   - tail -n +1 /proc/sys/vm/* || true
