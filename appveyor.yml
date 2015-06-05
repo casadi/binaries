@@ -47,8 +47,8 @@ install:
         Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "DefaultDomainName" -value $ComputerName
   - ps: |
         Invoke-WebRequest  http://the.earth.li/~sgtatham/putty/latest/x86/plink.exe -OutFile plink.exe
-  - echo "%FLEX_HOSTNAME%"
-  - echo "y" | plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:%FLEX_SERVER%:1701 -L 1719:%FLEX_SERVER%:1719 -L 1718:%FLEX_SERVER%:1718 -L 2015:%FLEX_SERVER%:2015 -L 1815:%FLEX_SERVER%:1815 -L 1715:%FLEX_SERVER%:1715 -N
+  - echo y | plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk "exit"
+  - start /B plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:%FLEX_SERVER%:1701 -L 1719:%FLEX_SERVER%:1719 -L 1718:%FLEX_SERVER%:1718 -L 2015:%FLEX_SERVER%:2015 -L 1815:%FLEX_SERVER%:1815 -L 1715:%FLEX_SERVER%:1715 -N
   - "SET ZIPFILE=casadi-matlab2014b-%COMMIT%.exe"
   - ps: |
         $a = @"
