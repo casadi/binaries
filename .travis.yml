@@ -102,6 +102,9 @@ script:
   # Unresolved dependency of our coinlapack
   - grep -v QPOASES_LIBRARIES ../casadi/interfaces/qpoases/CMakeLists.txt > new.txt
   - ls /usr/lib/gcc/$compilerprefix
+  - sudo apt-get install locate
+  - sudo updatedb
+  - locate libgfortran
   - export COMPILERLIBS=`ls /usr/lib/gcc/$compilerprefix/*win32`
   - echo "link_directories($COMPILERLIBS)" >> new.txt
   - echo "casadi_plugin_link_libraries(QpSolver qpoases \${QPOASES_LIBRARIES} gfortran)" >> new.txt
