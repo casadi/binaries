@@ -32,7 +32,7 @@ script:
   - pushd build
   - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DCMAKE_INSTALL_PREFIX=/home/travis/build/matlab-install -DWITH_MATLAB=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
   - make -j2
-  - sudo make -j2 install
+  - make -j2 install
   - popd
   - source /home/travis/build/testbot/restricted/env.sh
   - sudo bash -c "echo '127.0.0.1	$FLEX_SERVER' >> /etc/hosts;echo '127.0.0.1	$FLEX_HOSTNAME' >> /etc/hosts"
@@ -43,10 +43,10 @@ script:
   - ssh -i /home/travis/build/testbot/id_rsa_travis $USER_GATE@$GATE_SERVER -L 1701:$FLEX_SERVER:1701 -L 1719:$FLEX_SERVER:1719 -L 1718:$FLEX_SERVER:1718 -L 2015:$FLEX_SERVER:2015 -L 1815:$FLEX_SERVER:1815 -L 1715:$FLEX_SERVER:1715 -N &
   - sleep 3
   - pushd test && PATH=/home/travis/build/matlab/bin/:$PATH make unittests_matlab && popd
-  - sudo cp --preserve /home/travis/build/matlab-install/lib/* /home/travis/build/matlab-install/matlab_tb || true
-  - sudo cp --preserve /home/travis/build/matlab-install/lib/casadi/* /home/travis/build/matlab-install/matlab_tb || true
-  - pushd /home/travis/build/matlab-install/matlab_tb && tar -czf ../matlab.tar.gz .  && popd
-  - export RESULT_TAR=`ls /home/travis/build/matlab-install/*.tar.gz`
+  - cp $MATLABPATH/lib/* $MATLABPATH/matlab_tb
+  - cp $MATLABPATH/lib/casadi/* $MATLABPATH/matlab_tb
+  - pushd $MATLABPATH/matlab_tb && tar -czf ../matlab.tar.gz .  && popd
+  - export RESULT_TAR=`ls $MATLABPATH/*.tar.gz`
   - echo "$RESULT_TAR"
   - |
     cat <<EOF > upload.py
