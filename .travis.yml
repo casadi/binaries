@@ -103,7 +103,7 @@ script:
       if isempty(casadi_plugin_path_loaded)
            disect_path = strsplit(mfilename('fullpath'),filesep);
            libpath = strjoin(disect_path(1:end-2),filesep);
-           setenv('PATH',[getenv('PATH') ';' libpath ';'])
+           setenv('PATH',[ libpath ';' getenv('PATH')])
            casadi_plugin_path_loaded = 1; 
       end
     EOF
