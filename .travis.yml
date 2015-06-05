@@ -97,7 +97,8 @@ script:
   - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../matlab_install/matlab_tb
   
   # Insert an automatic setenv for plugin directories
-  - cat <<EOF > patch.txt
+  - |
+    cat <<EOF > patch.txt
       % Insert an automatic setenv for plugin directories
       persistent casadi_plugin_path_loaded;
       if isempty(casadi_plugin_path_loaded)
