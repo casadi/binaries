@@ -10,7 +10,6 @@ env:
     - WORHP=/home/travis/build/testbot/restricted/worhp
     - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
     - SNOPT=/home/travis/build/snopt7
-    - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - PYTHONVERSION=27
@@ -27,13 +26,6 @@ script:
   - tar -xvf toolbox-matlab.tar.gz -C matlab > /dev/null
   - ls -al /home/travis/build/
   - popd
-  - pushd casadi
-  - mkdir build
-  - pushd build
-  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DCMAKE_INSTALL_PREFIX=/home/travis/build/matlab-install -DWITH_MATLAB=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
-  - travis_wait make
-  - make install
-  - popd
   - source /home/travis/build/testbot/restricted/env.sh
   - sudo bash -c "echo '127.0.0.1	$FLEX_SERVER' >> /etc/hosts;echo '127.0.0.1	$FLEX_HOSTNAME' >> /etc/hosts"
   - sudo hostname $FLEX_HOSTNAME
@@ -42,14 +34,8 @@ script:
   - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
   - ssh -i /home/travis/build/testbot/id_rsa_travis $USER_GATE@$GATE_SERVER -L 1701:$FLEX_SERVER:1701 -L 1719:$FLEX_SERVER:1719 -L 1718:$FLEX_SERVER:1718 -L 2015:$FLEX_SERVER:2015 -L 1815:$FLEX_SERVER:1815 -L 1715:$FLEX_SERVER:1715 -N &
   - sleep 3
-  - pushd test && PATH=/home/travis/build/matlab/bin/:$PATH make unittests_matlab && popd
-  - cp $MATLABPATH/lib/* $MATLABPATH/matlab_tb
-  - cp $MATLABPATH/lib/casadi/* $MATLABPATH/matlab_tb
-  - pushd $MATLABPATH/matlab_tb && tar -czf ../matlab.tar.gz .  && popd
-  - export RESULT_TAR=`ls $MATLABPATH/*.tar.gz`
-  - echo "$RESULT_TAR"
   - |
-    cat <<EOF > upload.py
+    cat <<EOF > download.py
     import pysftp
     sftp = pysftp.Connection('web.sourceforge.net', 
                           username='casaditestbot,casadi',
@@ -62,9 +48,14 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('linux')
           with sftp.cd('linux'):
-            sftp.put("$RESULT_TAR","casadi-matlab2014b-$COMMIT.tar.gz")
+            sftp.get("casadi-matlab2014b-$COMMIT.tar.gz","matlab.tar.gz")
     EOF
-  - python upload.py
+  - python download.py
+  - mkdir matlab && tar -xvf "matlab.tar.gz" -C matlab.tar.gz
+  - ls matlab.tar.gz
+  - matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/home/travis/build/casadi/testbot/matlab'),savepath,exit"
+  - pushd casadi/test && make unittests_matlab && popd
+
   
 branches:
   except:
