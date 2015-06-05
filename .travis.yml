@@ -43,6 +43,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
+  - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
   - |
     cat <<EOF >toolchain.cmake
     # this one is important
