@@ -11,6 +11,9 @@ environment:
     PYTHON_ARCH: "32"
 
 install:
+  - dir
+  - ps: "New-NetFirewallRule -Direction Inbound -Program 'plink.exe' -RemoteAddress Any -Action Allow"
+  - ps: "New-NetFirewallRule -Direction Outbound -Program 'plink.exe' -RemoteAddress Any -Action Allow"
   - git submodule init
   - git submodule update
   - cd casadi
