@@ -11,9 +11,6 @@ environment:
     PYTHON_ARCH: "32"
 
 install:
-  - dir
-  - ps: "New-NetFirewallRule -Direction Inbound -Program 'plink.exe' -RemoteAddress Any -Action Allow"
-  - ps: "New-NetFirewallRule -Direction Outbound -Program 'plink.exe' -RemoteAddress Any -Action Allow"
   - git submodule init
   - git submodule update
   - cd casadi
@@ -50,6 +47,9 @@ install:
         Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "DefaultDomainName" -value $ComputerName
   - ps: |
         Invoke-WebRequest  http://the.earth.li/~sgtatham/putty/latest/x86/plink.exe -OutFile plink.exe
+        New-NetFirewallRule -DisplayName 'plink out' -Direction Outbound -Program 'C:\projects\binaries\plink.exe' -RemoteAddress Any -Action Allow
+        New-NetFirewallRule -DisplayName 'plink in' -Direction Inbound -Program 'C:\projects\binaries\plink.exe' -RemoteAddress Any -Action Allow
+        
   - echo y | plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk "exit"
   - start /B plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:%FLEX_SERVER%:1701 -L 1719:%FLEX_SERVER%:1719 -L 1718:%FLEX_SERVER%:1718 -L 2015:%FLEX_SERVER%:2015 -L 1815:%FLEX_SERVER%:1815 -L 1715:%FLEX_SERVER%:1715 -N
   - "SET ZIPFILE=casadi-matlab2014b-%COMMIT%.exe"
