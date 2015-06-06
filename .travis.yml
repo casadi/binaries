@@ -60,6 +60,8 @@ script:
   - python upload.py
 
 after_success:
+  - git remote add github git@github.com:casadi/binaries.git
+  - git fetch github
   - cd /home/travis/build/casadi/binaries
   - git checkout test-debian-matlab
   - git commit -a -m "automatic test commit $COMMIT"
