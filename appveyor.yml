@@ -74,15 +74,15 @@ install:
         $a | out-file -Encoding ascii -FilePath download.py
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - python -c "from restricted import *; download('matlabR2014b-win.zip')"
-  - 7z x -y "matlabR2014b-dev.zip" > nul
+  - 7z x -y "matlabR2014b-win.zip" -omatlab > nul
   - pwd
   - dir
-  - 7z x %ZIPFILE%
+  - 7z x %ZIPFILE% -o casadimatlab
   - pushd casadi\\test
-  - set PATH=C:\projects\binaries\:%PATH%
+  - set PATH=C:\projects\binaries\matlab\bin:%PATH%
   - echo "SERVER %FLEX_SERVER% ANY 1715" > license.lic
   - echo "USE_SERVER" >> license.lic
-  - matlab -nodisplay -nosplash -nodesktop -nojvm
+  - matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('C:\\projects\\binaries\\casadimatlab'),savepath,exit"
   - make unittests_py examples_code_py
   - popd
 
