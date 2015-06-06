@@ -29,6 +29,7 @@ install:
   - "powershell testbot/helpers/install.ps1"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install pysftp
+  - pip install requests
   - echo "127.0.0.1 %FLEX_SERVER%" >> c:\Windows\System32\Drivers\etc\hosts
   - echo '127.0.0.1 %FLEX_HOSTNAME%' >> c:\Windows\System32\Drivers\etc\hosts
   # Change hostname
