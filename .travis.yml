@@ -65,7 +65,8 @@ after_success:
   - git remote add github git@github.com:casadi/binaries.git
   - git fetch github
   - git checkout test-debian-matlab
-  - git commit -a -m "automatic test commit $COMMIT"
+  - git add casadi
+  - git commit -m "automatic test commit $COMMIT" || true
   - git push git@github.com:casadi/binaries.git test-debian-matlab
   
 branches:
