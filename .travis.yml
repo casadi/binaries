@@ -132,6 +132,12 @@ script:
     EOF
   - python upload.py
 
+after_success:
+  - cd /home/travis/build/casadi/binaries
+  - git checkout test-windows-matlab
+  - git commit -a -m "automatic test commit $COMMIT"
+  - git push git@github.com:casadi/binaries.git test-windows-matlab
+
 branches:
   except:
     - /.*appveyor.*/
