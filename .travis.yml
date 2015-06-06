@@ -23,8 +23,6 @@ script:
   - pushd /home/travis/build/
   - testbot/recipes/fetch.sh matlab$MATLABRELEASE.tar.gz
   - mkdir matlab && tar -xvf matlab$MATLABRELEASE.tar.gz -C matlab > /dev/null
-  - testbot/recipes/fetch.sh toolbox-matlab.tar.gz
-  - tar -xvf toolbox-matlab.tar.gz -C matlab > /dev/null
   - ls -al /home/travis/build/
   - popd
   - source /home/travis/build/testbot/restricted/env.sh
