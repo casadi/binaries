@@ -73,14 +73,13 @@ install:
         "@
         $a | out-file -Encoding ascii -FilePath download.py
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
-  - python -c "from restricted import *; download('matlabR2014b-win-dev.zip')"
-  - 7z x -y "matlabR2014b-win-dev.zip" > nul
-  - dir
+  - python -c "from restricted import *; download('matlabR2014b-win.zip')"
+  - 7z x -y "matlabR2014b-dev.zip" > nul
   - pwd
   - dir
   - 7z x %ZIPFILE%
   - pushd casadi\\test
-  - set PATH=/home/travis/build/matlab/bin/:%PATH%
+  - set PATH=C:\projects\binaries\:%PATH%
   - echo "SERVER %FLEX_SERVER% ANY 1715" > license.lic
   - echo "USE_SERVER" >> license.lic
   - matlab -nodisplay -nosplash -nodesktop -nojvm
