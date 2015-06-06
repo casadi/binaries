@@ -62,7 +62,7 @@ script:
   - python upload.py
 
 after_success:
-  - cd/home/travis/build/casadi/binaries
+  - cd /home/travis/build/casadi/binaries
   - git checkout test-debian-matlab
   - git commit -a -m "automatic test commit $COMMIT"
   - git push git@github.com:casadi/binaries.git test-debian-matlab
