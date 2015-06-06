@@ -23,7 +23,8 @@ before_script:
 script:
   - pushd /home/travis/build/
   - testbot/recipes/fetch.sh matlab$MATLABRELEASE.tar.gz
-  - mkdir matlab && tar -xvf matlab$MATLABRELEASE.tar.gz -C matlab > /dev/null
+  - mkdir matlab
+  - travis_wait tar -xf matlab$MATLABRELEASE.tar.gz -C matlab
   - ls -al /home/travis/build/
   - popd
   - pushd casadi
