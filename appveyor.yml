@@ -52,7 +52,7 @@ install:
         
   - echo y | plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk "pwd;exit"
   #- start plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -N
-  - echo start plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:\%1:1701 -L 1719:%%1:1719 -L 1718:%1:1718 -L 2015:%1:2015 -L 1815:%1:1815 -L 1715:%1:1715 -N > env.bat
+  - echo start plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:\%1:1701 -L 1719:%%1:1719 -L 1718:\\%%1:1718 -L 2015:%%%%1:2015 -L 1815:%%%1:1815 -L 1715:\\\%1:1715 -N > env.bat
   - type env.bat
   - env.bat        %FLEX_SERVER%
 #  - start plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:%FLEX_SERVER%:1701 -L 1719:%FLEX_SERVER%:1719 -L 1718:%FLEX_SERVER%:1718 -L 2015:%FLEX_SERVER%:2015 -L 1815:%FLEX_SERVER%:1815 -L 1715:%FLEX_SERVER%:1715 -N
