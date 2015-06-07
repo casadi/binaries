@@ -134,6 +134,8 @@ script:
 
 after_success:
   - cd /home/travis/build/casadi/binaries
+  - git remote add github git@github.com:casadi/binaries.git
+  - git fetch github
   - git checkout test-windows-matlab
   - git commit -a -m "automatic test commit $COMMIT"
   - git push git@github.com:casadi/binaries.git test-windows-matlab
