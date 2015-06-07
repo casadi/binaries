@@ -84,7 +84,8 @@ install:
   - set PATH=C:\projects\binaries\matlab\bin:%PATH%
   - echo "SERVER %FLEX_SERVER% ANY 1715" > license.lic
   - echo "USE_SERVER" >> license.lic
-  - matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('C:\\projects\\binaries\\casadimatlab'),savepath,exit"
+  - dir C:\projects\binaries\matlab\bin
+  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -r "addpath('C:\\projects\\binaries\\casadimatlab'),savepath,exit"
   - make unittests_py examples_code_py
   - popd
 
