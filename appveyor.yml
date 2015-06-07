@@ -72,6 +72,7 @@ install:
                 sftp.get("$Env:ZIPFILE")
         "@
         $a | out-file -Encoding ascii -FilePath download.py
+  - python download.py
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - python -c "from restricted import *; download('matlabR2014b-win.zip')"
   - 7z x -y "matlabR2014b-win.zip" -omatlab > nul
