@@ -87,7 +87,6 @@ install:
   - dir C:\projects\binaries\matlab\bin
   - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
   - make unittests_matlab
-  - popd
 
 branches: 
   except:
