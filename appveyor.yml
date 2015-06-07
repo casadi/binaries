@@ -79,14 +79,14 @@ install:
   - 7z x -y "matlab%MATLABRELEASE%-win.zip" -omatlab > nul
   - pwd
   - dir
-  - 7z x %ZIPFILE% -ocasadimatlab
+  - 7z x %ZIPFILE% -ocasadimatlab > nul
   - pushd casadi\\test
   - set PATH=C:\projects\binaries\matlab\bin;%PATH%
   - echo "SERVER %FLEX_SERVER% ANY 1715" > license.lic
   - echo "USE_SERVER" >> license.lic
   - dir C:\projects\binaries\matlab\bin
-  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -r "addpath('C:\\projects\\binaries\\casadimatlab'),savepath,exit"
-  - make unittests_py examples_code_py
+  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
+  - make unittests_matlab
   - popd
 
 branches: 
