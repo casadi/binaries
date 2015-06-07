@@ -9,6 +9,7 @@ environment:
     PYTHON: "C:\\Python27"
     PYTHON_VERSION: "2.7.8"
     PYTHON_ARCH: "32"
+    MATLABRELEASE: "R2014b"
 
 install:
   - git submodule init
