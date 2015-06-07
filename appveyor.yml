@@ -57,7 +57,7 @@ install:
   - echo start plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:%%%%1:1701 -L 1719:%%%%1:1719 -L 1718:%%%%1:1718 -L 2015:%%%%1:2015 -L 1815:%%%%1:1815 -L 1715:%%%%1:1715 -N > ex.bat
   - ps: "Start-Process -FilePath ex.bat -ArgumentList $Env:FLEX_SERVER"
 #  - start plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:%FLEX_SERVER%:1701 -L 1719:%FLEX_SERVER%:1719 -L 1718:%FLEX_SERVER%:1718 -L 2015:%FLEX_SERVER%:2015 -L 1815:%FLEX_SERVER%:1815 -L 1715:%FLEX_SERVER%:1715 -N
-  - "SET ZIPFILE=casadi-matlab2014b-%COMMIT%.exe"
+  - "SET ZIPFILE=casadi-matlab%MATLABRELEASE%-%COMMIT%.exe"
   - ps: |
         $a = @"
         import pysftp
@@ -75,8 +75,8 @@ install:
         $a | out-file -Encoding ascii -FilePath download.py
   - python download.py
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
-  - python -c "from restricted import *; download('matlabR2014b-win.zip')"
-  - 7z x -y "matlabR2014b-win.zip" -omatlab > nul
+  - python -c "from restricted import *; download('matlab%MATLABRELEASE%-win.zip')"
+  - 7z x -y "matlab%MATLABRELEASE%-win.zip" -omatlab > nul
   - pwd
   - dir
   - 7z x %ZIPFILE% -ocasadimatlab
