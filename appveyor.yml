@@ -81,7 +81,7 @@ install:
   - dir
   - 7z x %ZIPFILE% -ocasadimatlab
   - pushd casadi\\test
-  - set PATH=C:\projects\binaries\matlab\bin:%PATH%
+  - set PATH=C:\projects\binaries\matlab\bin;%PATH%
   - echo "SERVER %FLEX_SERVER% ANY 1715" > license.lic
   - echo "USE_SERVER" >> license.lic
   - dir C:\projects\binaries\matlab\bin
