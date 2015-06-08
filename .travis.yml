@@ -14,7 +14,7 @@ script:
   - |
     for i in `echo $RUN`; do
       git checkout $i;
-      git commit -a -m "automatic runner commit $COMMIT";
+      git commit -a -m "automatic runner commit $COMMIT" || true;
       git push git@github.com:casadi/binaries.git $i;
     done
 
