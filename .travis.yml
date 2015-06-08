@@ -17,7 +17,12 @@ script:
       git commit -a -m "automatic runner commit $COMMIT" || true;
       git push git@github.com:casadi/binaries.git $i;
     done
-
+  - ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net create
+  - |
+    ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net <<EOF
+    mkdir /home/frs/project/casadi/CasADi/commits/$HASH
+    python index.py
+    EOF
 
 before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
