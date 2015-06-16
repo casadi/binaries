@@ -1,4 +1,7 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
+
+os: osx
+
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
@@ -59,9 +62,9 @@ after_success:
   - cd /home/travis/build/casadi/binaries
   - git remote add github git@github.com:casadi/binaries.git
   - git fetch github
-  - git checkout tests-debian
+  - git checkout tests-osx
   - git commit -a -m "automatic runner commit $TRAVIS_COMMIT"
-  - git push github tests-debian
+  - git push github tests-osx
   
 branches:
   except:
@@ -86,13 +89,11 @@ before_install:
   - pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
   - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
-  - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
-  - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
-  - sudo apt-get update -qq
-  # Not available on 12.04: libslicot-dev
-  - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
-  - sudo apt-get install fakeroot rpm alien
-  - sudo pip install pysftp
-  - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
+  - brew update
+  - brew tap homebrew/science
+  - brew install swig pkg-config
+  #- brew doctor
+  - sudo easy_install pip
+  - sudo pip install ipython matplotlib numpy scipy
   
 language: cpp
