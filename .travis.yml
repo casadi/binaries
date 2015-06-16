@@ -33,7 +33,7 @@ script:
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
-  - export RESULT_TAR=`bundle.tar.gz`
+  - export RESULT_TAR="$PWD/bundle.tar.gz"
   - |
     cat <<EOF > upload.py
     import pysftp
