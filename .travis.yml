@@ -52,8 +52,8 @@ script:
       with sftp.cd('commits'):
         sftp.makedirs("$COMMIT")
         with sftp.cd("$COMMIT"):
-          sftp.makedirs('linux')
-          with sftp.cd('linux'):
+          sftp.makedirs('osx')
+          with sftp.cd('osx'):
             sftp.put("$RESULT_TAR","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.tar.gz")
     EOF
   - python upload.py
