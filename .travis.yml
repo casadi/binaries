@@ -23,7 +23,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
   - grep -i ipopt CMakeCache.txt
@@ -32,42 +32,8 @@ script:
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-  #- pushd test && make unittests_py examples_code_py && popd
-  - pushd python_install
-  - pwd
-  - ls
-  - |
-    cat <<EOF > preprocess.py
-    import os
-    import shutil
-    from glob import glob
-    for i in glob("lib/*.so"):
-      if os.path.islink(i):
-      	ir = os.path.realpath(i)
-      	os.unlink(i)
-      	shutil.copyfile(ir,i)
-    EOF
-  - python preprocess.py
-  - |
-    cat <<EOF > setup.py
-    from distutils.core import setup, Extension
-    from glob import glob
-    from shutil import copyfile
-    setup(name="python-casadi",
-        version="$HVERSION",
-        description="CasADi is a symbolic framework for automatic differentation and numeric optimization",
-        maintainer="Joris Gillis",
-        author="Joel Andersson",
-        url="casadi.org",
-        packages=["casadi","casadi.tools","casadi.tools.graph"],
-        package_data={"casadi": ["*.so"]},
-        data_files=[('/usr/lib',glob("lib/*.so")),('/usr/lib',glob("lib/casadi/*.so"))]
-    )
-    EOF
-  - python setup.py bdist_rpm --force-arch='x86_64'
-  - pushd dist && fakeroot alien `ls *64.rpm` && popd
-  - export RESULT_DEB=`ls dist/*.deb`
-  - export RESULT_TAR=`ls dist/*.tar.gz`
+  - pushd python_install && tar -czf ../bundle.tar.gz . && popd
+  - export RESULT_TAR=`bundle.tar.gz`
   - |
     cat <<EOF > upload.py
     import pysftp
@@ -85,7 +51,6 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('linux')
           with sftp.cd('linux'):
-            sftp.put("$RESULT_DEB","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.deb")
             sftp.put("$RESULT_TAR","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.tar.gz")
     EOF
   - python upload.py
