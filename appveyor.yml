@@ -56,7 +56,7 @@ install:
   # earlier in this session, or in a previous session.
   - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
   - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
-  - "SET EXEFILE=casadi-python%PYTHONVERSION%-numpy%NUMPYVERSION%-%COMMIT%.exe"
+  - "SET FILE=casadi-python%PYTHONVERSION%-numpy%NUMPYVERSION%-%COMMIT%"
   - pip install pysftp
   - ps: |
         $a = @"
@@ -70,16 +70,17 @@ install:
           with sftp.cd('commits'):
             with sftp.cd("$Env:COMMIT"):
               with sftp.cd('windows'):
-                sftp.get("$Env:EXEFILE")
+                sftp.get("$Env:FILE.zip")
         "@
         $a | out-file -Encoding ascii -FilePath download.py
   - type download.py
   - python download.py
-  - 7z x %EXEFILE%
-  - "SET PYTHONPATH=%PYTHONPATH%;C:\\projects\\binaries\\PURELIB"
+  - 7z x %FILE%.zip -ocasadipython
+  - "SET PYTHONPATH=%PYTHONPATH%;C:\\projects\\binaries\\casadipython"
   - pushd casadi\\test
   - make unittests_py examples_code_py
   - popd
+  - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
 
 branches: 
   except:
