@@ -92,37 +92,21 @@ script:
   - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
   
-  - cmake -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - ulimit -S -s 1000000
   - tail -n +1 /proc/sys/vm/* || true
-  - make -j2 VERBOSE=1
+  - make -j2
+  - rm CMakeCache.txt
+  - cmake -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - make
   - ls lib
   - make install
-  - cp lib/*.dll ../python_install/casadi
   - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../python_install/casadi
   - popd
-  - cd python_install
-  - |
-    cat <<EOF > setup.py
-    from distutils.core import setup, Extension
-    from glob import glob
-    from shutil import copyfile
-    
-    setup(name="python-casadi",
-        version="2.3.0",
-        description="CasADi is a symbolic framework for automatic differentation and numeric optimization",
-        maintainer="Joris Gillis",
-        author="Joel Andersson",
-        url="casadi.org",
-        packages=["casadi","casadi.tools","casadi.tools.graph"],
-        package_data={"casadi": ["_*.pyd","*.dll"]}
-    )
-    EOF
-  - /opt/wine-staging/bin/wine C:/Python27/python.exe setup.py bdist_wininst --target-version=2.7
-  - python setup.py bdist --format=zip
-  - pushd dist
-  - export RESULT_EXE=`ls *.exe`
-  - export RESULT_ZIP=`ls *.zip`
+  - export RESULT_ZIP="bundle.zip"
+  - sudo apt-get install zip
+  - pushd python_install
+  - zip -r9 ../bundle.zip .
   - popd
   - |
     cat <<EOF > upload.py
@@ -138,8 +122,7 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('windows')
           with sftp.cd('windows'):
-            sftp.put("dist/$RESULT_EXE","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.exe")
-            sftp.put("dist/$RESULT_ZIP","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.zip")
+            sftp.put("$RESULT_ZIP","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.zip")
     EOF
   - python upload.py
 
