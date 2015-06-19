@@ -30,18 +30,15 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DCMAKE_INSTALL_PREFIX=/home/travis/build/matlab-install -DWITH_MATLAB=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
+  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_SELFCONTAINED=ON -DCMAKE_INSTALL_PREFIX=$MATLABPATH -DWITH_DEEPBIND=ON -DWITH_MATLAB=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
   - make -j2
   - rm CMakeCache.txt
-  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DCMAKE_INSTALL_PREFIX=/home/travis/build/matlab-install -DWITH_MATLAB=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
+  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_SELFCONTAINED=ON -DCMAKE_INSTALL_PREFIX=$MATLABPATH -DWITH_DEEPBIND=ON -DWITH_MATLAB=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
   - travis_wait make
   - make install
   - popd
-  - cp $MATLABPATH/lib/*.so $MATLABPATH/matlab_tb
-  - cp $MATLABPATH/lib/casadi/*.so $MATLABPATH/matlab_tb
-  - pushd $MATLABPATH/matlab_tb && tar -czf ../matlab.tar.gz .  && popd
-  - export RESULT_TAR=`ls $MATLABPATH/*.tar.gz`
-  - echo "$RESULT_TAR"
+  - pushd $MATLABPATH && tar -czf ../bundle.tar.gz .  && popd
+  - export RESULT_TAR="$MATLABPATH/../bundle.tar.gz"
   - |
     cat <<EOF > upload.py
     import pysftp
