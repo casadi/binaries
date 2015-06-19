@@ -2,7 +2,7 @@
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - LD_LIBRARY_PATH=/home/travis/build/libhsl
+    - LD_LIBRARY_PATH=/home/travis/build/libhsl:/home/travis/build/testbot/restricted/worhp:/home/travis/build/snopt7/lib
     - secure: "Bu8uBe0emUQyEYWCVnEvH8uvJISDPrCTa7KXVzJnR7GUFKLLnq31Uhjg33VG8/88Is4TP4Volp3QcJadI30D0zfTkI7mZTIwF3JqG7/GjwG5LXSsR2uQM+Rt+hssALubRAlua/5Ml4O8w+tm8IZfvgM3Z2QPiVQ2lMM5DUwFXGatumesKb3SaKj96tSiOIswLqYr/NWEnBaWqm4DUuTUEwN/X6mkS13Lq/3/YqB4r+FwFuyQMWNqV8+/OD2/C+uEBMJCw3vJOPtKlP7+vzrbKobP1t44opPL33HRAhKxJg2Z99OL61QygazX2DoadIapAbrE2y6lnk42o9973C8pIG8TEN0xH0fWtPQDpXzzsgTqtx/Xlw+S0j51wUViLP86OcrVgvTRO2Bt7RAOgWYnOBvPvPfUOdnzSrAL/gh8vg2QsB3FeCuTr31Cf+81FOZy2yDQhTsaWOKUwqmJdV2PL0eatzMPinl0lod7pXBRIDwryv8iVzW3oA9AEwpeXMBx/AibX9/ZEu1BSjxYAVMHCKlR+k2/sGsYVOu9QzPthN7T5S/d/reF/RY19wjIm3L3Hvp7ygEV/xGpvOR8F5dTUxtWLb7+DrNgy3g7texU7YcGJS88atre2BAeZWE1a0GbXQHbB9sgjprVahEXZLVVOiyLOdBqaBspUaIfsmOMcRg="
     - CMAKE_INCLUDE_PATH=/home/travis/build/testbot/restricted/cplex/cplex/include:/home/travis/build/testbot/restricted/cplex/concert/include
     - CMAKE_LIBRARY_PATH=/home/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/home/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
@@ -20,54 +20,23 @@ before_script:
   - set -e
 
 script:
+  - ls -al /home/travis/build/testbot/restricted/worhp
+  - ldd /home/travis/build/testbot/restricted/worhp/libworhp.so.1
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
   - grep -i ipopt CMakeCache.txt
   - make VERBOSE=1
   - make install
+  - ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-  #- pushd test && make unittests_py examples_code_py && popd
-  - pushd python_install
-  - pwd
-  - ls
-  - |
-    cat <<EOF > preprocess.py
-    import os
-    import shutil
-    from glob import glob
-    for i in glob("lib/*.so"):
-      if os.path.islink(i):
-      	ir = os.path.realpath(i)
-      	os.unlink(i)
-      	shutil.copyfile(ir,i)
-    EOF
-  - python preprocess.py
-  - |
-    cat <<EOF > setup.py
-    from distutils.core import setup, Extension
-    from glob import glob
-    from shutil import copyfile
-    setup(name="python-casadi",
-        version="$HVERSION",
-        description="CasADi is a symbolic framework for automatic differentation and numeric optimization",
-        maintainer="Joris Gillis",
-        author="Joel Andersson",
-        url="casadi.org",
-        packages=["casadi","casadi.tools","casadi.tools.graph"],
-        package_data={"casadi": ["*.so"]},
-        data_files=[('/usr/lib',glob("lib/*.so")),('/usr/lib',glob("lib/casadi/*.so"))]
-    )
-    EOF
-  - python setup.py bdist_rpm --force-arch='x86_64'
-  - pushd dist && fakeroot alien `ls *64.rpm` && popd
-  - export RESULT_DEB=`ls dist/*.deb`
-  - export RESULT_TAR=`ls dist/*.tar.gz`
+  - pushd python_install && tar -czf ../bundle.tar.gz . && popd
+  - export RESULT_TAR="$PWD/bundle.tar.gz"
   - |
     cat <<EOF > upload.py
     import pysftp
@@ -85,7 +54,6 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('linux')
           with sftp.cd('linux'):
-            sftp.put("$RESULT_DEB","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.deb")
             sftp.put("$RESULT_TAR","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.tar.gz")
     EOF
   - python upload.py
