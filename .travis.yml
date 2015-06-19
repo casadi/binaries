@@ -21,6 +21,7 @@ script:
   - |
     ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net <<EOF
     mkdir /home/frs/project/casadi/CasADi/commits/$HASH
+    find /home/frs/project/casadi/CasADi/commits/ -type d -ctime +14 | xargs rm -rf
     python index.py
     EOF
 
