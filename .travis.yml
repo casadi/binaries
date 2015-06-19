@@ -6,6 +6,7 @@ env:
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
+    - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
 
 before_script:
   - set -e
@@ -51,6 +52,7 @@ before_install:
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
+  - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - pushd testbot/restricted && mkdir -p worhp && cd worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
 
 language: cpp
