@@ -13,12 +13,12 @@ script:
   - |
     ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net <<EOF
     pushd /home/project-web/casadi/htdocs/
-    mkdir -p v$COMMIT
-    cp -r commits/$COMMIT v$VERSION/
+    mkdir -p $COMMIT
+    cp -r commits/$COMMIT $VERSION/
     popd
     pushd /home/frs/project/casadi/CasADi/commits/$COMMIT
-    find . -type f -name '*' -exec bash -c "install -D \\\$1 /home/frs/project/casadi/CasADi/v$VERSION/\\\$(sed "s/$COMMIT/v$VERSION/" <<< "\\\$1") " _ {}  \;
-    echo "Link: [online documentation](http://docs.casadi.org/v$VERSION/api/html)" > /home/frs/project/casadi/CasADi/v$VERSION/README.md
+    find . -type f -name '*' -exec bash -c "install -D \\\$1 /home/frs/project/casadi/CasADi/$VERSION/\\\$(sed "s/$COMMIT/v$VERSION/" <<< "\\\$1") " _ {}  \;
+    echo "Link: [online documentation](http://docs.casadi.org/v$VERSION/api/html)" > /home/frs/project/casadi/CasADi/$VERSION/README.md
     EOF
 
 language: cpp
