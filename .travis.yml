@@ -18,12 +18,10 @@ env:
     - NUMPYVERSION=1.9.1
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - LIB=/home/travis/build/lapack
+  matrix:
+    - BUILD_TYPE=Release NAME_SUFFIX=""
+    - BUILD_TYPE=Debug NAME_SUFFIX="-Debug"
 
-matrix:
-  include:
-    - env: BUILD_TYPE=Release NAME_SUFFIX=""
-    - env: BUILD_TYPE=Debug NAME_SUFFIX="-Debug"
-    
 compiler:
   - i686-w64-mingw32-gcc
 
