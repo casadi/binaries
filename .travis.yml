@@ -161,7 +161,8 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
   
   # Fix for #1477 (part 1)
-  - sed -i -e 's/\"SwigPyObject\"/\"SwigPyCasadiObject\"/g' /home/travis/build/swig/home/travis/build/swig/pyrun.swg
+  - ls -al /home/travis/build/swig/
+  - sed -i -e 's/\"SwigPyObject\"/\"SwigPyCasadiObject\"/g' /home/travis/build/swig/share/swig/2.0.12/python/pyrun.swg
   
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
   - travis_retry testbot/recipes/fetch.sh ipopt_mingw32.tar.gz && mkdir ipopt && tar -xvf ipopt_mingw32.tar.gz -C ipopt
