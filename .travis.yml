@@ -16,6 +16,9 @@ env:
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - MATLABRELEASE=R2014b
     - LIB=/home/travis/build/lapack
+  matrix:
+    - BUILD_TYPE=Release NAME_SUFFIX=""
+    - BUILD_TYPE=Debug NAME_SUFFIX="-Debug"
 
 compiler:
   - x86_64-w64-mingw32-gcc
@@ -90,7 +93,7 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     EOF
-  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install ..
+  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install ..
   - cat swig/matlab/CMakeFiles/casadiMATLAB_wrap.dir/includes_CXX.rsp
   - make -j2 VERBOSE=1
   - ls lib
@@ -113,7 +116,7 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('windows')
           with sftp.cd('windows'):
-            sftp.put("bundle.zip","casadi-matlab$MATLABRELEASE-$COMMIT.zip")
+            sftp.put("bundle.zip","casadi-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.zip")
     EOF
   - python upload.py
 
