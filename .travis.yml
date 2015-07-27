@@ -1,5 +1,4 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
-
 os: osx
 
 env: 
