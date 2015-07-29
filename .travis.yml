@@ -18,9 +18,9 @@ env:
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - LIB=/home/travis/build/lapack
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="-64bit" BITSUFFIX=".amd64" compilerprefix=x86_64-w64-mingw32 BITNESS=64
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITSUFFIX=""  compilerprefix=i686-w64-mingw32 BITNESS=32
-    - BUILD_TYPE=Debug NAME_SUFFIX="-Debug" BITSUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32
+    - BUILD_TYPE=Release NAME_SUFFIX="-64bit" BITSUFFIX=".amd64" compilerprefix=x86_64-w64-mingw32 BITNESS=64 NUMPYSUFFIX=win-amd64
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITSUFFIX=""  compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32
+    - BUILD_TYPE=Debug NAME_SUFFIX="-Debug" BITSUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32
 
 
 before_script:
@@ -85,11 +85,10 @@ script:
        /home/travis/.wine/drive_c/Python27/include
       NO_SYSTEM_ENVIRONMENT_PATH
     )
-    
     set(PYTHON_EXECUTABLE /home/travis/.wine/drive_c/Python27/python.exe)
-    set(NUMPY_INCLUDE_DIR /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include)
-    set(NUMPY_INCLUDED_DIRS /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include/numpy)
-    set(NUMPY_PATH /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-win32.egg/numpy/core/include/numpy)
+    set(NUMPY_INCLUDE_DIR /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-$NUMPYSUFFIX.egg/numpy/core/include)
+    set(NUMPY_INCLUDED_DIRS /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-$NUMPYSUFFIX.egg/numpy/core/include/numpy)
+    set(NUMPY_PATH /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-$NUMPYSUFFIX.egg/numpy/core/include/numpy)
     EOF
   - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
