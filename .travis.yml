@@ -18,9 +18,9 @@ env:
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - LIB=/home/travis/build/lapack
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="-64bit" BITSUFFIX=".amd64" compilerprefix=x86_64-w64-mingw32
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITSUFFIX=""  compilerprefix=i686-w64-mingw32
-    - BUILD_TYPE=Debug NAME_SUFFIX="-Debug" BITSUFFIX="" compilerprefix=i686-w64-mingw32
+    - BUILD_TYPE=Release NAME_SUFFIX="-64bit" BITSUFFIX=".amd64" compilerprefix=x86_64-w64-mingw32 BITNESS=64
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITSUFFIX=""  compilerprefix=i686-w64-mingw32 BITNESS=32
+    - BUILD_TYPE=Debug NAME_SUFFIX="-Debug" BITSUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32
 
 
 before_script:
@@ -44,6 +44,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
+  - ls /home/travis/.wine/drive_c/Python27/Lib/site-packages/
   - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
   - |
     cat <<EOF >toolchain.cmake
@@ -153,7 +154,7 @@ before_install:
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
-  - travis_retry testbot/recipes/fetch.sh lapack_mingw.tar.gz && mkdir lapack && tar -xvf lapack_mingw.tar.gz -C lapack
+  - travis_retry testbot/recipes/fetch.sh lapack_mingw$BITNESS.tar.gz && mkdir lapack && tar -xvf lapack_mingw$BITNESS.tar.gz -C lapack
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /home/travis/build/casadi/testbot
   - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
@@ -163,7 +164,7 @@ before_install:
   - sed -i -e 's/\"SwigPyObject\"/\"SwigPyCasadiObject\"/g' /home/travis/build/swig/share/swig/2.0.12/python/pyrun.swg
   
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
-  - travis_retry testbot/recipes/fetch.sh ipopt_mingw32.tar.gz && mkdir ipopt && tar -xvf ipopt_mingw32.tar.gz -C ipopt
+  - travis_retry testbot/recipes/fetch.sh ipopt_mingw$BITNESS.tar.gz && mkdir ipopt && tar -xvf ipopt_mingw$BITNESS.tar.gz -C ipopt
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
   - ls ipopt
   - ls $PKG_CONFIG_PATH
