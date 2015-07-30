@@ -18,9 +18,9 @@ env:
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - LIB=/home/travis/build/lapack
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="-64bit" BITSUFFIX=".amd64" compilerprefix=x86_64-w64-mingw32 BITNESS=64 NUMPYSUFFIX=win-amd64
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITSUFFIX=""  compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32
-    - BUILD_TYPE=Debug NAME_SUFFIX="-Debug" BITSUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32
+    - BUILD_TYPE=Release NAME_SUFFIX="-64bit" BITSUFFIX=".amd64" compilerprefix=x86_64-w64-mingw32 BITNESS=64 NUMPYSUFFIX=win-amd64 EXTRA_FLAGS="-DMS_WIN64"
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITSUFFIX=""  compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS=""
+    - BUILD_TYPE=Debug NAME_SUFFIX="-Debug" BITSUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS=""
 
 
 before_script:
@@ -61,7 +61,7 @@ script:
     
     # where is the target environment 
     SET(CMAKE_FIND_ROOT_PATH  /usr/$compilerprefix)
-    SET(CMAKE_CXX_FLAGS "-ftime-report -DMS_WIN64" CACHE STRING "" FORCE)
+    SET(CMAKE_CXX_FLAGS "$EXTRA_FLAGS" CACHE STRING "" FORCE)
     
     # search for programs in the build host directories
     SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
