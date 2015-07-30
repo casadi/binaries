@@ -61,7 +61,7 @@ script:
     
     # where is the target environment 
     SET(CMAKE_FIND_ROOT_PATH  /usr/$compilerprefix)
-    SET(CMAKE_CXX_FLAGS "-ftime-report")
+    SET(CMAKE_CXX_FLAGS "-ftime-report -DMS_WIN64")
     
     # search for programs in the build host directories
     SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
