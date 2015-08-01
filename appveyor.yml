@@ -78,7 +78,7 @@ install:
   - 7z x %FILE%.zip -ocasadipython
   - "SET PYTHONPATH=%PYTHONPATH%;C:\\projects\\binaries\\casadipython"
   - pushd casadi\\test
-  - make unittests_py examples_code_py
+  - make unittests_py
   - popd
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
 
