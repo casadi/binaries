@@ -30,7 +30,7 @@ script:
     EOF
   - python download.py
   - mkdir casadi_python
-  - tar -xvf casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.tar.gz -C casadi_python
+  - tar -xvf casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz -C casadi_python
   - echo "$PWD/casadi_python"
   - export PYTHONPATH=$PYTHONPATH:$PWD/casadi_python
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
