@@ -127,7 +127,7 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('windows')
           with sftp.cd('windows'):
-            sftp.put("$RESULT_ZIP","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT$NAME_SUFFIX.zip")
+            sftp.put("$RESULT_ZIP","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT$NAME_SUFFIX.zip")
     EOF
   - python upload.py
 
