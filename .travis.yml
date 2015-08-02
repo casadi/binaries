@@ -55,7 +55,7 @@ script:
   - pushd swig/matlab
   - |
     cat <<EOF > CMakeLists2.txt
-    set(MATLAB_LIBRARIES $MATLAB_ROOT/bin/win64/libmex.dll $MATLAB_ROOT/bin/win64/libmx.dll $MATLAB_ROOT/bin/win64/libeng.dll)
+    set(MATLAB_LIBRARIES $MATLAB_ROOT/bin/win64/libut.dll $MATLAB_ROOT/bin/win64/libmex.dll $MATLAB_ROOT/bin/win64/libmx.dll $MATLAB_ROOT/bin/win64/libeng.dll)
     
     set(MATLAB_INCLUDE_DIR "$MATLAB_ROOT/extern/include")
     set(MATLAB_EXTRA_CXXFLAGS "-D__STDC_UTF_16__")
