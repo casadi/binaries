@@ -16,6 +16,8 @@ env:
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - MATLABRELEASE=R2014b
     - LIB=/home/travis/build/lapack
+    - CLANG=/home/travis/build/clang
+
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX=""
     - BUILD_TYPE=Debug NAME_SUFFIX="-Debug"
@@ -93,7 +95,7 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     EOF
-  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install ..
+  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_CLANG=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install ..
   - cat swig/matlab/CMakeFiles/casadiMATLAB_wrap.dir/includes_CXX.rsp
   - make -j2 VERBOSE=1
   - ls lib
@@ -142,6 +144,7 @@ before_install:
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
+  - travis_retry testbot/recipes/fetch.sh clang_mingw64.tar.gz && mkdir clang && tar -xvf clang_mingw64.tar.gz -C clang
   - travis_retry testbot/recipes/fetch.sh lapack_mingw64.tar.gz && mkdir lapack && tar -xvf lapack_mingw64.tar.gz -C lapack
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /home/travis/build/casadi/testbot
