@@ -17,6 +17,8 @@ env:
     - NUMPYVERSION=1.9.1
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - LIB=/home/travis/build/lapack
+    - CLANG=/home/travis/build/clang
+
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py27 TESTCOMMIT="1"
     - BUILD_TYPE=Debug NAME_SUFFIX="-Debug" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py27
@@ -92,12 +94,12 @@ script:
   - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
   
-  - cmake -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - ulimit -S -s 1000000
   - tail -n +1 /proc/sys/vm/* || true
   - make -j2
   - rm CMakeCache.txt
-  - cmake -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - make VERBOSE=1
   - ls lib
   - make install
@@ -161,6 +163,7 @@ before_install:
   - sed -i -e 's/\"SwigPyObject\"/\"SwigPyCasadiObject\"/g' /home/travis/build/swig/share/swig/2.0.12/python/pyrun.swg
   
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
+  - travis_retry testbot/recipes/fetch.sh clang_mingw$BITNESS.tar.gz && mkdir clang && tar -xvf clang_mingw$BITNESS.tar.gz -C clang
   - travis_retry testbot/recipes/fetch.sh ipopt_mingw$BITNESS.tar.gz && mkdir ipopt && tar -xvf ipopt_mingw$BITNESS.tar.gz -C ipopt
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
   - ls ipopt
