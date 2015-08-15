@@ -55,6 +55,8 @@ script:
     #this one not so much
     SET(CMAKE_SYSTEM_VERSION 1)
 
+    SET(PREFIX $compilerprefix)
+
     # specify the cross compiler
     SET(CMAKE_C_COMPILER   $compilerprefix-gcc)
     SET(CMAKE_CXX_COMPILER $compilerprefix-g++)
