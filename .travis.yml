@@ -48,10 +48,6 @@ script:
   - ls
   - mkdir matlab && unzip matlab$MATLABRELEASE-win.zip -d matlab > /dev/null
   - ls -al /home/travis/build/
-  - ls -al /usr/$compilerprefix/lib/
-  - sudo apt-get install locate
-  - sudo updatedb
-  - locate imagehlp
   - popd
   - export PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH
   - echo $PATH
@@ -82,6 +78,8 @@ script:
     SET(CMAKE_SYSTEM_NAME Windows)
     #this one not so much
     SET(CMAKE_SYSTEM_VERSION 1)
+
+    SET(PREFIX $compilerprefix)
 
     # specify the cross compiler
     SET(CMAKE_C_COMPILER   $compilerprefix-gcc)
