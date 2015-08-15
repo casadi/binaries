@@ -17,6 +17,7 @@ env:
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
+    - CLANG=/home/travis/build/clang
     
 before_script:
   - set -e
@@ -27,7 +28,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
   - grep -i ipopt CMakeCache.txt
@@ -79,6 +80,7 @@ before_install:
   - sudo apt-get install p7zip-full -y
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
+  - travis_retry testbot/recipes/fetch.sh clang.tar.gz && mkdir clang && tar -xvf clang.tar.gz -C clang
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - mkdir -p /home/travis/build/casadi/testbot
   - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
