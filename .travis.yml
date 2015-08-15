@@ -178,5 +178,6 @@ before_install:
   - free -t -m
   - vmstat
   - sudo ps aux --sort -rss
+  - sync && sudo echo 3 > /proc/sys/vm/drop_caches
 
 language: cpp
