@@ -41,6 +41,7 @@ before_script:
   - more /proc/meminfo
   - free -t -m
   - vmstat
+  - sudo ps aux --sort -rss
 
 script:
   - pushd /home/travis/build/
@@ -142,6 +143,7 @@ before_install:
   - more /proc/meminfo
   - free -t -m
   - vmstat
+  - sudo ps aux --sort -rss
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
@@ -171,5 +173,10 @@ before_install:
   - sudo apt-get install -q -y mingw-w64
   - sudo apt-get install -q -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
   - sudo pip install pysftp
+  - sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr
+  - more /proc/meminfo
+  - free -t -m
+  - vmstat
+  - sudo ps aux --sort -rss
 
 language: cpp
