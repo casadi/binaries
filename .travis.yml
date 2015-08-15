@@ -144,6 +144,7 @@ before_install:
   - free -t -m
   - vmstat
   - sudo ps aux --sort -rss
+  - ps -A --sort -rss -o comm,pmem
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
@@ -178,6 +179,8 @@ before_install:
   - free -t -m
   - vmstat
   - sudo ps aux --sort -rss
+  - ps -A --sort -rss -o comm,pmem
   - sync && sudo echo 3 > /proc/sys/vm/drop_caches
+
 
 language: cpp
