@@ -180,7 +180,8 @@ before_install:
   - vmstat
   - sudo ps aux --sort -rss
   - ps -A --sort -rss -o comm,pmem
-  - sync && sudo echo 3 > /proc/sys/vm/drop_caches
+  - sync
+  - ulimit -a
 
 
 language: cpp
