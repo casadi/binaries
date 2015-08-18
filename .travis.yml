@@ -14,13 +14,13 @@ env:
     - MATLAB_ROOT=/home/travis/build/matlab
     - compilerprefix=x86_64-w64-mingw32
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
-    - MATLABRELEASE=R2014b
     - LIB=/home/travis/build/lapack
     - CLANG=/home/travis/build/clang
 
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1"
-    - BUILD_TYPE=Debug NAME_SUFFIX="-Debug"
+    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
+    - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014a
+    - BUILD_TYPE=Debug NAME_SUFFIX="-Debug" MATLABRELEASE=R2014b
 
 compiler:
   - x86_64-w64-mingw32-gcc
