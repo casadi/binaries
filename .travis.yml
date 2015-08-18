@@ -42,7 +42,7 @@ before_script:
   - free -t -m
   - vmstat
   - sudo ps aux --sort -rss
-  - while true; do free -t -m; sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr | head ;sleep .5; done &
+  - while true; do free -t -m; sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr | head ; sleep 1; done &
 
 script:
   - pushd /home/travis/build/
