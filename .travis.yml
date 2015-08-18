@@ -179,7 +179,7 @@ before_install:
   - vmstat
   - sudo ps aux --sort -rss
   - ps -A --sort -rss -o comm,pmem
-  - sync
+  - sudo sync && sudo sh -c 'echo 3 >/proc/sys/vm/drop_caches'
   - ulimit -a
 
 
