@@ -27,23 +27,8 @@ compiler:
   - x86_64-w64-mingw32-gcc
 
 before_script:
-  - tail -n +1 /proc/sys/vm/* || true
   - set -e
-  - sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr
-  - more /proc/meminfo
-  - free -t -m
-  - vmstat
-  #- sudo dd if=/dev/zero of=/home/travis/swapfile bs=64K count=64
-  #- sudo mkswap /home/travis/swapfile
-  #- sudo chmod 600 /home/travis/swapfile
-  #- sudo swapoff -a
-  #- sudo swapon -a /home/travis/swapfile
-  - sudo bash fakeswap.sh 2048
-  - more /proc/meminfo
-  - free -t -m
-  - vmstat
-  - sudo ps aux --sort -rss
-  - while true; do free -t -m; sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr | head ; sleep 1; done &
+  - set -o pipefail  # otherwise, piping with grep discards exit statuses
 
 script:
   - pushd /home/travis/build/
@@ -138,31 +123,29 @@ branches:
     - /.*appveyor.*/
 
 before_install:
-  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
-  - sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr
-  - more /proc/meminfo
+  - sudo /etc/init.d/mysql stop
+  - sudo /etc/init.d/postgresql stop
+  - sync
   - free -t -m
-  - vmstat
-  - sudo ps aux --sort -rss
-  - ps -A --sort -rss -o comm,pmem
+  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
-  - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
-  - travis_retry testbot/recipes/fetch.sh clang_mingw64.tar.gz && mkdir clang && tar -xvf clang_mingw64.tar.gz -C clang
-  - travis_retry testbot/recipes/fetch.sh lapack_mingw64.tar.gz && mkdir lapack && tar -xvf lapack_mingw64.tar.gz -C lapack
-  - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
+  - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xf libhsl.tar.gz -C libhsl
+  - travis_retry testbot/recipes/fetch.sh clang_mingw64.tar.gz && mkdir clang && tar -xf clang_mingw64.tar.gz -C clang
+  - travis_retry testbot/recipes/fetch.sh lapack_mingw64.tar.gz && mkdir lapack && tar -xf lapack_mingw64.tar.gz -C lapack
+  - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xf snopt7.tar.gz -C snopt7
   - mkdir -p /home/travis/build/casadi/testbot
-  - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
+  - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xf swig.tar.gz -C swig
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
-  - travis_retry testbot/recipes/fetch.sh ipopt_mingw64.tar.gz && mkdir ipopt && tar -xvf ipopt_mingw64.tar.gz -C ipopt
+  - travis_retry testbot/recipes/fetch.sh ipopt_mingw64.tar.gz && mkdir ipopt && tar -xf ipopt_mingw64.tar.gz -C ipopt
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
   - ls ipopt
   - ls $PKG_CONFIG_PATH
-  - travis_retry testbot/recipes/fetch.sh swig_matlab.tar.gz && mkdir swig_matlab && tar -xvf swig_matlab.tar.gz -C swig_matlab
+  - travis_retry testbot/recipes/fetch.sh swig_matlab.tar.gz && mkdir swig_matlab && tar -xf swig_matlab.tar.gz -C swig_matlab
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig_matlab  swig-matlab-install  && popd
   - export PATH=/home/travis/build/swig/bin:$PATH
-  - pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
+  - pushd testbot/restricted/cplex && mkdir cplex && tar -xf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xf cplex12.4-concert.tar.gz -C concert && popd
   - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
@@ -174,13 +157,5 @@ before_install:
   - sudo apt-get install -q -y mingw-w64
   - sudo apt-get install -q -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
   - sudo pip install pysftp
-  - sudo ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr
-  - more /proc/meminfo
-  - free -t -m
-  - vmstat
-  - sudo ps aux --sort -rss
-  - ps -A --sort -rss -o comm,pmem 
-  - ulimit -a
-
 
 language: cpp
