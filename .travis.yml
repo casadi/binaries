@@ -18,6 +18,7 @@ env:
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - CLANG=/home/travis/build/clang
+    - ECOS=/home/travis/build/ecos
     
 before_script:
   - set -e
@@ -28,7 +29,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake --DWITH_ECOS=ON DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
   - grep -i ipopt CMakeCache.txt
@@ -78,6 +79,7 @@ before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
+  - travis_retry testbot/recipes/fetch.sh ecos.tar.gz && mkdir ecos && tar -xf ecos.tar.gz -C ecos && rm ecos.tar.gz
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - travis_retry testbot/recipes/fetch.sh clang.tar.gz && mkdir clang && tar -xvf clang.tar.gz -C clang
