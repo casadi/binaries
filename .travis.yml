@@ -155,7 +155,7 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh ipopt_mingw$BITNESS.tar.gz && mkdir ipopt && tar -xf ipopt_mingw$BITNESS.tar.gz -C ipopt && rm ipopt_mingw$BITNESS.tar.gz
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
   - pushd testbot/restricted/cplex && mkdir cplex && tar -xf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xf cplex12.4-concert.tar.gz -C concert && rm cplex12.4-concert.tar.gz && popd
-  - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && rm ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z && popd
+  - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y >/dev/null && rm ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z && popd
   - popd
   - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
   - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
