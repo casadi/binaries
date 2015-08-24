@@ -19,7 +19,8 @@ env:
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - CLANG=/home/travis/build/clang
-    
+    - ECOS=/home/travis/build/ecos
+
 before_script:
   - set -e
 
@@ -33,10 +34,10 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DCMAKE_INSTALL_PREFIX=$MATLABPATH -DWITH_DEEPBIND=ON -DWITH_MATLAB=OFF -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
+  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_ECOS=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DCMAKE_INSTALL_PREFIX=$MATLABPATH -DWITH_DEEPBIND=ON -DWITH_MATLAB=OFF -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
   - make -j2
   - rm CMakeCache.txt
-  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DCMAKE_INSTALL_PREFIX=$MATLABPATH -DWITH_DEEPBIND=ON -DWITH_MATLAB=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
+  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_ECOS=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DCMAKE_INSTALL_PREFIX=$MATLABPATH -DWITH_DEEPBIND=ON -DWITH_MATLAB=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
   - travis_wait make
   - make install
   - popd
@@ -78,6 +79,7 @@ before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
+  - travis_retry testbot/recipes/fetch.sh ecos.tar.gz && mkdir ecos && tar -xf ecos.tar.gz -C ecos && rm ecos.tar.gz
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh clang.tar.gz && mkdir clang && tar -xvf clang.tar.gz -C clang
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
