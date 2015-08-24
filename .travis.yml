@@ -84,9 +84,6 @@ script:
   - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
   
-  - cmake -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-  - make
-  - rm CMakeCache.txt
   - cmake -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - make
   - make install
@@ -97,7 +94,6 @@ script:
   - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../python_install/casadi
   - popd
   - export RESULT_ZIP="bundle.zip"
-  - sudo apt-get install zip
   - pushd python_install
   - zip -r9 ../bundle.zip .
   - popd
@@ -138,24 +134,21 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
-  - sudo apt-get install p7zip-full -y
+  - sudo apt-get install p7zip-full zip -y
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xf libhsl.tar.gz -C libhsl && rm libhsl.tar.gz
   - travis_retry testbot/recipes/fetch.sh lapack_mingw$BITNESS.tar.gz && mkdir lapack && tar -xf lapack_mingw$BITNESS.tar.gz -C lapack && rm lapack_mingw$BITNESS.tar.gz
-  - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xf snopt7.tar.gz -C snopt7 && rm snopt7.tar.gz
   - mkdir -p /home/travis/build/casadi/testbot
   - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xf swig.tar.gz -C swig && rm swig.tar.gz
+  - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
   - export PATH=/home/travis/build/swig/bin:$PATH
   
   # Fix for #1477 (part 1)
   - ls -al /home/travis/build/swig/
   - sed -i -e 's/\"SwigPyObject\"/\"SwigPyCasadiObject\"/g' /home/travis/build/swig/share/swig/2.0.12/python/pyrun.swg
   
-  - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
   - travis_retry testbot/recipes/fetch.sh clang_mingw$BITNESS.tar.gz && mkdir clang && tar -xf clang_mingw$BITNESS.tar.gz -C clang && rm clang_mingw$BITNESS.tar.gz
   - travis_retry testbot/recipes/fetch.sh ipopt_mingw$BITNESS.tar.gz && mkdir ipopt && tar -xf ipopt_mingw$BITNESS.tar.gz -C ipopt && rm ipopt_mingw$BITNESS.tar.gz
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
-  - pushd testbot/restricted/cplex && mkdir cplex && tar -xf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xf cplex12.4-concert.tar.gz -C concert && rm cplex12.4-concert.tar.gz && popd
-  - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y >/dev/null && rm ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z && popd
   - popd
   - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
   - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
@@ -163,7 +156,6 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib coinor-libipopt-dev libmumps-seq-dev libblas-dev liblapack-dev libslicot-dev libxml2-dev
   - sudo apt-get remove -qq -y mingw32
-  - sudo apt-get install -q -y mingw-w64
   - sudo apt-get install -q -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
   - wget https://raw.githubusercontent.com/casadi/python-lib-template/master/.travis-setup.sh && chmod +x .travis-setup.sh
   - "./.travis-setup.sh"
