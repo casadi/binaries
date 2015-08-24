@@ -147,7 +147,7 @@ before_install:
   - ls -al /home/travis/build/swig/
   - sed -i -e 's/\"SwigPyObject\"/\"SwigPyCasadiObject\"/g' /home/travis/build/swig/share/swig/2.0.12/python/pyrun.swg
   
-  - travis_retry testbot/recipes/fetch.sh ecos_mingw$BITNESS.tar.gz && mkdir ecos && tar -xf ecos_mingw$BITNESS.tar.gz -C clang && rm ecos_mingw$BITNESS.tar.gz
+  - travis_retry testbot/recipes/fetch.sh ecos_mingw$BITNESS.tar.gz && mkdir ecos && tar -xf ecos_mingw$BITNESS.tar.gz -C ecos && rm ecos_mingw$BITNESS.tar.gz
   - travis_retry testbot/recipes/fetch.sh clang_mingw$BITNESS.tar.gz && mkdir clang && tar -xf clang_mingw$BITNESS.tar.gz -C clang && rm clang_mingw$BITNESS.tar.gz
   - travis_retry testbot/recipes/fetch.sh ipopt_mingw$BITNESS.tar.gz && mkdir ipopt && tar -xf ipopt_mingw$BITNESS.tar.gz -C ipopt && rm ipopt_mingw$BITNESS.tar.gz
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
