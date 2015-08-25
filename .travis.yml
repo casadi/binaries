@@ -35,7 +35,7 @@ script:
   - make install
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-  - brew install crosstool-ng
+  - brew install binutils
   - gobjdump -p `pwd`/python_install/casadi/_casadi.so | grep RPATH
   - gobjdump -p `pwd`/python_install/casadi/libcasadi.dylib | grep RPATH
   - ldd `pwd`/python_install/casadi/_casadi.so
