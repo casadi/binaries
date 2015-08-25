@@ -21,6 +21,8 @@ env:
 before_script:
   - set -e
 
+compiler: clang
+
 script:
   - pushd casadi
   - mkdir build
