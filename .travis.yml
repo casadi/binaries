@@ -35,7 +35,6 @@ script:
   - make install
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-  - brew install binutils
   - gobjdump -p `pwd`/python_install/casadi/_casadi.so | grep RPATH
   - gobjdump -p `pwd`/python_install/casadi/libcasadi.dylib | grep RPATH
   - ldd `pwd`/python_install/casadi/_casadi.so
@@ -79,6 +78,8 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - brew install binutils
+  - which gobjdump
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
