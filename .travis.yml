@@ -36,7 +36,7 @@ script:
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - brew install binutils
-  - gobjdump -p `pwd`/python_install/lib/libcasadi.so | grep RPATH
+  - objdump -p `pwd`/python_install/lib/libcasadi.so | grep RPATH
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
   - export RESULT_TAR="$PWD/bundle.tar.gz"
