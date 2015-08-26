@@ -36,8 +36,8 @@ script:
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - ls `pwd`/python_install/casadi/_casadi.so
-  - gobjdump -p `pwd`/python_install/casadi/_casadi.so
-  - gobjdump -p `pwd`/python_install/casadi/libcasadi.dylib
+  - otool -afhlLD `pwd`/python_install/casadi/_casadi.so
+  - otool -afhlLD `pwd`/python_install/casadi/libcasadi.dylib
   - ldd `pwd`/python_install/casadi/_casadi.so
   - ldd `pwd`/python_install/casadi/libcasadi.dylib
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
