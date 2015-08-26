@@ -25,7 +25,7 @@ script:
     with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
       with sftp.cd('commits'):
         with sftp.cd("$COMMIT"):
-          with sftp.cd('linux'):
+          with sftp.cd('osx'):
             sftp.get("casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
     EOF
   - python download.py
@@ -46,9 +46,13 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
-  - sudo apt-get install python-numpy
+  - brew update
+  - brew tap homebrew/science
+  - brew install swig pkg-config  p7zip
+  #- brew doctor
+  - sudo easy_install pip
+  - sudo pip install ipython matplotlib numpy scipy pysftp
   - sudo pip install pysftp
-  - sudo apt-get install p7zip-full -y
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
