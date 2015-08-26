@@ -35,7 +35,8 @@ script:
   - make install
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-  - export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:`pwd`/python_install/casadi:`pwd`/python_install/lib
+  - #export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:`pwd`/python_install/casadi:`pwd`/python_install/lib
+  - export DYLD_PRINT_RPATHS=1
   - ls `pwd`/python_install/casadi/_casadi.so
   - otool -afhlLD `pwd`/python_install/casadi/_casadi.so
   - otool -afhlLD `pwd`/python_install/casadi/libcasadi.dylib
