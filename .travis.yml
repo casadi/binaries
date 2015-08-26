@@ -102,6 +102,6 @@ before_install:
   - brew install swig pkg-config
   #- brew doctor
   - sudo easy_install pip
-  - sudo pip install ipython matplotlib numpy scipy
+  - sudo pip install ipython matplotlib numpy scipy pysftp
   
 language: cpp
