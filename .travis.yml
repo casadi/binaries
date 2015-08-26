@@ -35,11 +35,10 @@ script:
   - make install
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+  - export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:`pwd`/python_install/casadi:`pwd`/python_install/lib
   - ls `pwd`/python_install/casadi/_casadi.so
   - otool -afhlLD `pwd`/python_install/casadi/_casadi.so
   - otool -afhlLD `pwd`/python_install/casadi/libcasadi.dylib
-  - ldd `pwd`/python_install/casadi/_casadi.so
-  - ldd `pwd`/python_install/casadi/libcasadi.dylib
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
   - export RESULT_TAR="$PWD/bundle.tar.gz"
