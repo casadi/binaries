@@ -30,9 +30,6 @@ script:
   - mkdir build
   - pushd build
   - cmake -DWITH_ECOS=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-  - export HVERSION=`python /Users/travis/build/testbot/helpers/extract_hversion.py`
-  - echo "::$HVERSION::"
-  - grep -i ipopt CMakeCache.txt
   - make VERBOSE=1
   - make install
   - popd
@@ -60,7 +57,7 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('osx')
           with sftp.cd('osx'):
-            sftp.put("$RESULT_TAR","casadi-python$PYTHONVERSION-numpy$NUMPYVERSION-$COMMIT.tar.gz")
+            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
     EOF
   - python upload.py
 
