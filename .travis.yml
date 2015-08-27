@@ -11,6 +11,8 @@ env:
 before_script:
   - set -e
 
+os: osx
+
 script:
   - ls
   - pushd casadi
