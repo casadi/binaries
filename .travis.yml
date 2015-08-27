@@ -69,7 +69,7 @@ after_success:
   - git remote add github git@github.com:casadi/binaries.git
   - git fetch github
   - git checkout tests-osx
-  - git commit -a -m "automatic runner commit $TRAVIS_COMMIT"
+  - git commit -a -m "automatic runner commit $COMMIT"
   - git push github tests-osx
   
 branches:
