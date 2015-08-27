@@ -100,8 +100,8 @@ before_install:
   #- pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - brew update
-  - brew tap homebrew/science slicot
-  - brew install swig pkg-config
+  - brew tap homebrew/science
+  - brew install swig pkg-config slicot
   #- brew doctor
   - sudo easy_install pip
   - sudo pip install ipython matplotlib numpy scipy pysftp
