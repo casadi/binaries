@@ -79,6 +79,7 @@ before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
+  - /home/travis/build/testbot/restricted/knitro/get_machine_ID
   - travis_retry testbot/recipes/fetch.sh ecos.tar.gz && mkdir ecos && tar -xf ecos.tar.gz -C ecos && rm ecos.tar.gz
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
