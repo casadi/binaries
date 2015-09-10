@@ -7,7 +7,7 @@ env:
     - CMAKE_INCLUDE_PATH=/home/travis/build/testbot/restricted/cplex/cplex/include:/home/travis/build/testbot/restricted/cplex/concert/include
     - CMAKE_LIBRARY_PATH=/home/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/home/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
     - ILOG_LICENSE_FILE=/home/travis/build/testbot/restricted/cplex/access.ilm
-    - WORHP=/home/travis/build/testbot/restricted/worhp
+    - WORHP=/home/travis/build/testbot/restricted/worfhp
     - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
@@ -79,7 +79,10 @@ before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
+  - sudo apt-get install macchanger -y
   - ifconfig
+  - sudo macchanger venet0 -r
+  - sudo macchanger venet0 -m 56:95:ac:ee:6e:77
   - /home/travis/build/testbot/restricted/knitro/get_machine_ID
   - travis_retry testbot/recipes/fetch.sh ecos.tar.gz && mkdir ecos && tar -xf ecos.tar.gz -C ecos && rm ecos.tar.gz
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
