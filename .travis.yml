@@ -15,12 +15,15 @@ env:
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
-    - MATLABRELEASE=R2014b
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - CLANG=/home/travis/build/clang
     - ECOS=/home/travis/build/ecos
 
+  matrix:
+    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
+    - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014a
+    
 before_script:
   - set -e
 
@@ -57,7 +60,7 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('linux')
           with sftp.cd('linux'):
-            sftp.put("$RESULT_TAR","casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz")
+            sftp.put("$RESULT_TAR","casadi-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.tar.gz")
     EOF
   - python upload.py
 
@@ -68,7 +71,7 @@ after_success:
   - git checkout test-debian-matlab
   - git add casadi
   - git commit -m "automatic test commit $COMMIT" || true
-  - git push git@github.com:casadi/binaries.git test-debian-matlab
+  - if [ $TESTCOMMIT ]; then git commit -a -m "automatic test commit $COMMIT"; git push git@github.com:casadi/binaries.git test-debian-matlab; fi
   
 branches:
   except:
