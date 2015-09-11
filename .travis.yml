@@ -18,8 +18,12 @@ env:
 
 before_script:
   - set -e
+  - set -o pipefail
 
 script:
+   # travis-wait seems to stop at 20 mins, regardless if output is being generated
+  - (while true ; do sleep 60 ; echo "ping" ; done ) &
+  
   - set -e
   - pushd casadi
   - mkdir build
