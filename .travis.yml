@@ -92,7 +92,8 @@ script:
   - ls lib
   - make install
   - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../matlab_install
-
+  - cp -RL /usr/$compilerprefix/include ../matlab_install/include/casadi/jit/clib
+  
   - popd
   - pushd matlab_install && zip -r ../bundle.zip . && popd
   - |
