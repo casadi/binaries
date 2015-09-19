@@ -92,7 +92,9 @@ script:
   - ls lib
   - make install
   - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../matlab_install
-  - cp -RL /usr/$compilerprefix/include ../matlab_install/include/casadi/jit/clib
+  - cp -RL /usr/$compilerprefix/include ../python_install/casadi/jit/mingw
+  - cp -RL /usr/lib/gcc/$compilerprefix/4.6-win32/include/c++ ../python_install/casadi/jit/mingw/c++
+  #- cp -RL /usr/include/c++/4.6/$compilerprefix ../python_install/casadi/casadi/jit/mingw/c++
   
   - popd
   - pushd matlab_install && zip -r ../bundle.zip . && popd
