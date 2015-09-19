@@ -94,8 +94,8 @@ script:
   
   - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../python_install/casadi
   - cp -RL /usr/$compilerprefix/include ../python_install/casadi/casadi/jit/mingw
-  #- cp -RL /usr/lib/gcc/$compilerprefix/4.6-win32/include/c++ ../python_install/casadi/jit/mingw/c++
-  - cp -RL /usr/include/c++/4.6/$compilerprefix ../python_install/casadi/casadi/jit/mingw/c++
+  - cp -RL /usr/lib/gcc/$compilerprefix/4.6-win32/include/c++ ../python_install/casadi/casadi/jit/mingw/c++
+  #- cp -RL /usr/include/c++/4.6/$compilerprefix ../python_install/casadi/casadi/jit/mingw/c++
   - sudo apt-get install locate
   - sudo updatedb
   - locate cmath
