@@ -93,7 +93,9 @@ script:
   - sed -i -e "s/'SwigPyObject'/'SwigPyCasadiObject'/g" ../python_install/casadi/casadi.py
   
   - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../python_install/casadi
-  - cp -RL /usr/$compilerprefix/include ../python_install/include/casadi/jit/clib
+  - cp -RL /usr/$compilerprefix/include ../python_install/casadi/jit/mingw
+  - cp -RL /usr/lib/gcc/$compilerprefix/4.6-win32/include/c++ ../python_install/casadi/jit/mingw/c++
+  
   - popd
   - export RESULT_ZIP="bundle.zip"
   - pushd python_install
