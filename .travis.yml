@@ -100,7 +100,11 @@ before_install:
   - brew update
   - brew tap homebrew/science
   - brew install swig pkg-config
-  - travis_wait brew install llvm --with-clang
+
+  # travis-wait seems to stop at 20 mins, regardless if output is being generated
+  - (while true ; do sleep 60 ; echo "ping" ; done ) &
+
+  - brew install llvm --with-clang
   #- brew doctor
   - sudo easy_install pip
   - sudo pip install ipython matplotlib numpy scipy pysftp
