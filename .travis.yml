@@ -2,25 +2,25 @@
 env: 
   global: 
     - secure: "Bu8uBe0emUQyEYWCVnEvH8uvJISDPrCTa7KXVzJnR7GUFKLLnq31Uhjg33VG8/88Is4TP4Volp3QcJadI30D0zfTkI7mZTIwF3JqG7/GjwG5LXSsR2uQM+Rt+hssALubRAlua/5Ml4O8w+tm8IZfvgM3Z2QPiVQ2lMM5DUwFXGatumesKb3SaKj96tSiOIswLqYr/NWEnBaWqm4DUuTUEwN/X6mkS13Lq/3/YqB4r+FwFuyQMWNqV8+/OD2/C+uEBMJCw3vJOPtKlP7+vzrbKobP1t44opPL33HRAhKxJg2Z99OL61QygazX2DoadIapAbrE2y6lnk42o9973C8pIG8TEN0xH0fWtPQDpXzzsgTqtx/Xlw+S0j51wUViLP86OcrVgvTRO2Bt7RAOgWYnOBvPvPfUOdnzSrAL/gh8vg2QsB3FeCuTr31Cf+81FOZy2yDQhTsaWOKUwqmJdV2PL0eatzMPinl0lod7pXBRIDwryv8iVzW3oA9AEwpeXMBx/AibX9/ZEu1BSjxYAVMHCKlR+k2/sGsYVOu9QzPthN7T5S/d/reF/RY19wjIm3L3Hvp7ygEV/xGpvOR8F5dTUxtWLb7+DrNgy3g7texU7YcGJS88atre2BAeZWE1a0GbXQHbB9sgjprVahEXZLVVOiyLOdBqaBspUaIfsmOMcRg="
-    - VERSION=2.4.0-rc3 
+    - VERSION=2.4.0
 sudo: required
 
 script:
-#  - export mypwd=`pwd`
-#  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
-#  - pushd ../../ && git clone https://github.com/casadi/testbot.git
-#  - pushd testbot && recipes/setup.sh && popd
-#  - ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net create
-#  - |
-#    ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net <<EOF
-#    pushd /home/project-web/casadi/htdocs/
-#    mkdir -p $COMMIT
-#    cp -r commits/$COMMIT v$VERSION/
-#    popd
-#    pushd /home/frs/project/casadi/CasADi/commits/$COMMIT
-#    find . -type f -name '*' -exec bash -c "install -D \\\$1 /home/frs/project/casadi/CasADi/$VERSION/\\\$(sed "s/$COMMIT/v$VERSION/" <<< "\\\$1") " _ {}  \;
-#    echo "Link: [online documentation](http://docs.casadi.org/v$VERSION/api/html)" > /home/frs/project/casadi/CasADi/$VERSION/README.md
-#    EOF
-#  - pushd $mypwd/casadi && git tag -a $VERSION -m 'version $VERSION' && git push --tags && popd
+  - export mypwd=`pwd`
+  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
+  - pushd ../../ && git clone https://github.com/casadi/testbot.git
+  - pushd testbot && recipes/setup.sh && popd
+  - ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net create
+  - |
+    ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net <<EOF
+    pushd /home/project-web/casadi/htdocs/
+    mkdir -p $COMMIT
+    cp -r commits/$COMMIT v$VERSION/
+    popd
+    pushd /home/frs/project/casadi/CasADi/commits/$COMMIT
+    find . -type f -name '*' -exec bash -c "install -D \\\$1 /home/frs/project/casadi/CasADi/$VERSION/\\\$(sed "s/$COMMIT/v$VERSION/" <<< "\\\$1") " _ {}  \;
+    echo "Link: [online documentation](http://docs.casadi.org/v$VERSION/api/html)" > /home/frs/project/casadi/CasADi/$VERSION/README.md
+    EOF
+  - pushd $mypwd/casadi && git tag -a $VERSION -m 'version $VERSION' && git push --tags && popd
 
 language: cpp
