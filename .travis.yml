@@ -17,7 +17,6 @@ env:
     - PKG_CONFIG_PATH=/Users/travis/ipopt-install/lib/pkgconfig
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
-    - CLANG=/Users/travis/build/clang
     - ECOS=/Users/travis/build/ecos
     
 before_script:
@@ -30,7 +29,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DWITH_ECOS=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - make VERBOSE=1
   - make install
   - popd
@@ -88,7 +87,6 @@ before_install:
   - mkdir -p /Users/travis/build/casadi/testbot
   #- travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
   #- pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig  swig-install  && popd
-  - travis_retry testbot/recipes/fetch.sh clang_osx.tar.gz && mkdir clang && tar -xf clang_osx.tar.gz -C clang && rm clang_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ecos_osx.tar.gz && mkdir ecos && tar -xf ecos_osx.tar.gz -C ecos && rm ecos_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ipopt_osx.tar.gz && mkdir ipopt && tar -xvf ipopt_osx.tar.gz -C ipopt && rm ipopt_osx.tar.gz
   - pushd /Users/travis/ && ln -s  /Users/travis/build/ipopt  ipopt-install  && popd
@@ -102,6 +100,7 @@ before_install:
   - brew update
   - brew tap homebrew/science
   - brew install swig pkg-config
+  - brew install llvm --with-clang
   #- brew doctor
   - sudo easy_install pip
   - sudo pip install ipython matplotlib numpy scipy pysftp
