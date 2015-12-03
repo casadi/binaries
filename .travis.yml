@@ -109,7 +109,6 @@ before_install:
   - popd
   - brew update
   - brew tap homebrew/science
-  - brew install swig pkg-config
   #- brew doctor
   - sudo easy_install pip
   - sudo pip install ipython matplotlib numpy scipy pysftp
