@@ -97,15 +97,13 @@ before_install:
   #- pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig  swig-install  && popd
   - swig_matlab_file=`python testbot/helpers/gitmatch.py testbot/recipes/swig_matlab.yaml /Users/travis/build/casadi/binaries/casadi`
   - travis_retry testbot/recipes/fetch.sh ${swig_matlab_file}_osx.tar.gz && mkdir swig_matlab && tar -xf ${swig_matlab_file}_osx.tar.gz -C swig_matlab && rm ${swig_matlab_file}_osx.tar.gz
-  - pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig  swig-install  && popd
+  - pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig_matlab  swig-matlab-install  && popd
+  - export PATH=/Users/travis/build/swig/bin:$PATH
   - travis_retry testbot/recipes/fetch.sh clang_osx.tar.gz && mkdir clang && tar -xf clang_osx.tar.gz -C clang && rm clang_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ecos_osx.tar.gz && mkdir ecos && tar -xf ecos_osx.tar.gz -C ecos && rm ecos_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ipopt_osx.tar.gz && mkdir ipopt && tar -xvf ipopt_osx.tar.gz -C ipopt && rm ipopt_osx.tar.gz
   - pushd /Users/travis/ && ln -s  /Users/travis/build/ipopt  ipopt-install  && popd
   - ls /Users/travis/ipopt-install/include/coin
-  - travis_retry testbot/recipes/fetch.sh swig_matlab.tar.gz && mkdir swig_matlab && tar -xvf swig_matlab.tar.gz -C swig_matlab
-  - pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig_matlab  swig-matlab-install  && popd
-  - export PATH=/Users/travis/build/swig/bin:$PATH
   #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
   #- pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
