@@ -13,6 +13,8 @@ before_script:
 
 script:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
+  - cat .git/config
+  - git --version
   - |
     for i in `echo $RUN`; do
       git checkout $i;
