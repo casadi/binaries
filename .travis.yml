@@ -19,18 +19,25 @@ env:
     - NUMPYVERSION=1.9.1
     - CLANG=/Users/travis/build/clang
     - ECOS=/Users/travis/build/ecos
-    
+
+matrix:
+  - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
+
 before_script:
   - set -e
 
 compiler: clang
 
 script:
+  - pushd /home/travis/build/
+  - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
+  - mkdir matlab
+  - travis_wait unzip atlab${MATLABRELEASE}_osx.tar.gz -d matlab > /dev/null
   - pkg-config --libs --cflags ipopt
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_MATLAB=ON -DWITH_PYTHON=OFF -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH ..
   - make VERBOSE=1
   - make install
   - popd
@@ -40,8 +47,8 @@ script:
   #- ssh-keyscan gate.mech.kuleuven.be >> ~/.ssh/known_hosts
   #- echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA3mEl1i8wiojyJdJnwrmC3RTWCIGgUM4lmtWNWu4p4QyiBry2iB7y2qno48pZqkV/EFRsyWWeEDvbdA4etYlceKZaGJFAdqJig/247qPbamU5W5++d7zkGwA5nQDH147/+JMYk4na9RoGl2iOHMyxi7Wq0WkN11u0Slp2awluvV9UXpBl/XD74eYmUfOFop6y+Hkg/K2hyytg8vAkp33x/vy8JxSK93vbnLGsrVOVjp6Epf7Jo2C8ZHX9eVL2sfi7icjNbt6s9AnU076tBURBIEQbg+Sa8nK7v6zzJNZbn9G85t0M64BKMvcRH1BXf0VvIeBQs/yv9uZLaC9SFvj+4Q== u0052373@xen-vm03.mech.kuleuven.be" >> ~/.ssh/authorized_keys
   #- ssh -R 2245:localhost:22 u0052373@gate.mech.kuleuven.be
-  - pushd python_install && tar -czf ../bundle.tar.gz . && popd
-  - export RESULT_TAR="$PWD/bundle.tar.gz"
+  - pushd $MATLABPATH && tar -czf ../bundle.tar.gz .  && popd
+  - export RESULT_TAR="$MATLABPATH/../bundle.tar.gz"
   - |
     cat <<EOF > upload.py
     import pysftp
@@ -59,7 +66,7 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('osx')
           with sftp.cd('osx'):
-            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+            sftp.put("$RESULT_TAR","casadi-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.tar.gz")
     EOF
   - python upload.py
 
@@ -88,6 +95,9 @@ before_install:
   - mkdir -p /Users/travis/build/casadi/testbot
   #- travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
   #- pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig  swig-install  && popd
+  - swig_matlab_file=`python testbot/helpers/gitmatch.py testbot/recipes/swig_matlab.yaml /home/travis/build/casadi/casadi`
+  - travis_retry testbot/recipes/fetch.sh ${swig_matlab_file}_osx.tar.gz && mkdir swig_matlab && tar -xf ${swig_matlab_file}_osx.tar.gz -C swig_matlab && rm ${swig_matlab_file}_osx.tar.gz
+  - pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig  swig-install  && popd
   - travis_retry testbot/recipes/fetch.sh clang_osx.tar.gz && mkdir clang && tar -xf clang_osx.tar.gz -C clang && rm clang_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ecos_osx.tar.gz && mkdir ecos && tar -xf ecos_osx.tar.gz -C ecos && rm ecos_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ipopt_osx.tar.gz && mkdir ipopt && tar -xvf ipopt_osx.tar.gz -C ipopt && rm ipopt_osx.tar.gz
