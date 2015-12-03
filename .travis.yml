@@ -96,7 +96,7 @@ before_install:
   - popd
   - brew update
   - brew tap homebrew/science
-  - brew outdated swig || brew install swig
+  - brew outdated swig ; brew install swig
   - swig -version
   #- brew doctor
   - sudo easy_install pip
