@@ -66,8 +66,6 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh ecos.tar.gz && mkdir ecos && tar -xvf ecos.tar.gz -C ecos
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /home/travis/build/casadi/testbot
-  - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
-  - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
   - travis_retry testbot/recipes/fetch.sh ipopt.tar.gz && mkdir ipopt && tar -xvf ipopt.tar.gz -C ipopt
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt  ipopt-install  && popd
   - ls /home/travis/ipopt-install/include/coin
