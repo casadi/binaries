@@ -29,10 +29,11 @@ before_script:
 compiler: clang
 
 script:
-  - pushd /home/travis/build/
+  - pushd /Users/travis/build
   - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
   - mkdir matlab
-  - travis_wait unzip atlab${MATLABRELEASE}_osx.tar.gz -d matlab > /dev/null
+  - travis_wait unzip matlab${MATLABRELEASE}_osx.tar.gz -d matlab > /dev/null
+  - popd
   - pkg-config --libs --cflags ipopt
   - pushd casadi
   - mkdir build
