@@ -86,22 +86,18 @@ before_install:
   #- travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /Users/travis/build/casadi/testbot
-  #- travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
-  #- pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig  swig-install  && popd
   - travis_retry testbot/recipes/fetch.sh clang_osx.tar.gz && mkdir clang && tar -xf clang_osx.tar.gz -C clang && rm clang_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ecos_osx.tar.gz && mkdir ecos && tar -xf ecos_osx.tar.gz -C ecos && rm ecos_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ipopt_osx.tar.gz && mkdir ipopt && tar -xvf ipopt_osx.tar.gz -C ipopt && rm ipopt_osx.tar.gz
   - pushd /Users/travis/ && ln -s  /Users/travis/build/ipopt  ipopt-install  && popd
   - ls /Users/travis/ipopt-install/include/coin
-  - travis_retry testbot/recipes/fetch.sh swig_matlab.tar.gz && mkdir swig_matlab && tar -xvf swig_matlab.tar.gz -C swig_matlab
-  - pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig_matlab  swig-matlab-install  && popd
-  - export PATH=/Users/travis/build/swig/bin:$PATH
   #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
   #- pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - brew update
   - brew tap homebrew/science
   - brew outdated swig || brew install swig
+  - swig -version
   #- brew doctor
   - sudo easy_install pip
   - sudo pip install ipython matplotlib numpy scipy pysftp
