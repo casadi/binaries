@@ -19,7 +19,7 @@ env:
     - NUMPYVERSION=1.9.1
     - CLANG=/Users/travis/build/clang
     - ECOS=/Users/travis/build/ecos
-    - MATLABRELEASE=R2014b
+    - MATLABRELEASE=R2015a
 
 matrix:
   - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
