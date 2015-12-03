@@ -19,6 +19,7 @@ env:
     - NUMPYVERSION=1.9.1
     - CLANG=/Users/travis/build/clang
     - ECOS=/Users/travis/build/ecos
+    - MATLABRELEASE=R2014b
 
 matrix:
   - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
@@ -30,6 +31,7 @@ compiler: clang
 
 script:
   - pushd /Users/travis/build
+  - echo $MATLABRELEASE
   - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
   - ls
   - mkdir matlab
