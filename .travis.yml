@@ -102,7 +102,7 @@ before_install:
   - swig_matlab_file=`python testbot/helpers/gitmatch.py testbot/recipes/swig_matlab.yaml /Users/travis/build/casadi/binaries/casadi`
   - travis_retry testbot/recipes/fetch.sh ${swig_matlab_file}_osx.tar.gz && mkdir swig_matlab && tar -xf ${swig_matlab_file}_osx.tar.gz -C swig_matlab && rm ${swig_matlab_file}_osx.tar.gz
   - pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig_matlab  swig-matlab-install  && popd
-  - export PATH=/Users/travis/build/swig/bin:$PATH
+  - export PATH=/Users/travis/build/swig_matlab/bin:$PATH
   - travis_retry testbot/recipes/fetch.sh clang_osx.tar.gz && mkdir clang && tar -xf clang_osx.tar.gz -C clang && rm clang_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ecos_osx.tar.gz && mkdir ecos && tar -xf ecos_osx.tar.gz -C ecos && rm ecos_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ipopt_osx.tar.gz && mkdir ipopt && tar -xvf ipopt_osx.tar.gz -C ipopt && rm ipopt_osx.tar.gz
