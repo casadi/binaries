@@ -150,7 +150,7 @@ before_install:
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
   - ls ipopt
   - ls $PKG_CONFIG_PATH
-  - swig_matlab_file=`python testbot/helpers/gitmatch.py testbot/recipes/swig_matlab.yaml /home/travis/build/casadi/casadi`
+  - swig_matlab_file=`python testbot/helpers/gitmatch.py testbot/recipes/swig_matlab.yaml /home/travis/build/casadi/binaries/casadi`
   - travis_retry testbot/recipes/fetch.sh ${swig_matlab_file}.tar.gz && mkdir swig_matlab && tar -xf ${swig_matlab_file}.tar.gz -C swig_matlab
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig_matlab  swig-matlab-install  && popd
   - export PATH=/home/travis/build/swig/bin:$PATH
