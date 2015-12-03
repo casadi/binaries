@@ -87,7 +87,7 @@ branches:
     - /.*appveyor.*/
 
 before_install:
-  - brew install binutils
+  - brew install binutils pcre
   - which gobjdump
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
