@@ -31,8 +31,9 @@ compiler: clang
 script:
   - pushd /Users/travis/build
   - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
+  - ls
   - mkdir matlab
-  - travis_wait unzip matlab${MATLABRELEASE}_osx.tar.gz -d matlab > /dev/null
+  - travis_wait unzip matlab${MATLABRELEASE}_osx.zip -d matlab > /dev/null
   - popd
   - pkg-config --libs --cflags ipopt
   - pushd casadi
