@@ -17,7 +17,6 @@ script:
   - |
     ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net <<EOF
     pushd /home/project-web/casadi/htdocs/
-    mkdir -p $COMMIT
     cp -r commits/$COMMIT v$VERSION/
     popd
     pushd /home/frs/project/casadi/CasADi/commits/$COMMIT
