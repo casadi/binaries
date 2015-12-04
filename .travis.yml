@@ -22,7 +22,7 @@ env:
     - MATLABRELEASE=R2015a
 
 matrix:
-  - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
+  - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2015a
 
 before_script:
   - set -e
@@ -76,9 +76,9 @@ after_success:
   - cd /Users/travis/build/casadi/binaries
   - git remote add github git@github.com:casadi/binaries.git
   - git fetch github
-  - git checkout tests-osx-matlab
+  - git checkout test-osx-matlab
   - git commit -a -m "automatic runner commit $COMMIT"
-  - git push github tests-osx-matlab
+  - git push github test-osx-matlab
   
 branches:
   except:
