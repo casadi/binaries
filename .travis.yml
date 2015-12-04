@@ -8,7 +8,7 @@ sudo: required
 script:
   - export mypwd=`pwd`
   - pushd casadi && git fetch --tags && export COMMIT=`git rev-parse --short HEAD` && popd
-  - export CHECK=`git rev-parse --short $VERSION` || export CHECK=$COMMIT
+  - export CHECK=`git rev-parse --short $VERSION || echo $COMMIT`
   - echo "Comparing $CHECK vs $COMMIT..."
   - if [ "$COMMIT" == "$CHECK" ]; then echo "All is fine"; else exit 1; fi
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
