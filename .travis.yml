@@ -48,7 +48,7 @@ script:
   - ls
   - echo "casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz"
   - mkdir matlab && tar -xvf casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz -C matlab
-  - ldd matlab/libcasadi_nlpsolver_ipopt.dylib
+  - otool -L matlab/libcasadi_nlpsolver_ipopt.dylib
   - PATH=/Users/travis/build/matlab/bin/:$PATH matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/Users/travis/build/casadi/binaries/matlab'),savepath,exit"
   - pushd casadi/test && PATH=/Users/travis/build/matlab/bin/:$PATH make unittests_matlab && popd
   
