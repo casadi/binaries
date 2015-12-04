@@ -3,8 +3,7 @@ env:
   global: 
     - LD_LIBRARY_PATH=/Users/travis/build/libhsl:/Users/travis/build/testbot/restricted/worhp:/Users/travis/build/snopt7/lib:/Users/travis/build/mosek/7/tools/platform/linux64x86/bin/
     - secure: "Bu8uBe0emUQyEYWCVnEvH8uvJISDPrCTa7KXVzJnR7GUFKLLnq31Uhjg33VG8/88Is4TP4Volp3QcJadI30D0zfTkI7mZTIwF3JqG7/GjwG5LXSsR2uQM+Rt+hssALubRAlua/5Ml4O8w+tm8IZfvgM3Z2QPiVQ2lMM5DUwFXGatumesKb3SaKj96tSiOIswLqYr/NWEnBaWqm4DUuTUEwN/X6mkS13Lq/3/YqB4r+FwFuyQMWNqV8+/OD2/C+uEBMJCw3vJOPtKlP7+vzrbKobP1t44opPL33HRAhKxJg2Z99OL61QygazX2DoadIapAbrE2y6lnk42o9973C8pIG8TEN0xH0fWtPQDpXzzsgTqtx/Xlw+S0j51wUViLP86OcrVgvTRO2Bt7RAOgWYnOBvPvPfUOdnzSrAL/gh8vg2QsB3FeCuTr31Cf+81FOZy2yDQhTsaWOKUwqmJdV2PL0eatzMPinl0lod7pXBRIDwryv8iVzW3oA9AEwpeXMBx/AibX9/ZEu1BSjxYAVMHCKlR+k2/sGsYVOu9QzPthN7T5S/d/reF/RY19wjIm3L3Hvp7ygEV/xGpvOR8F5dTUxtWLb7+DrNgy3g7texU7YcGJS88atre2BAeZWE1a0GbXQHbB9sgjprVahEXZLVVOiyLOdBqaBspUaIfsmOMcRg="
-    - PYTHONVERSION=27
-    - NUMPYVERSION=1.9.1
+    - MATLABRELEASE=R2015a
     - WORHP_LICENSE_FILE=/Users/travis/build/testbot/restricted/worhp/unlocked.lic
     - MOSEKLM_LICENSE_FILE=/Users/travis/build/testbot/restricted/mosek.lic
 
@@ -28,16 +27,16 @@ script:
       with sftp.cd('commits'):
         with sftp.cd("$COMMIT"):
           with sftp.cd('osx'):
-            sftp.get("casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+            sftp.get("casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz")
     EOF
   - python download.py
-  - mkdir casadi_python
-  - tar -xvf casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz -C casadi_python
-  - echo "$PWD/casadi_python"
-  - export PYTHONPATH=$PYTHONPATH:$PWD/casadi_python
-  - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-  - pushd /Users/travis/build/casadi/binaries/casadi/test && make unittests_py && popd
-  - pushd /Users/travis/build/casadi/binaries/casadi/test && make examples_code_py && popd
+  - ls
+  - echo "casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz"
+  - mkdir matlab && tar -xvf matlab.tar.gz -C matlab
+  - ls matlab.tar.gz
+  - ldd matlab/libcasadi_nlpsolver_ipopt.dylib
+  - PATH=/Users/travis/build/matlab/bin/:$PATH matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/Users/travis/build/casadi/binaries/matlab'),savepath,exit"
+  - pushd casadi/test && PATH=/Users/travis/build/matlab/bin/:$PATH make unittests_matlab && popd
   
 branches:
   except:
