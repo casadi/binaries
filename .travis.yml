@@ -13,7 +13,6 @@ before_script:
 os: osx
 
 script:
-  - pushd /Users/travis/build
   - echo $MATLABRELEASE
   - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
   - ls
@@ -56,7 +55,6 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
-  - popd
   - brew update
   - brew tap homebrew/science
   - brew install p7zip
