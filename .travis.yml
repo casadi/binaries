@@ -41,7 +41,7 @@ script:
       with sftp.cd('commits'):
         with sftp.cd("$COMMIT"):
           with sftp.cd('osx'):
-            sftp.get("casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz")
+            sftp.get("casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz","matlab.tar.gz")
     EOF
   - python download.py
   - mkdir matlab && tar -xvf matlab.tar.gz -C matlab
