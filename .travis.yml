@@ -44,6 +44,8 @@ script:
             sftp.get("casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz")
     EOF
   - python download.py
+  - mkdir matlab && tar -xvf matlab.tar.gz -C matlab
+  - ls matlab.tar.gz
   - PATH=/Users/travis/build/matlab/bin/:$PATH matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/Users/travis/build/casadi/binaries/matlab'),savepath,exit"
   - pushd casadi/test && PATH=/Users/travis/build/matlab/bin/:$PATH make unittests_matlab && popd
   
