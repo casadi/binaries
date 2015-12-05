@@ -47,7 +47,10 @@ script:
   - make VERBOSE=1
   - make install
   - popd
-  - pushd /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1 && cp libgfortran.3.dylib libquadmath.0.dylib $MATLABPATH && popd
+  - pushd /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1 && cp libgcc_s.1.dylib libgfortran.3.dylib libquadmath.0.dylib $MATLABPATH && popd
+  - sudo install_name_tool -change /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib "@rpath/libquadmath.0.dylib" $MATLABPATH/libgfortran.3.dylib  
+  - sudo install_name_tool -change /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib "@rpath/libgcc_s.1.dylib" $MATLABPATH/libgfortran.3.dylib  
+  - sudo install_name_tool -change /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgcc_s.1.dylib "@rpath/libgcc_s.1.dylib" $MATLABPATH/libquadmath.0.dylib 
   - otool -l /Users/travis/build/casadi/binaries/casadi/build/lib/libcasadi_nlpsolver_ipopt.dylib
   - otool -l $MATLABPATH/libcasadi_nlpsolver_ipopt.dylib
   #- ssh-keyscan gate.mech.kuleuven.be >> ~/.ssh/known_hosts
