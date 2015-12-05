@@ -63,12 +63,13 @@ before_install:
   - brew install p7zip
   #- brew doctor
   - sudo easy_install pip
-  - sudo pip install ipython matplotlib numpy scipy pysftp
   - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - pushd testbot/restricted && mkdir -p worhp && cd worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
-
+  - sudo rm /usr/local/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgfortran.3.dylib 
+  - sudo rm /usr/local/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib
+  
 language: cpp
