@@ -30,6 +30,8 @@ before_script:
 compiler: clang
 
 script:
+  - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" /usr/local/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgfortran.3.dylib
+  - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" /usr/local/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib
   - pushd /Users/travis/build
   - echo $MATLABRELEASE
   - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
