@@ -46,6 +46,7 @@ script:
   - python download.py
   - mkdir matlab && tar -xvf matlab.tar.gz -C matlab
   - ls matlab.tar.gz
+  - otool -l matlab/libcasadi_nlpsolver_ipopt.dylib
   - PATH=/Users/travis/build/matlab/bin/:$PATH matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/Users/travis/build/casadi/binaries/matlab'),savepath,exit"
   - pushd casadi/test && PATH=/Users/travis/build/matlab/bin/:$PATH make unittests_matlab && popd
   
