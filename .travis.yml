@@ -20,9 +20,9 @@ env:
     - CLANG=/Users/travis/build/clang
     - ECOS=/Users/travis/build/ecos
 
-matrix:
-  - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2015a
-  - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014b
+  matrix:
+    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2015a
+    - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014b
   
 before_script:
   - set -e
