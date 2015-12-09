@@ -37,7 +37,7 @@ script:
   - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
   - ls -al
   - mkdir matlab
-  - travis_wait unzip matlab${MATLABRELEASE}_osx.zip -d matlab > /dev/null
+  - unzip matlab${MATLABRELEASE}_osx.zip -d matlab > /dev/null
   - popd
   - pkg-config --libs --cflags ipopt
   - pushd casadi
