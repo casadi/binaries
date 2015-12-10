@@ -35,6 +35,7 @@ script:
   - pushd /Users/travis/build
   - echo $MATLABRELEASE
   - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
+  - source testbot/shellhelpers
   - ls -al
   - mkdir matlab
   - unzip matlab${MATLABRELEASE}_osx.zip -d matlab > /dev/null || allowfail 2
