@@ -85,7 +85,7 @@ after_success:
   - git remote add github git@github.com:casadi/binaries.git
   - git fetch github
   - git checkout test-osx-matlab
-  - git commit -a -m "automatic runner commit $COMMIT"
+  - git commit -a -m "automatic runner commit $COMMIT"|| allowfail 1 # perhaps it's already commited
   - if [ $TESTCOMMIT ]; then git push github test-osx-matlab; fi
   
 branches:
