@@ -45,8 +45,9 @@ branches:
 before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
+  - sudo apt-get update -qq
   - pushd testbot && recipes/setup.sh && popd
-  - sudo apt-get install python-numpy
+  - sudo apt-get install -y python-numpy
   - sudo pip install pysftp
   - sudo apt-get install p7zip-full -y
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
