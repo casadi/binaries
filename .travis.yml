@@ -67,7 +67,7 @@ script:
   - ls $MATLAB_ROOT/extern/include
   - mkdir build
   - pushd build
-  - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
+  - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /usr/share/cmake-3.2/Modules/FindLAPACK.cmake
   - |
     cat <<EOF >toolchain.cmake
     # this one is important
@@ -169,11 +169,6 @@ before_install:
   - sudo pip install pysftp
   - source /home/travis/build/testbot/restricted/env.sh
   - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
-  - whoami
-  - sudo apt-get install -q -y locate
-  - sudo updatedb
-  - locate FindLAPACK.cmake
-  - ls /usr/share/cmake-2.8/Modules/
 
 language: cpp
 
