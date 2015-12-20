@@ -1,5 +1,8 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 
+dist: trusty
+language: generic
+
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
@@ -130,8 +133,6 @@ branches:
     - /.*appveyor.*/
 
 before_install:
-  - sudo /etc/init.d/mysql stop
-  - sudo /etc/init.d/postgresql stop
   - sync
   - free -t -m
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
@@ -157,9 +158,9 @@ before_install:
   - pushd testbot/restricted/cplex && mkdir cplex && tar -xf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xf cplex12.4-concert.tar.gz -C concert && popd
   - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
-  - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
-  - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
-  - sudo add-apt-repository ppa:tkelman/mingw-backport -y
+  #- sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
+  #- sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
+  #- sudo add-apt-repository ppa:tkelman/mingw-backport -y
   - sudo apt-get update -qq
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev libxml2-dev
   - sudo apt-get remove -qq -y mingw32
