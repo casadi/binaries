@@ -148,7 +148,7 @@ before_install:
   - mkdir -p /home/travis/build/casadi/testbot
   - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xf swig.tar.gz -C swig
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
-  - travis_retry testbot/recipes/fetch.sh ipopt_mingw64.tar.gz && mkdir ipopt && tar -xf ipopt_mingw64.tar.gz -C ipopt
+  - travis_retry testbot/recipes/fetch.sh ipopt_mingw64_trusty.tar.gz && mkdir ipopt && tar -xf ipopt_mingw64_trusty.tar.gz -C ipopt && rm ipopt_mingw64_trusty.tar.gz
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
   - ls ipopt
   - ls $PKG_CONFIG_PATH
