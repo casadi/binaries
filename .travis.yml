@@ -94,7 +94,7 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     EOF
   - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DMATLAB_EXTRA_CXXFLAGS="-D__STDC_UTF_16__" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install ..
-  - make install -j2
+  - make install -j2 VERBOSE=1
   - ls lib
   - make install
   - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../matlab_install
@@ -143,7 +143,7 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh ecos_mingw64_trusty.tar.gz && mkdir ecos && tar -xf ecos_mingw64_trusty.tar.gz -C ecos && rm ecos_mingw64_trusty.tar.gz
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh clang_mingw64_trusty.tar.gz && mkdir clang && tar -xf clang_mingw64_trusty.tar.gz -C clang
-  - travis_retry testbot/recipes/fetch.sh lapack_mingw64.tar.gz && mkdir lapack && tar -xf lapack_mingw64.tar.gz -C lapack
+  - travis_retry testbot/recipes/fetch.sh lapack_mingw64_trusty.tar.gz && mkdir lapack && tar -xf lapack_mingw64_trusty.tar.gz -C lapack
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xf snopt7.tar.gz -C snopt7
   - mkdir -p /home/travis/build/casadi/testbot
   - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xf swig.tar.gz -C swig
