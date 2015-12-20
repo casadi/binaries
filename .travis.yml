@@ -119,7 +119,7 @@ script:
           with sftp.cd('windows'):
             sftp.put("bundle.zip","casadi-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.zip")
     EOF
-  - python upload.py
+  - sudo python upload.py
 
 after_success:
   - cd /home/travis/build/casadi/binaries
@@ -166,7 +166,7 @@ before_install:
   - sudo apt-get remove -qq -y mingw32
   - sudo apt-get install -q -y mingw-w64
   - sudo apt-get install -q -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
-  - pip install pysftp
+  - sudo pip install pysftp
   - source /home/travis/build/testbot/restricted/env.sh
   - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
 
