@@ -140,7 +140,7 @@ before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
-  - travis_retry testbot/recipes/fetch.sh ecos_mingw64.tar.gz && mkdir ecos && tar -xf ecos_mingw64.tar.gz -C ecos && rm ecos_mingw64.tar.gz
+  - travis_retry testbot/recipes/fetch.sh ecos_mingw64_trusty.tar.gz && mkdir ecos && tar -xf ecos_mingw64_trusty.tar.gz -C ecos && rm ecos_mingw64_trusty.tar.gz
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh clang_mingw64.tar.gz && mkdir clang && tar -xf clang_mingw64.tar.gz -C clang
   - travis_retry testbot/recipes/fetch.sh lapack_mingw64.tar.gz && mkdir lapack && tar -xf lapack_mingw64.tar.gz -C lapack
