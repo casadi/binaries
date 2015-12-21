@@ -163,10 +163,10 @@ before_install:
   #- sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
   #- sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
   #- sudo add-apt-repository ppa:tkelman/mingw-backport -y
+  - sudo add-apt-repository ppa:tobydox/mingw-x-trusty
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake cmake-data liblapack-dev ipython python-dev libxml2-dev
   - sudo apt-get remove -qq -y mingw32
-  - sudo apt-get install -q -y mingw-w64
-  - sudo apt-get install -q -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
+  - sudo apt-get install -q -y mingw-x-gcc
   - sudo pip install pysftp
   - source /home/travis/build/testbot/restricted/env.sh
   - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
