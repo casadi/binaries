@@ -23,6 +23,7 @@ env:
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2015a
     - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014b
+    - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014a
   
 before_script:
   - set -e
