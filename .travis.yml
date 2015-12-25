@@ -45,7 +45,15 @@ script:
   - popd
   - export PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH
   - pushd casadi
-  
+
+  # Fixing issue https://github.com/casadi/casadi/issues/1654
+  - |
+    cat <<EOF >> swig/casadi.i
+    %begin %{
+    #define UINT64_T unsigned long long int
+    %}
+    EOF
+    
   # Displace find_package(MATLAB)
   - pushd swig/matlab
   - |
