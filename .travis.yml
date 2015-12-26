@@ -106,7 +106,8 @@ script:
   - make install -j2 VERBOSE=1
   - ls lib
   - make install
-  - cp /usr/lib/gcc/$compilerprefix/*/*.dll ../matlab_install
+  - ls /usr/lib/gcc/$compilerprefix/
+  - cp /usr/lib/gcc/$compilerprefix/4.9-win32/*.dll ../matlab_install
   - cp -RL /usr/$compilerprefix/include ../matlab_install/casadi/jit/mingw
   - cp -R /home/travis/build/clang/include/c++/v1 ../matlab_install/casadi/jit/mingw/c++
   
