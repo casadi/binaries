@@ -176,13 +176,11 @@ before_install:
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake cmake-data liblapack-dev ipython python-dev libxml2-dev
   - sudo apt-get remove -qq -y mingw32
   - |
-    cat <<EOF > temp
+    cat <<EOF | sudo tee --append  /etc/apt/sources.list
     deb-src http://archive.ubuntu.com/ubuntu vivid main restricted universe multiverse
     deb http://archive.ubuntu.com/ubuntu vivid main restricted universe multiverse
-    EOF
-  - cat temp | sudo tee --append  /etc/apt/sources.list
   - |
-    cat <<EOF > temp
+    cat <<EOF | sudo tee /etc/apt/preferences.d/mytest
     Package: *
     Pin: release n=trusty
     Pin-priority: 700
@@ -190,8 +188,6 @@ before_install:
     Package: *
     Pin: release n=vivid
     Pin-priority: 600
-    EOF
-  - cat temp | sudo tee /etc/apt/preferences.d/mytest
   - tail /etc/apt/sources.list
   - tail /etc/apt/preferences.d/mytest
   - sudo apt-get update
