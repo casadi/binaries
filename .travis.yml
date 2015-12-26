@@ -192,6 +192,8 @@ before_install:
     Pin-priority: 600
     EOF
   - cat temp | sudo tee /etc/apt/preferences.d/mytest
+  - tail /etc/apt/sources.list
+  - tail /etc/apt/preferences.d/mytest
   - sudo apt-get update
   - sudo apt-get install -q -y -t vivid mingw-w64
   - sudo apt-get install -q -y -t vivid mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
