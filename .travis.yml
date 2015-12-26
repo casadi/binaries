@@ -49,6 +49,14 @@ script:
   - export PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH
   - pushd casadi
   
+    # Fixing issue https://github.com/casadi/casadi/issues/1654
+  - |
+    cat <<EOF >> swig/casadi.i
+    %begin %{
+    #define UINT64_T unsigned long long int
+    %}
+    EOF
+  
   # Displace find_package(MATLAB)
   - pushd swig/matlab
   - |
@@ -85,7 +93,7 @@ script:
     
     # where is the target environment 
     SET(CMAKE_FIND_ROOT_PATH  /usr/$compilerprefix)
-    SET(CMAKE_CXX_FLAGS "-fpermissive" CACHE STRING "" FORCE)
+    SET(CMAKE_CXX_FLAGS "-fno-ipa-cp-clone" CACHE STRING "" FORCE)
     
     # search for programs in the build host directories
     SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
