@@ -70,6 +70,7 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - pushd testbot/restricted && mkdir -p worhp && cd worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - sudo rm -rf /usr/local/lib/gcc/*darwin*/*
-  - sudo rm -rf /usr/local/lib/gcc/*darwin*/*
+  - ls /usr/local/Cellar/gcc/*/lib/gcc/*darwin*/*
+  - sudo rm -rf /usr/local/Cellar/gcc/*/lib/gcc/*darwin*/*
   
 language: cpp
