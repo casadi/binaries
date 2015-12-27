@@ -133,7 +133,8 @@ after_success:
   - git remote add github git@github.com:casadi/binaries.git
   - git fetch github
   - git checkout test-windows-matlab
-  - if [ $TESTCOMMIT ]; then git commit -a -m "automatic test commit $COMMIT"; git push github test-windows-matlab; fi
+  - git commit -a -m "automatic test commit $COMMIT" || allowfail 1 # perhaps it's already commited
+  - if [ $TESTCOMMIT ]; then git push github test-windows-matlab; fi
 
 branches:
   except:
