@@ -147,6 +147,7 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
+  - source testbot/shellhelpers
   - sudo apt-get install p7zip-full -y
   - travis_retry testbot/recipes/fetch.sh ecos_mingw64_trusty.tar.gz && mkdir ecos && tar -xf ecos_mingw64_trusty.tar.gz -C ecos && rm ecos_mingw64_trusty.tar.gz
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xf libhsl.tar.gz -C libhsl
