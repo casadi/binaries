@@ -47,7 +47,7 @@ script:
   #- ssh -R 2245:localhost:22 u0052373@gate.mech.kuleuven.be
   - pushd /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1 && cp libgcc_s.1.dylib libgfortran.3.dylib libquadmath.0.dylib /Users/travis/build/casadi/binaries/casadi/python_install/casadi && popd
   - sudo install_name_tool -change /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib "@rpath/libquadmath.0.dylib" python_install/casadi/libgfortran.3.dylib  
-  - sudo install_name_tool -change /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib "@rpath/libgcc_s.1.dylib" python_install/casadi/libgfortran.3.dylib  
+  - sudo install_name_tool -change /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgcc_s.1.dylib "@rpath/libgcc_s.1.dylib" python_install/casadi/libgfortran.3.dylib  
   - sudo install_name_tool -change /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgcc_s.1.dylib "@rpath/libgcc_s.1.dylib" python_install/casadi/libquadmath.0.dylib 
 
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
