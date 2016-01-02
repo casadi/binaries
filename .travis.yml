@@ -30,6 +30,9 @@ script:
   - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib
   - pkg-config --libs --cflags ipopt
   - pushd casadi
+  - grep -v PYTHON_LIBRARIES swig/python/CMakeLists.txt > tmp && mv tmp swig/python/CMakeLists.txt
+  - echo "set_target_properties(_casadi PROPERTIES LINK_FLAGS \"-undefined dynamic_lookup\")" >> swig/python/CMakeLists.txt
+  - echo "swig_link_libraries(casadi casadi)" >> swig/python/CMakeLists.txt
   - mkdir build
   - pushd build
   - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
