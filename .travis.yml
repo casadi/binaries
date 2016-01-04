@@ -17,6 +17,7 @@ env:
     - MATLABRELEASE=R2014b
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - GUROBI_HOME=/home/travis/build/gurobi
+    - GRB_LICENSE_FILE=/home/travis/gurobi.lic
     
 before_script:
   - set -e
