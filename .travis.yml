@@ -21,6 +21,7 @@ env:
     - LIB=/home/travis/build/lapack
     - CLANG=/home/travis/build/clang
     - ECOS=/home/travis/build/ecos
+    - GUROBI_HOME=/home/travis/build/gurobi
 
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
@@ -153,6 +154,7 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh clang_mingw64_trusty.tar.gz && mkdir clang && tar -xf clang_mingw64_trusty.tar.gz -C clang
   - travis_retry testbot/recipes/fetch.sh lapack_mingw64_trusty.tar.gz && mkdir lapack && tar -xf lapack_mingw64_trusty.tar.gz -C lapack
+  - travis_retry testbot/recipes/fetch.sh gurobi650_mingw64.zip && mkdir gurobi && unzip gurobi650_mingw64.zip -d gurobi
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xf snopt7.tar.gz -C snopt7
   - mkdir -p /home/travis/build/casadi/testbot
   - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xf swig.tar.gz -C swig
