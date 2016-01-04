@@ -77,7 +77,7 @@ before_install:
   - pushd testbot && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
   - travis_retry testbot/recipes/fetch.sh ecos.tar.gz && mkdir ecos && tar -xf ecos.tar.gz -C ecos && rm ecos.tar.gz
-  - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi.tar.gz
+  - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - travis_retry testbot/recipes/fetch.sh clang.tar.gz && mkdir clang && tar -xvf clang.tar.gz -C clang
