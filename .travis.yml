@@ -32,7 +32,7 @@ script:
   - grep -i ipopt CMakeCache.txt
   - make VERBOSE=1
   - make install
-  - ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
+  #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
