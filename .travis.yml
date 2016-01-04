@@ -19,6 +19,7 @@ env:
     - NUMPYVERSION=1.9.1
     - CLANG=/Users/travis/build/clang
     - ECOS=/Users/travis/build/ecos
+    - GUROBI_HOME=/Users/travis/build/gurobi
     
 before_script:
   - set -e
@@ -102,6 +103,7 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh clang_osx.tar.gz && mkdir clang && tar -xf clang_osx.tar.gz -C clang && rm clang_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ecos_osx.tar.gz && mkdir ecos && tar -xf ecos_osx.tar.gz -C ecos && rm ecos_osx.tar.gz
   - travis_retry testbot/recipes/fetch.sh ipopt_osx.tar.gz && mkdir ipopt && tar -xvf ipopt_osx.tar.gz -C ipopt && rm ipopt_osx.tar.gz
+  - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
   - pushd /Users/travis/ && ln -s  /Users/travis/build/ipopt  ipopt-install  && popd
   - ls /Users/travis/ipopt-install/include/coin
   #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
