@@ -23,7 +23,6 @@ before_script:
   - set -e
 
 script:
-  - /home/travis/build/gurobi/bin/grbgetkey 6ddeb425-ad09-e0ec-ead6-568acd8b158e
   - pushd casadi
   - mkdir build
   - pushd build
