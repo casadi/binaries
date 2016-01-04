@@ -20,7 +20,8 @@ env:
     - LIB=/home/travis/build/lapack
     - CLANG=/home/travis/build/clang
     - ECOS=/home/travis/build/ecos
-
+    - GUROBI_HOME=/home/travis/build/gurobi
+    
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py27 TESTCOMMIT="1"
     #- BUILD_TYPE=Debug NAME_SUFFIX="-Debug" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py27
@@ -161,6 +162,7 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh ecos_mingw$BITNESS.tar.gz && mkdir ecos && tar -xf ecos_mingw$BITNESS.tar.gz -C ecos && rm ecos_mingw$BITNESS.tar.gz
   - travis_retry testbot/recipes/fetch.sh clang_mingw$BITNESS.tar.gz && mkdir clang && tar -xf clang_mingw$BITNESS.tar.gz -C clang && rm clang_mingw$BITNESS.tar.gz
   - travis_retry testbot/recipes/fetch.sh ipopt_mingw$BITNESS.tar.gz && mkdir ipopt && tar -xf ipopt_mingw$BITNESS.tar.gz -C ipopt && rm ipopt_mingw$BITNESS.tar.gz
+  - travis_retry testbot/recipes/fetch.sh gurobi650_mingw$BITNESS.zip && mkdir gurobi && unzip gurobi650_mingw$BITNESS.zip -d gurobi && rm gurobi650_mingw$BITNESS.zip
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
   - popd
   - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
