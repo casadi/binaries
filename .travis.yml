@@ -23,8 +23,6 @@ before_script:
   - set -e
 
 script:
-  - ls -al /home/travis/build/testbot/restricted/worhp
-  - ldd /home/travis/build/testbot/restricted/worhp/libworhp.so.1
   - pushd casadi
   - mkdir build
   - pushd build
