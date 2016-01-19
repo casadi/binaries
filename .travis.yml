@@ -23,6 +23,7 @@ env:
     
 before_script:
   - set -e
+  - sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist
 
 compiler: clang
 
