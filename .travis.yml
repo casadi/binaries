@@ -40,6 +40,7 @@ script:
   - make VERBOSE=1
   - make install
   - popd
+  - locate math.h
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   #- otool -l /Users/travis/build/casadi/binaries/casadi/python_install/casadi/libcasadi_nlpsolver_ipopt.dylib
   - otool -l /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgfortran.3.dylib
