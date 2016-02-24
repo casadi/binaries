@@ -57,7 +57,7 @@ script:
           with sftp.cd('linux'):
             sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
     EOF
-#  - python upload.py
+  - python upload.py
 
 after_success:
   - cd /home/travis/build/casadi/binaries
@@ -70,12 +70,8 @@ after_success:
 branches:
   except:
     - /.*appveyor.*/
-    
-services:
-  - docker
+
 before_install:
-  - docker pull centos:6
-  - docker run -d -p 127.0.0.1:80:4567 centos:6 /bin/sh -c "pwd"
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
