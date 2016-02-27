@@ -59,6 +59,7 @@ script:
   - ls matlab.tar.gz
   - PATH=/home/travis/build/matlab/bin/:$PATH matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/home/travis/build/casadi/binaries/matlab'),savepath,exit"
   - pushd casadi/test && PATH=/home/travis/build/matlab/bin/:$PATH make unittests_matlab && popd
+  - PATH=/home/travis/build/matlab/bin/:$PATH matlab -nodisplay -nosplash -nodesktop -nojvm -r "cd casadi/test,callback,exit"
 
   
 branches:
