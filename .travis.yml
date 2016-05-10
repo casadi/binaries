@@ -13,65 +13,251 @@ env:
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - SNOPT=/home/travis/build/snopt7
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
-    - PYTHONVERSION=27
-    - NUMPYVERSION=1.9.1
     - CLANG=/home/travis/build/clang
     - ECOS=/home/travis/build/ecos
     - GUROBI_HOME=/home/travis/build/gurobi
+    - DEBIAN_FRONTEND=noninteractive
     
 before_script:
   - set -e
 
-script:
-  - pushd casadi
-  - mkdir build
-  - pushd build
-  - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-  - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
-  - echo "::$HVERSION::"
-  - grep -i ipopt CMakeCache.txt
-  - make VERBOSE=1
-  - make install
-  #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
-  - popd
-  - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-  - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-  - pushd python_install && tar -czf ../bundle.tar.gz . && popd
-  - export RESULT_TAR="$PWD/bundle.tar.gz"
-  - |
-    cat <<EOF > upload.py
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/home/travis/build/testbot/id_rsa_travis')
-    
-    binaries_dir = '/home/jg/binaries'
-    
-    
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('commits')
-      with sftp.cd('commits'):
-        sftp.makedirs("$COMMIT")
-        with sftp.cd("$COMMIT"):
-          sftp.makedirs('linux')
-          with sftp.cd('linux'):
-            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
-    EOF
-  - python upload.py
+matrix:
+  include:
+    - compiler: gcc
+      os: linux
+      env: PYTHONVERSION=27 NUMPYVERSION=1.9.1 TESTCOMMIT=1
+      script:
+        - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
+        - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
+        - sudo apt-get update -qq
+        # Not available on 12.04: libslicot-dev
+        - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+        - sudo apt-get install fakeroot rpm alien
+        - pushd casadi
+        - mkdir build
+        - pushd build
+        - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+        - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
+        - echo "::$HVERSION::"
+        - grep -i ipopt CMakeCache.txt
+        - make VERBOSE=1
+        - make install
+        #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
+        - popd
+        - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test && make unittests_py && popd
+        - pushd python_install && tar -czf ../bundle.tar.gz . && popd
+        - export RESULT_TAR="$PWD/bundle.tar.gz"
+        - |
+          cat <<EOF > upload.py
+          import pysftp
+          sftp = pysftp.Connection('web.sourceforge.net', 
+                                username='casaditestbot,casadi',
+                                private_key='/home/travis/build/testbot/id_rsa_travis')
+          
+          binaries_dir = '/home/jg/binaries'
+          
+          
+          with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+            sftp.makedirs('commits')
+            with sftp.cd('commits'):
+              sftp.makedirs("$COMMIT")
+              with sftp.cd("$COMMIT"):
+                sftp.makedirs('linux')
+                with sftp.cd('linux'):
+                  sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+          EOF
+        - cat upload.py
+        - python upload.py
+    - compiler: gcc
+      os: linux
+      env:
+        - PYTHONVERSION=32
+        - NUMPYVERSION=1.9.1
+        - WITH_PYTHON3=ON 
+      script:
+        - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
+        - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
+        - sudo apt-get update -qq
+        # Not available on 12.04: libslicot-dev
+        - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+        - sudo apt-get install fakeroot rpm alien
+        - sudo apt-get remove cmake
+        - sudo add-apt-repository ppa:george-edison55/precise-backports -y
+        - sudo add-apt-repository ppa:takluyver/python3  -y
+        - sudo apt-get update -qq
+        - sudo apt-get install cmake valgrind libgomp1 python3-dev python3-numpy python3-scipy python3-matplotlib python3-setuptools -y
+        - pushd casadi
+        - mkdir build
+        - pushd build
+        - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_PYTHON3=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+        - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
+        - echo "::$HVERSION::"
+        - grep -i ipopt CMakeCache.txt
+        - make VERBOSE=1
+        - make install
+        #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
+        - popd
+        - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+        - python3 -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test && make unittests_py && popd
+        - pushd python_install && tar -czf ../bundle.tar.gz . && popd
+        - export RESULT_TAR="$PWD/bundle.tar.gz"
+        - |
+          cat <<EOF > upload.py
+          import pysftp
+          sftp = pysftp.Connection('web.sourceforge.net', 
+                                username='casaditestbot,casadi',
+                                private_key='/home/travis/build/testbot/id_rsa_travis')
+          
+          binaries_dir = '/home/jg/binaries'
+          
+          
+          with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+            sftp.makedirs('commits')
+            with sftp.cd('commits'):
+              sftp.makedirs("$COMMIT")
+              with sftp.cd("$COMMIT"):
+                sftp.makedirs('linux')
+                with sftp.cd('linux'):
+                  sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+          EOF
+        - cat upload.py
+        - python upload.py
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      language: generic
+      env:
+        - PYTHONVERSION=34
+        - NUMPYVERSION=1.9.1
+        - WITH_PYTHON3=ON
+      script:
+        - sudo apt-get install binutils gcc g++ gfortran git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
+        - sudo apt-get install valgrind libgomp1 python3-dev python3-numpy python3-scipy python3-matplotlib python3-setuptools -y
+        - pushd casadi
+        - mkdir build
+        - pushd build
+        - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_PYTHON3=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+        - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
+        - echo "::$HVERSION::"
+        - grep -i ipopt CMakeCache.txt
+        - make VERBOSE=1
+        - make install
+        #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
+        - popd
+        - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+        - python3 -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test && make unittests_py && popd 
+        - pushd python_install && tar -czf ../bundle.tar.gz . && popd
+        - export RESULT_TAR="$PWD/bundle.tar.gz"
+        - |
+          cat <<EOF > upload.py
+          import pysftp
+          sftp = pysftp.Connection('web.sourceforge.net', 
+                                username='casaditestbot,casadi',
+                                private_key='/home/travis/build/testbot/id_rsa_travis')
+          
+          binaries_dir = '/home/jg/binaries'
+          
+          
+          with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+            sftp.makedirs('commits')
+            with sftp.cd('commits'):
+              sftp.makedirs("$COMMIT")
+              with sftp.cd("$COMMIT"):
+                sftp.makedirs('linux')
+                with sftp.cd('linux'):
+                  sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+          EOF
+        - cat upload.py
+        - python upload.py
 
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      language: generic
+      env:
+        - PYTHONVERSION=35
+        - NUMPYVERSION=1.9.1
+        - WITH_PYTHON3=ON
+      script:
+        - sudo apt-get install git binutils gcc g++ gfortran git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
+        - |
+          cat <<EOF | sudo tee --append  /etc/apt/sources.list
+          deb-src http://archive.ubuntu.com/ubuntu xenial main restricted universe multiverse
+          deb http://archive.ubuntu.com/ubuntu xenial main restricted universe multiverse
+        - |
+          cat <<EOF | sudo tee /etc/apt/preferences.d/mytest
+          Package: *
+          Pin: release n=trusty
+          Pin-priority: 700
+          Package: *
+          Pin: release n=xenial
+          Pin-priority: 600
+        - tail /etc/apt/sources.list
+        - tail /etc/apt/preferences.d/mytest
+        - sudo apt-get update
+        - sudo apt-get --yes --force-yes install -q -t xenial -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" python3-dev python3-numpy
+        - sudo apt-get install cmake valgrind libgomp1 -y
+        - pushd casadi
+        - mkdir build
+        - pushd build
+        - export CC=gcc-4.8
+        - export CXX=g++-4.8
+        - export FC=gfortran-4.8
+        - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_PYTHON3=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+        - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
+        - echo "::$HVERSION::"
+        - grep -i ipopt CMakeCache.txt
+        - make VERBOSE=1
+        - make install
+        #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
+        - popd
+        - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+        - python3 -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        #- pushd test && make unittests_py && popd # SOME ERRORS
+        
+        - pushd python_install && tar -czf ../bundle.tar.gz . && popd
+        - export RESULT_TAR="$PWD/bundle.tar.gz"
+        - |
+          cat <<EOF > upload.py
+          import pysftp
+          sftp = pysftp.Connection('web.sourceforge.net', 
+                                username='casaditestbot,casadi',
+                                private_key='/home/travis/build/testbot/id_rsa_travis')
+          
+          binaries_dir = '/home/jg/binaries'
+          
+          
+          with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+            sftp.makedirs('commits')
+            with sftp.cd('commits'):
+              sftp.makedirs("$COMMIT")
+              with sftp.cd("$COMMIT"):
+                sftp.makedirs('linux')
+                with sftp.cd('linux'):
+                  sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+          EOF
+        - cat upload.py
+        - python upload.py
+
+  
 after_success:
   - cd /home/travis/build/casadi/binaries
   - git remote add github git@github.com:casadi/binaries.git
   - git fetch github
   - git checkout tests-debian
-  - git commit -a -m "automatic test commit $COMMIT"
-  - git push github tests-debian
+  - if [ $TESTCOMMIT ]; then git commit -a -m "automatic test commit $COMMIT"; git push github tests-debian; fi
   
 branches:
   except:
     - /.*appveyor.*/
 
 before_install:
+  - sudo apt-get update
+  - sudo apt-get install python-dev -y
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
@@ -92,12 +278,6 @@ before_install:
   - pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
   - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
-  - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
-  - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
-  - sudo apt-get update -qq
-  # Not available on 12.04: libslicot-dev
-  - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
-  - sudo apt-get install fakeroot rpm alien
   - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   
