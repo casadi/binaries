@@ -20,14 +20,14 @@ env:
     - ECOS=/Users/travis/build/ecos
     - GUROBI_HOME=/Users/travis/build/gurobi
     
+  matrix:
+    - PYTHONVERSION=27 PSF="" CMAKE_FLAG=""
+    - CMAKE_FLAG="-DWITH_PYTHON3" WITH_PYTHON3=ON PY3=ON PSF=3 PYTHONVERSION=35 FORMULA=https://raw.githubusercontent.com/Homebrew/homebrew-core/2aab554b46257cacadd25ea3aa2ee1336273954a/Formula/python3.rb
+
 before_script:
   - set -e
 
 compiler: clang
-
-matrix:
-  - PYTHONVERSION=27 PSF="" CMAKE_FLAG=""
-  - CMAKE_FLAG="-DWITH_PYTHON3" WITH_PYTHON3=ON PY3=ON PSF=3 PYTHONVERSION=35 FORMULA=https://raw.githubusercontent.com/Homebrew/homebrew-core/2aab554b46257cacadd25ea3aa2ee1336273954a/Formula/python3.rb
 
 script:
   - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgfortran.3.dylib
