@@ -118,7 +118,7 @@ before_install:
   - swig -version 
   #- brew doctor
   
-  - if [ $PY3 ]; then sudo brew install $FORMULA ; fi
+  - if [ $PY3 ]; then brew install $FORMULA ; fi
   - sudo pip$PSF install ipython matplotlib numpy scipy cryptography==1.2.1
   - sudo pip install pysftp
   
