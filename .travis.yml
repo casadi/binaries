@@ -115,11 +115,11 @@ before_install:
   - brew update
   - brew tap homebrew/science
   - brew outdated swig ; brew install swig
-  - swig -version
+  - swig -version 
   #- brew doctor
   - 
   - if [ $PY3 ]; then sudo easy_install pip ; fi
-  - sudo pip$PSF install ipython matplotlib numpy scipy
+  - sudo pip$PSF install ipython matplotlib numpy scipy cryptography-1.2.1
   - sudo pip install pysftp
   
 language: cpp
