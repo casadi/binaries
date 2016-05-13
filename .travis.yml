@@ -67,7 +67,7 @@ before_install:
   - brew install p7zip
   #- brew doctor
   - sudo easy_install pip
-  - sudo pip install pysftp
+  - sudo pip install pysftp cryptography==1.2.1 2>/dev/null
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
