@@ -52,7 +52,7 @@ before_install:
   - brew install p7zip
   #- brew doctor
   - sudo easy_install pip
-  - sudo pip install ipython matplotlib numpy scipy pysftp
+  - sudo pip install ipython matplotlib numpy scipy pysftp cryptography==1.2.1 2>/dev/null
   - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
