@@ -1,6 +1,4 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
-
-
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
@@ -14,7 +12,6 @@ env:
     - SNOPT=/home/travis/build/snopt7
     - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab
-    - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
     - LIB=/home/travis/build/lapack
@@ -23,9 +20,13 @@ env:
     - GUROBI_HOME=/home/travis/build/gurobi
     
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py27 TESTCOMMIT="1"
+    - BUILD_TYPE=Release PYTHONVERSION=27 PYTHONVERSIONDOT=2.7 NAME_SUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py27 TESTCOMMIT="1"
     #- BUILD_TYPE=Debug NAME_SUFFIX="-Debug" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py27
-    - BUILD_TYPE=Release NAME_SUFFIX="-64bit" compilerprefix=x86_64-w64-mingw32 BITNESS=64 NUMPYSUFFIX=win-amd64 EXTRA_FLAGS="-DMS_WIN64" WINEENV=py27_64
+    - BUILD_TYPE=Release PYTHONVERSION=27 PYTHONVERSIONDOT=2.7 NAME_SUFFIX="-64bit" compilerprefix=x86_64-w64-mingw32 BITNESS=64 NUMPYSUFFIX=win-amd64 EXTRA_FLAGS="-DMS_WIN64" WINEENV=py27_64
+    #- BUILD_TYPE=Release PYTHONVERSION=35 PY3=ON PYTHONVERSIONDOT=3.5 NAME_SUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py35
+    #- BUILD_TYPE=Release PYTHONVERSION=35 PY3=ON PYTHONVERSIONDOT=3.5 NAME_SUFFIX="-64bit" compilerprefix=x86_64-w64-mingw32 BITNESS=64 NUMPYSUFFIX=win-amd64 EXTRA_FLAGS="-DMS_WIN64" WINEENV=py35_64
+    - BUILD_TYPE=Release PYTHONVERSION=34 PY3=ON PYTHONVERSIONDOT=3.4 NAME_SUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py34
+    - BUILD_TYPE=Release PYTHONVERSION=34 PY3=ON PYTHONVERSIONDOT=3.4 NAME_SUFFIX="-64bit" compilerprefix=x86_64-w64-mingw32 BITNESS=64 NUMPYSUFFIX=win-amd64 EXTRA_FLAGS="-DMS_WIN64" WINEENV=py34_64
 
 before_script:
   - set -e
@@ -35,7 +36,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - ls /home/travis/.wine/drive_c/Python27/Lib/site-packages/
+  - ls /home/travis/.wine/drive_c/Python$PYTHONVERSION/Lib/site-packages/
   - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /usr/share/cmake-2.8/Modules/FindLAPACK.cmake
   - |
     cat <<EOF >toolchain.cmake
@@ -62,29 +63,42 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     EOF
+  - ls /home/travis/.wine/drive_c/Python$PYTHONVERSION/Lib/site-packages
   - |
     cat <<EOF >>patch.txt
     find_library(PYTHON_LIBRARY
       NAMES
-        python27
+        python$PYTHONVERSION
       PATHS
-        /home/travis/.wine/drive_c/Python27/libs
+        /home/travis/.wine/drive_c/Python$PYTHONVERSION/libs
       NO_SYSTEM_ENVIRONMENT_PATH
     )
     
     find_path(PYTHON_INCLUDE_DIR
         NAMES Python.h
     PATHS
-       /home/travis/.wine/drive_c/Python27/include
+       /home/travis/.wine/drive_c/Python$PYTHONVERSION/include
       NO_SYSTEM_ENVIRONMENT_PATH
     )
-    set(PYTHON_EXECUTABLE /home/travis/.wine/drive_c/Python27/python.exe)
-    set(NUMPY_INCLUDE_DIR /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-$NUMPYSUFFIX.egg/numpy/core/include)
-    set(NUMPY_INCLUDED_DIRS /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-$NUMPYSUFFIX.egg/numpy/core/include/numpy)
-    set(NUMPY_PATH /home/travis/.wine/drive_c/Python27/Lib/site-packages/numpy-1.9.1-py2.7-$NUMPYSUFFIX.egg/numpy/core/include/numpy)
+    set(PYTHON_EXECUTABLE /home/travis/.wine/drive_c/Python$PYTHONVERSION/python.exe)
+    set(NUMPY_INCLUDE_DIR /home/travis/.wine/drive_c/Python$PYTHONVERSION/Lib/site-packages/numpy-1.9.1-py$PYTHONVERSIONDOT-$NUMPYSUFFIX.egg/numpy/core/include)
+    set(NUMPY_INCLUDED_DIRS /home/travis/.wine/drive_c/Python$PYTHONVERSION/Lib/site-packages/numpy-1.9.1-py$PYTHONVERSIONDOT-$NUMPYSUFFIX.egg/numpy/core/include/numpy)
+    set(NUMPY_PATH /home/travis/.wine/drive_c/Python$PYTHONVERSION/Lib/site-packages/numpy-1.9.1-py$PYTHONVERSIONDOT-$NUMPYSUFFIX.egg/numpy/core/include/numpy)
     EOF
+  
+  # Avoid checking python version
+  - if [ $PY3 ]; then echo "set(CMAKE_SWIG_FLAGS \${CMAKE_SWIG_FLAGS} \"-DWITH_PYTHON3\")" >> patch.txt; fi
+  
   - cat patch.txt ../swig/python/CMakeLists.txt > CMakeLists.txt
   - mv CMakeLists.txt ../swig/python/CMakeLists.txt
+  - ls /home/travis/.wine/drive_c/Python$PYTHONVERSION/libs
+  - ls /home/travis/.wine/drive_c/Python$PYTHONVERSION
+  
+  # Recent Python installers don't ship with libpython$VERSION.a
+  - pushd /home/travis/.wine/drive_c/Python$PYTHONVERSION/libs
+  - gendef - ../python$PYTHONVERSION.dll > python$PYTHONVERSION.def
+  - $compilerprefix-dlltool --input-def python$PYTHONVERSION.def --dllname  /home/travis/.wine/drive_c/Python$PYTHONVERSION/python$PYTHONVERSION.dll --output-lib libpython$PYTHONVERSION.a
+  - popd
   
   - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - make VERBOSE=1
@@ -147,7 +161,7 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && recipes/setup.sh && popd
-  - sudo apt-get install p7zip-full zip -y
+  - sudo apt-get install p7zip-full zip mingw-w64-tools -y
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xf libhsl.tar.gz -C libhsl && rm libhsl.tar.gz
   - travis_retry testbot/recipes/fetch.sh lapack_mingw$BITNESS.tar.gz && mkdir lapack && tar -xf lapack_mingw$BITNESS.tar.gz -C lapack && rm lapack_mingw$BITNESS.tar.gz
   - mkdir -p /home/travis/build/casadi/testbot
@@ -175,7 +189,7 @@ before_install:
   - wget https://raw.githubusercontent.com/casadi/python-lib-template/master/.travis-setup.sh && chmod +x .travis-setup.sh
   - "./.travis-setup.sh"
   - wget -O numpy.exe https://github.com/casadi/testbot/releases/download/perpetual/numpy-$NUMPYVERSION-sse2.exe
-  - /opt/wine-staging/bin/wine C:/Python27/Scripts/easy_install.exe numpy.exe && rm numpy.exe
+  - /opt/wine-staging/bin/wine C:/Python$PYTHONVERSION/Scripts/easy_install.exe numpy.exe && rm numpy.exe
   - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
 
