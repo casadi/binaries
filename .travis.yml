@@ -120,6 +120,6 @@ before_install:
   - 
   - sudo easy_install$PSF pip$PSF
   - sudo pip$PSF install ipython matplotlib numpy scipy
-  - sudo pip pysftp
+  - sudo pip install pysftp
   
 language: cpp
