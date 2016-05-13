@@ -21,7 +21,7 @@ env:
     - GUROBI_HOME=/Users/travis/build/gurobi
     
   matrix:
-    - PYTHONVERSION=27 PSF="" CMAKE_FLAG=""
+    - PYTHONVERSION=27 PSF="" CMAKE_FLAG="" TESTCOMMIT=ON
     - CMAKE_FLAG="-DWITH_PYTHON3" WITH_PYTHON3=ON PY3=ON PSF=3 PYTHONVERSION=35 FORMULA=https://raw.githubusercontent.com/Homebrew/homebrew-core/2aab554b46257cacadd25ea3aa2ee1336273954a/Formula/python3.rb
 
 before_script:
@@ -86,7 +86,7 @@ after_success:
   - git fetch github
   - git checkout tests-osx
   - git commit -a -m "automatic runner commit $COMMIT"
-  - git push github tests-osx
+  - if [ $TESTCOMMIT ]; then git push github tests-osx ; fi
   
 branches:
   except:
@@ -119,7 +119,7 @@ before_install:
   #- brew doctor
   
   - if [ $PY3 ]; then brew install $FORMULA ; fi
-  - sudo pip$PSF install ipython matplotlib numpy scipy cryptography==1.2.1
+  - sudo pip$PSF install ipython matplotlib numpy scipy cryptography==1.2.1 2>/dev/null
   - sudo pip install pysftp
   
 language: cpp
