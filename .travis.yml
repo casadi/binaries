@@ -126,6 +126,6 @@ before_install:
   - brew tap homebrew/science
   #- brew doctor
   - sudo easy_install pip
-  - sudo pip install ipython matplotlib numpy scipy pysftp
+  - sudo pip install ipython matplotlib numpy scipy pysftp cryptography==1.2.1
   
 language: cpp
