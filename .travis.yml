@@ -120,6 +120,6 @@ before_install:
   
   - if [ $PY3 ]; then brew install $FORMULA ; fi
   - sudo pip$PSF install ipython matplotlib numpy scipy cryptography==1.2.1 2>/dev/null
-  - sudo pip install pysftp 2>/dev/null
+  - sudo pip install pysftp >/dev/null 2>&1
   
 language: cpp
