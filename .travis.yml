@@ -118,7 +118,7 @@ before_install:
   - swig -version
   #- brew doctor
   - 
-  - sudo easy_install$PSF pip$PSF
+  - if [ $PY3 ]; then sudo easy_install pip ; fi
   - sudo pip$PSF install ipython matplotlib numpy scipy
   - sudo pip install pysftp
   
