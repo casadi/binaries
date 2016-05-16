@@ -15,12 +15,15 @@ env:
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
     - PKG_CONFIG_PATH=/Users/travis/ipopt-install/lib/pkgconfig
-    - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - CLANG=/Users/travis/build/clang
     - ECOS=/Users/travis/build/ecos
     - GUROBI_HOME=/Users/travis/build/gurobi
     
+  matrix:
+    - PYTHONVERSION=27 PSF="" CMAKE_FLAG="" TESTCOMMIT=ON
+    - CMAKE_FLAG="-DWITH_PYTHON3=ON" WITH_PYTHON3=ON PY3=ON PSF=3 PYTHONVERSION=35 FORMULA=https://raw.githubusercontent.com/Homebrew/homebrew-core/2aab554b46257cacadd25ea3aa2ee1336273954a/Formula/python3.rb
+
 before_script:
   - set -e
 
@@ -36,7 +39,7 @@ script:
   - echo "swig_link_libraries(casadi casadi)" >> swig/python/CMakeLists.txt
   - mkdir build
   - pushd build
-  - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake $CMAKE_FLAG -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - make VERBOSE=1
   - make install
   - popd
@@ -82,8 +85,7 @@ after_success:
   - git remote add github git@github.com:casadi/binaries.git
   - git fetch github
   - git checkout tests-osx
-  - git commit -a -m "automatic runner commit $COMMIT"
-  - git push github tests-osx
+  - if [ $TESTCOMMIT ]; then git commit -a -m "automatic runner commit $COMMIT"; git push github tests-osx ; fi
   
 branches:
   except:
@@ -112,9 +114,11 @@ before_install:
   - brew update
   - brew tap homebrew/science
   - brew outdated swig ; brew install swig
-  - swig -version
+  - swig -version 
   #- brew doctor
-  - sudo easy_install pip
-  - sudo pip install ipython matplotlib numpy scipy pysftp cryptography==1.2.1
+  
+  - if [ $PY3 ]; then brew install $FORMULA ; fi
+  - sudo pip$PSF install ipython matplotlib numpy scipy 2>/dev/null
+  - sudo pip install pysftp cryptography==1.2.1 >/dev/null 2>&1
   
 language: cpp
