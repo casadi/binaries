@@ -187,7 +187,7 @@ before_install:
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib coinor-libipopt-dev libmumps-seq-dev libblas-dev liblapack-dev libslicot-dev libxml2-dev
   - sudo apt-get remove -qq -y mingw32
   - sudo apt-get install -q -y mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
-  - wget https://raw.githubusercontent.com/casadi/python-lib-template/test2/.travis-setup.sh && chmod +x .travis-setup.sh
+  - wget https://raw.githubusercontent.com/casadi/python-lib-template/test3/.travis-setup.sh && chmod +x .travis-setup.sh
   - "./.travis-setup.sh"
   - wget -O numpy.exe https://github.com/casadi/testbot/releases/download/perpetual/numpy-$NUMPYVERSION-sse2.exe
   - /opt/wine-staging/bin/wine C:/Python$PYTHONVERSION/Scripts/easy_install.exe numpy.exe && rm numpy.exe
