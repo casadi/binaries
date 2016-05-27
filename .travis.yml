@@ -14,7 +14,7 @@ env:
     - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab
     - NUMPYVERSION=1.9.1
-    - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
+    - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig:/home/travis/bonmin-install/lib/pkgconfig
     - LIB=/home/travis/build/lapack
     - CLANG=/home/travis/build/clang
     - ECOS=/home/travis/build/ecos
@@ -177,8 +177,10 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh ecos_mingw$BITNESS.tar.gz && mkdir ecos && tar -xf ecos_mingw$BITNESS.tar.gz -C ecos && rm ecos_mingw$BITNESS.tar.gz
   - travis_retry testbot/recipes/fetch.sh clang_mingw$BITNESS.tar.gz && mkdir clang && tar -xf clang_mingw$BITNESS.tar.gz -C clang && rm clang_mingw$BITNESS.tar.gz
   - travis_retry testbot/recipes/fetch.sh ipopt_mingw$BITNESS.tar.gz && mkdir ipopt && tar -xf ipopt_mingw$BITNESS.tar.gz -C ipopt && rm ipopt_mingw$BITNESS.tar.gz
+  - travis_retry testbot/recipes/fetch.sh bonmin_mingw$BITNESS.tar.gz && mkdir bonmin && tar -xf bonmin_mingw$BITNESS.tar.gz -C bonmin && rm bonmin_mingw$BITNESS.tar.gz
   - travis_retry testbot/recipes/fetch.sh gurobi650_mingw$BITNESS.zip && mkdir gurobi && unzip gurobi650_mingw$BITNESS.zip -d gurobi && rm gurobi650_mingw$BITNESS.zip
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
+  - pushd /home/travis/ && ln -s  /home/travis/build/bonmin-install  && popd
   - popd
   - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
   - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
