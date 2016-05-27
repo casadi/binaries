@@ -12,7 +12,7 @@ env:
     - SNOPT=/home/travis/build/snopt7
     - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab
-    - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
+    - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig:/home/travis/bonmin-install/lib/pkgconfig
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - MOSEK=/home/travis/build/mosek
@@ -94,6 +94,8 @@ before_install:
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
   - travis_retry testbot/recipes/fetch.sh ipopt.tar.gz && mkdir ipopt && tar -xvf ipopt.tar.gz -C ipopt
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt  ipopt-install  && popd
+  - travis_retry testbot/recipes/fetch.sh bonmin.tar.gz && mkdir bonmin && tar -xvf bonmin.tar.gz -C bonmin
+  - pushd /home/travis/ && ln -s  /home/travis/build/bonmin  bonmin-install  && popd
   - ls /home/travis/ipopt-install/include/coin
   - swig_matlab_file=`python testbot/helpers/gitmatch.py testbot/recipes/swig_matlab.yaml /home/travis/build/casadi/binaries/casadi`
   - travis_retry testbot/recipes/fetch.sh ${swig_matlab_file}.tar.gz && mkdir swig_matlab && tar -xvf ${swig_matlab_file}.tar.gz -C swig_matlab
