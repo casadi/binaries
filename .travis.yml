@@ -14,7 +14,7 @@ env:
     - SNOPT=/Users/travis/build/snopt7
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
-    - PKG_CONFIG_PATH=/Users/travis/ipopt-install/lib/pkgconfig
+    - PKG_CONFIG_PATH=/Users/travis/ipopt-install/lib/pkgconfig:/Users/travis/bonmin-install/lib/pkgconfig
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - CLANG=/Users/travis/build/clang
