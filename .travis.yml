@@ -17,7 +17,7 @@ env:
     - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab
     - compilerprefix=x86_64-w64-mingw32
-    - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig
+    - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig:/home/travis/bonmin-install/lib/pkgconfig
     - LIB=/home/travis/build/lapack
     - CLANG=/home/travis/build/clang
     - ECOS=/home/travis/build/ecos
@@ -162,6 +162,8 @@ before_install:
   - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
   - travis_retry testbot/recipes/fetch.sh ipopt_mingw64_trusty.tar.gz && mkdir ipopt && tar -xf ipopt_mingw64_trusty.tar.gz -C ipopt && rm ipopt_mingw64_trusty.tar.gz
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
+  - travis_retry testbot/recipes/fetch.sh bonmin_mingw64_trusty.tar.gz && mkdir bonmin && tar -xf bonmin_mingw64_trusty.tar.gz -C bonmin && rm bonmin_mingw64_trusty.tar.gz
+  - pushd /home/travis/ && ln -s  /home/travis/build/bonmin bonmin-install  && popd
   - ls ipopt
   - ls $PKG_CONFIG_PATH
   - swig_matlab_file=`python testbot/helpers/gitmatch.py testbot/recipes/swig_matlab.yaml /home/travis/build/casadi/binaries/casadi`
