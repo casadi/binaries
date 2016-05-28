@@ -180,7 +180,7 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh bonmin_mingw$BITNESS.tar.gz && mkdir bonmin && tar -xf bonmin_mingw$BITNESS.tar.gz -C bonmin && rm bonmin_mingw$BITNESS.tar.gz
   - travis_retry testbot/recipes/fetch.sh gurobi650_mingw$BITNESS.zip && mkdir gurobi && unzip gurobi650_mingw$BITNESS.zip -d gurobi && rm gurobi650_mingw$BITNESS.zip
   - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
-  - pushd /home/travis/ && ln -s  /home/travis/build/bonmin-install  && popd
+  - pushd /home/travis/ && ln -s  /home/travis/build/bonmin bonmin-install  && popd
   - popd
   - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
   - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
