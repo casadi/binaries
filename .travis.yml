@@ -17,6 +17,7 @@ env:
     - MATLAB_ROOT=/home/travis/build/matlab
     - compilerprefix=x86_64-w64-mingw32
     - GUROBI_HOME=/home/travis/build/gurobi
+    - BITNESS=64
 
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
