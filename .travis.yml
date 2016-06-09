@@ -125,12 +125,7 @@ script:
   - sudo python upload.py
 
 after_success:
-  - cd /home/travis/build/casadi/binaries
-  - git remote add github git@github.com:casadi/binaries.git
-  - git fetch github
-  - git checkout test-windows-matlab
-  - git commit -a -m "automatic test commit $COMMIT" || allowfail 1 # perhaps it's already commited
-  - if [ $TESTCOMMIT ]; then git push github test-windows-matlab; fi
+  - test_commit test-windows-matlab
 
 branches:
   except:
@@ -142,7 +137,7 @@ before_install:
   - free -t -m
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && recipes/setup.sh && popd
+  - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - source testbot/shellhelpers
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
