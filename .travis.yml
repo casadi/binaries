@@ -141,7 +141,7 @@ before_install:
   - source testbot/shellhelpers
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
-  - export SLURP_CROSS=MINGW
+  - export SLURP_CROSS=mingw
   - slurp ecos
   - slurp clang
   - slurp lapack
