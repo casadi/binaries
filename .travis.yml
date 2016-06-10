@@ -1,8 +1,7 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 env: 
   global: 
-    - DYLD_LIBRARY_PATH=/Users/travis/build/libhsl:/Users/travis/build/testbot/restricted/worhp:/Users/travis/build/snopt7/lib:/Users/travis/build/mosek/7/tools/platform/linux64x86/bin/:/Users/travis/build/gurobi/lib
-    - secure: "Bu8uBe0emUQyEYWCVnEvH8uvJISDPrCTa7KXVzJnR7GUFKLLnq31Uhjg33VG8/88Is4TP4Volp3QcJadI30D0zfTkI7mZTIwF3JqG7/GjwG5LXSsR2uQM+Rt+hssALubRAlua/5Ml4O8w+tm8IZfvgM3Z2QPiVQ2lMM5DUwFXGatumesKb3SaKj96tSiOIswLqYr/NWEnBaWqm4DUuTUEwN/X6mkS13Lq/3/YqB4r+FwFuyQMWNqV8+/OD2/C+uEBMJCw3vJOPtKlP7+vzrbKobP1t44opPL33HRAhKxJg2Z99OL61QygazX2DoadIapAbrE2y6lnk42o9973C8pIG8TEN0xH0fWtPQDpXzzsgTqtx/Xlw+S0j51wUViLP86OcrVgvTRO2Bt7RAOgWYnOBvPvPfUOdnzSrAL/gh8vg2QsB3FeCuTr31Cf+81FOZy2yDQhTsaWOKUwqmJdV2PL0eatzMPinl0lod7pXBRIDwryv8iVzW3oA9AEwpeXMBx/AibX9/ZEu1BSjxYAVMHCKlR+k2/sGsYVOu9QzPthN7T5S/d/reF/RY19wjIm3L3Hvp7ygEV/xGpvOR8F5dTUxtWLb7+DrNgy3g7texU7YcGJS88atre2BAeZWE1a0GbXQHbB9sgjprVahEXZLVVOiyLOdBqaBspUaIfsmOMcRg="
+    - DYLD_LIBRARY_PATH=/Users/travis/build/testbot/restricted/worhp:/Users/travis/build/snopt7/lib:/Users/travis/build/mosek/7/tools/platform/linux64x86/bin/:/Users/travis/build/gurobi/lib
     - MATLABRELEASE=R2015a
     - WORHP_LICENSE_FILE=/Users/travis/build/testbot/restricted/worhp/unlocked.lic
     - MOSEKLM_LICENSE_FILE=/Users/travis/build/testbot/restricted/mosek.lic
@@ -19,14 +18,7 @@ script:
   - mkdir matlab
   - travis_wait unzip matlab${MATLABRELEASE}_osx.zip -d matlab > /dev/null
   - popd
-  - source /Users/travis/build/testbot/restricted/env.sh
-  - sudo bash -c "echo '127.0.0.1	$FLEX_SERVER' >> /etc/hosts;echo '127.0.0.1	$FLEX_HOSTNAME' >> /etc/hosts"
-  - sudo hostname $FLEX_HOSTNAME
-  - mkdir -p ~/.matlab/${MATLABRELEASE}_licenses/
-  - echo -e "SERVER $FLEX_SERVER ANY 1715\nUSE_SERVER" > ~/.matlab/${MATLABRELEASE}_licenses/license.lic
-  - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
-  - ssh -i /Users/travis/build/testbot/id_rsa_travis $USER_GATE@$GATE_SERVER -L 1701:$FLEX_SERVER:1701 -L 1719:$FLEX_SERVER:1719 -L 1718:$FLEX_SERVER:1718 -L 2015:$FLEX_SERVER:2015 -L 1815:$FLEX_SERVER:1815 -L 1715:$FLEX_SERVER:1715 -N &
-  - sleep 3
+  - matlabtunnel
   - ls
   - pushd casadi
   - popd
@@ -61,7 +53,7 @@ branches:
 before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && recipes/setup.sh && popd
+  - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - brew update
   - brew tap homebrew/science
   - brew install p7zip
@@ -69,7 +61,8 @@ before_install:
   - sudo easy_install pip
   - sudo pip install pysftp cryptography==1.2.1 2>/dev/null
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
-  - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
+  - export SLURP_OS=osx
+  - slurp hsl
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
