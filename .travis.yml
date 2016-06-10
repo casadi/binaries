@@ -2,8 +2,7 @@
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - LD_LIBRARY_PATH=/home/travis/build/libhsl:/home/travis/build/testbot/restricted/worhp:/home/travis/build/snopt75/lib:/home/travis/build/mosek/7/tools/platform/linux64x86/bin/:/home/travis/build/gurobi/lib
-    - secure: "Bu8uBe0emUQyEYWCVnEvH8uvJISDPrCTa7KXVzJnR7GUFKLLnq31Uhjg33VG8/88Is4TP4Volp3QcJadI30D0zfTkI7mZTIwF3JqG7/GjwG5LXSsR2uQM+Rt+hssALubRAlua/5Ml4O8w+tm8IZfvgM3Z2QPiVQ2lMM5DUwFXGatumesKb3SaKj96tSiOIswLqYr/NWEnBaWqm4DUuTUEwN/X6mkS13Lq/3/YqB4r+FwFuyQMWNqV8+/OD2/C+uEBMJCw3vJOPtKlP7+vzrbKobP1t44opPL33HRAhKxJg2Z99OL61QygazX2DoadIapAbrE2y6lnk42o9973C8pIG8TEN0xH0fWtPQDpXzzsgTqtx/Xlw+S0j51wUViLP86OcrVgvTRO2Bt7RAOgWYnOBvPvPfUOdnzSrAL/gh8vg2QsB3FeCuTr31Cf+81FOZy2yDQhTsaWOKUwqmJdV2PL0eatzMPinl0lod7pXBRIDwryv8iVzW3oA9AEwpeXMBx/AibX9/ZEu1BSjxYAVMHCKlR+k2/sGsYVOu9QzPthN7T5S/d/reF/RY19wjIm3L3Hvp7ygEV/xGpvOR8F5dTUxtWLb7+DrNgy3g7texU7YcGJS88atre2BAeZWE1a0GbXQHbB9sgjprVahEXZLVVOiyLOdBqaBspUaIfsmOMcRg="
+    - LD_LIBRARY_PATH=/home/travis/build/testbot/restricted/worhp:/home/travis/build/snopt75/lib:/home/travis/build/mosek/7/tools/platform/linux64x86/bin/:/home/travis/build/gurobi/lib
     - CMAKE_INCLUDE_PATH=/home/travis/build/testbot/restricted/cplex/cplex/include:/home/travis/build/testbot/restricted/cplex/concert/include
     - CMAKE_LIBRARY_PATH=/home/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/home/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
     - ILOG_LICENSE_FILE=/home/travis/build/testbot/restricted/cplex/access.ilm
@@ -12,27 +11,23 @@ env:
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - SNOPT=/home/travis/build/snopt75
-    - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig:/home/travis/bonmin-install/lib/pkgconfig
-    - CLANG=/home/travis/build/clang
-    - ECOS=/home/travis/build/ecos
     - GUROBI_HOME=/home/travis/build/gurobi
     - DEBIAN_FRONTEND=noninteractive
-    
+
+os: linux
+dist: trusty
+language: generic
+
 before_script:
   - set -e
 
 matrix:
   include:
     - compiler: gcc
-      os: linux
       env: PYTHONVERSION=27 NUMPYVERSION=1.9.1 TESTCOMMIT=1
       script:
-        - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
-        - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
-        - sudo apt-get update -qq
-        # Not available on 12.04: libslicot-dev
-        - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
-        - sudo apt-get install fakeroot rpm alien
+        - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+        - sudo apt-get install -y fakeroot rpm alien
         - pushd casadi
         - mkdir build
         - pushd build
@@ -71,22 +66,14 @@ matrix:
         - cat upload.py
         - python upload.py
     - compiler: gcc
-      os: linux
       env:
         - PYTHONVERSION=32
         - NUMPYVERSION=1.9.1
         - WITH_PYTHON3=ON 
       script:
-        - sudo add-apt-repository ppa:umn-claoit-rce/compute-packages -y
-        - sudo add-apt-repository ppa:baltix-members/ppa -y #  for libslicot-dev
         - sudo apt-get update -qq
-        # Not available on 12.04: libslicot-dev
-        - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
-        - sudo apt-get install fakeroot rpm alien
-        - sudo apt-get remove cmake
-        - sudo add-apt-repository ppa:george-edison55/precise-backports -y
-        - sudo add-apt-repository ppa:takluyver/python3  -y
-        - sudo apt-get update -qq
+        - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+        - sudo apt-get install -y fakeroot rpm alien
         - sudo apt-get install cmake valgrind libgomp1 python3-dev python3-numpy python3-scipy python3-matplotlib python3-setuptools -y
         - pushd casadi
         - mkdir build
@@ -126,9 +113,6 @@ matrix:
         - cat upload.py
         - python upload.py
     - compiler: gcc
-      os: linux
-      dist: trusty
-      language: generic
       env:
         - PYTHONVERSION=34
         - NUMPYVERSION=1.9.1
@@ -175,27 +159,13 @@ matrix:
         - python upload.py
 
     - compiler: gcc
-      os: linux
-      dist: trusty
-      language: generic
       env:
         - PYTHONVERSION=35
         - NUMPYVERSION=1.9.1
         - WITH_PYTHON3=ON
       script:
         - sudo apt-get install git binutils gcc g++ gfortran cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
-        - |
-          cat <<EOF | sudo tee --append  /etc/apt/sources.list
-          deb-src http://archive.ubuntu.com/ubuntu xenial main restricted universe multiverse
-          deb http://archive.ubuntu.com/ubuntu xenial main restricted universe multiverse
-        - |
-          cat <<EOF | sudo tee /etc/apt/preferences.d/mytest
-          Package: *
-          Pin: release n=trusty
-          Pin-priority: 700
-          Package: *
-          Pin: release n=xenial
-          Pin-priority: 600
+        - pinning xenial
         - tail /etc/apt/sources.list
         - tail /etc/apt/preferences.d/mytest
         - sudo apt-get update
@@ -245,9 +215,8 @@ matrix:
 
   
 after_success:
-  - cd /home/travis/build/casadi/binaries
-  - if [ $TESTCOMMIT ]; then git remote add github git@github.com:casadi/binaries.git; git fetch github; git checkout tests-debian; git commit -a -m "automatic test commit $COMMIT"; git push github tests-debian; fi
-  
+  - test_commit tests-debian
+
 branches:
   except:
     - /.*appveyor.*/
@@ -257,27 +226,22 @@ before_install:
   - sudo apt-get install python-dev -y
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && recipes/setup.sh && popd
+  - pushd testbot && git checkout merged && source recipes/setup.sh && popd
+  - export SLURP_OS=trusty
   - sudo apt-get install p7zip-full -y
-  - travis_retry testbot/recipes/fetch.sh ecos.tar.gz && mkdir ecos && tar -xf ecos.tar.gz -C ecos && rm ecos.tar.gz
+  - slurp ecos
   - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
-  - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
+  - slurp hsl
   - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
-  - travis_retry testbot/recipes/fetch.sh clang.tar.gz && mkdir clang && tar -xvf clang.tar.gz -C clang
+  - slurp clang
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - mkdir -p /home/travis/build/casadi/testbot
-  - travis_retry testbot/recipes/fetch.sh ipopt.tar.gz && mkdir ipopt && tar -xvf ipopt.tar.gz -C ipopt
-  - pushd /home/travis/ && ln -s  /home/travis/build/ipopt  ipopt-install  && popd
-  - travis_retry testbot/recipes/fetch.sh bonmin.tar.gz && mkdir bonmin && tar -xvf bonmin.tar.gz -C bonmin
-  - pushd /home/travis/ && ln -s  /home/travis/build/bonmin  bonmin-install  && popd
-  - ls /home/travis/ipopt-install/include/coin
-  - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
-  - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
-  - export PATH=/home/travis/build/swig/bin:$PATH
+  - slurp ipopt
+  - slurp bonmin
+  - slurp swig
   - pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
   - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   
-language: cpp
