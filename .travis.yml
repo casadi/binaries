@@ -2,11 +2,15 @@
 env: 
   global: 
     - LD_LIBRARY_PATH=/home/travis/build/libhsl:/home/travis/build/testbot/restricted/worhp:/home/travis/build/snopt75/lib:/home/travis/build/mosek/7/tools/platform/linux64x86/bin/:/home/travis/build/gurobi/lib
-    - secure: "Bu8uBe0emUQyEYWCVnEvH8uvJISDPrCTa7KXVzJnR7GUFKLLnq31Uhjg33VG8/88Is4TP4Volp3QcJadI30D0zfTkI7mZTIwF3JqG7/GjwG5LXSsR2uQM+Rt+hssALubRAlua/5Ml4O8w+tm8IZfvgM3Z2QPiVQ2lMM5DUwFXGatumesKb3SaKj96tSiOIswLqYr/NWEnBaWqm4DUuTUEwN/X6mkS13Lq/3/YqB4r+FwFuyQMWNqV8+/OD2/C+uEBMJCw3vJOPtKlP7+vzrbKobP1t44opPL33HRAhKxJg2Z99OL61QygazX2DoadIapAbrE2y6lnk42o9973C8pIG8TEN0xH0fWtPQDpXzzsgTqtx/Xlw+S0j51wUViLP86OcrVgvTRO2Bt7RAOgWYnOBvPvPfUOdnzSrAL/gh8vg2QsB3FeCuTr31Cf+81FOZy2yDQhTsaWOKUwqmJdV2PL0eatzMPinl0lod7pXBRIDwryv8iVzW3oA9AEwpeXMBx/AibX9/ZEu1BSjxYAVMHCKlR+k2/sGsYVOu9QzPthN7T5S/d/reF/RY19wjIm3L3Hvp7ygEV/xGpvOR8F5dTUxtWLb7+DrNgy3g7texU7YcGJS88atre2BAeZWE1a0GbXQHbB9sgjprVahEXZLVVOiyLOdBqaBspUaIfsmOMcRg="
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
+
+os: linux
+
+dist: trusty
+language: generic
 
 before_script:
   - set -e
@@ -46,16 +50,17 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - sudo apt-get update -qq
-  - pushd testbot && recipes/setup.sh && popd
+  - sudo apt-get install -y python-dev
+  - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - sudo apt-get install -y python-numpy
   - sudo pip install pysftp
   - sudo apt-get install p7zip-full -y
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
-  - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
+  - export SLURP_OS=trusty
+  - slurp hsl
   - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
   - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - pushd testbot/restricted && mkdir -p worhp && cd worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - sudo hostname JGLAB
   
-language: cpp
