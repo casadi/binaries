@@ -6,7 +6,6 @@ language: generic
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - LD_LIBRARY_PATH=/home/travis/build/libhsl
     - CMAKE_INCLUDE_PATH=/home/travis/build/testbot/restricted/cplex/cplex/include:/home/travis/build/testbot/restricted/cplex/concert/include
     - CMAKE_LIBRARY_PATH=/home/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/home/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
     - ILOG_LICENSE_FILE=/home/travis/build/testbot/restricted/cplex/access.ilm
@@ -149,11 +148,9 @@ before_install:
   - slurp swig_matlab
   - slurp ipopt
   - slurp bonmin
-  - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xf libhsl.tar.gz -C libhsl
+  - slurp hsl
   - travis_retry testbot/recipes/fetch.sh gurobi650_mingw64.zip && mkdir gurobi && unzip gurobi650_mingw64.zip -d gurobi
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xf snopt7.tar.gz -C snopt7
-  - mkdir -p /home/travis/build/casadi/testbot
-  - swig_matlab_file=`python testbot/helpers/gitmatch.py testbot/recipes/swig_matlab.yaml /home/travis/build/casadi/binaries/casadi`
   - pushd testbot/restricted/cplex && mkdir cplex && tar -xf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xf cplex12.4-concert.tar.gz -C concert && popd
   - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
