@@ -6,8 +6,6 @@ language: generic
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - LD_LIBRARY_PATH=/home/travis/build/libhsl
-    - secure: "Bu8uBe0emUQyEYWCVnEvH8uvJISDPrCTa7KXVzJnR7GUFKLLnq31Uhjg33VG8/88Is4TP4Volp3QcJadI30D0zfTkI7mZTIwF3JqG7/GjwG5LXSsR2uQM+Rt+hssALubRAlua/5Ml4O8w+tm8IZfvgM3Z2QPiVQ2lMM5DUwFXGatumesKb3SaKj96tSiOIswLqYr/NWEnBaWqm4DUuTUEwN/X6mkS13Lq/3/YqB4r+FwFuyQMWNqV8+/OD2/C+uEBMJCw3vJOPtKlP7+vzrbKobP1t44opPL33HRAhKxJg2Z99OL61QygazX2DoadIapAbrE2y6lnk42o9973C8pIG8TEN0xH0fWtPQDpXzzsgTqtx/Xlw+S0j51wUViLP86OcrVgvTRO2Bt7RAOgWYnOBvPvPfUOdnzSrAL/gh8vg2QsB3FeCuTr31Cf+81FOZy2yDQhTsaWOKUwqmJdV2PL0eatzMPinl0lod7pXBRIDwryv8iVzW3oA9AEwpeXMBx/AibX9/ZEu1BSjxYAVMHCKlR+k2/sGsYVOu9QzPthN7T5S/d/reF/RY19wjIm3L3Hvp7ygEV/xGpvOR8F5dTUxtWLb7+DrNgy3g7texU7YcGJS88atre2BAeZWE1a0GbXQHbB9sgjprVahEXZLVVOiyLOdBqaBspUaIfsmOMcRg="
     - CMAKE_INCLUDE_PATH=/home/travis/build/testbot/restricted/cplex/cplex/include:/home/travis/build/testbot/restricted/cplex/concert/include
     - CMAKE_LIBRARY_PATH=/home/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/home/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
     - ILOG_LICENSE_FILE=/home/travis/build/testbot/restricted/cplex/access.ilm
@@ -17,11 +15,8 @@ env:
     - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab
     - compilerprefix=x86_64-w64-mingw32
-    - PKG_CONFIG_PATH=/home/travis/ipopt-install/lib/pkgconfig:/home/travis/bonmin-install/lib/pkgconfig
-    - LIB=/home/travis/build/lapack
-    - CLANG=/home/travis/build/clang
-    - ECOS=/home/travis/build/ecos
     - GUROBI_HOME=/home/travis/build/gurobi
+    - BITNESS=64
 
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
@@ -47,7 +42,6 @@ script:
 
   - mkdir matlab && unzip matlab$MATLABRELEASE-win.zip -d matlab > /dev/null
   - popd
-  - export PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH
   - pushd casadi
     # Fixing issue https://github.com/casadi/casadi/issues/1654
   - |
@@ -101,12 +95,12 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     set(CMAKE_SHARED_LIBRARY_SUFFIX "dll")
     EOF
-  - PATH=/home/travis/build/swig_matlab/bin:/home/travis/build/swig_matlab/share:$PATH cmake -DOLD_LLVM=ON -DWITH_CLANG=ON -DMATLAB_EXTRA_CXXFLAGS="-D__STDC_UTF_16__" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install -DWITH_EXAMPLES=OFF ..
+  - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DMATLAB_EXTRA_CXXFLAGS="-D__STDC_UTF_16__" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install -DWITH_EXAMPLES=OFF ..
   - make install -j2 VERBOSE=1
   - ls lib
   - make install
   - ls /usr/lib/gcc/$compilerprefix
-  - cp /usr/lib/gcc/$compilerprefix/4.9-win32/*.dll ../matlab_install
+  - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../matlab_install
   - cp -RL /usr/$compilerprefix/include ../matlab_install/casadi/jit/mingw
   - cp -R /home/travis/build/clang/include/c++/v1 ../matlab_install/casadi/jit/mingw/c++
   
@@ -131,12 +125,7 @@ script:
   - sudo python upload.py
 
 after_success:
-  - cd /home/travis/build/casadi/binaries
-  - git remote add github git@github.com:casadi/binaries.git
-  - git fetch github
-  - git checkout test-windows-matlab
-  - git commit -a -m "automatic test commit $COMMIT" || allowfail 1 # perhaps it's already commited
-  - if [ $TESTCOMMIT ]; then git push github test-windows-matlab; fi
+  - test_commit test-windows-matlab
 
 branches:
   except:
@@ -148,50 +137,26 @@ before_install:
   - free -t -m
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && recipes/setup.sh && popd
+  - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - source testbot/shellhelpers
   - sudo apt-get install p7zip-full -y
-  - travis_retry testbot/recipes/fetch.sh ecos_mingw64_trusty.tar.gz && mkdir ecos && tar -xf ecos_mingw64_trusty.tar.gz -C ecos && rm ecos_mingw64_trusty.tar.gz
-  - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xf libhsl.tar.gz -C libhsl
-  - travis_retry testbot/recipes/fetch.sh clang_mingw64_trusty.tar.gz && mkdir clang && tar -xf clang_mingw64_trusty.tar.gz -C clang
-  - travis_retry testbot/recipes/fetch.sh lapack_mingw64_trusty.tar.gz && mkdir lapack && tar -xf lapack_mingw64_trusty.tar.gz -C lapack
+  - export SLURP_OS=trusty
+  - export SLURP_CROSS=mingw
+  - slurp ecos
+  - slurp clang
+  - slurp lapack
+  - slurp swig_matlab
+  - slurp ipopt
+  - slurp bonmin
+  - slurp hsl
   - travis_retry testbot/recipes/fetch.sh gurobi650_mingw64.zip && mkdir gurobi && unzip gurobi650_mingw64.zip -d gurobi
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xf snopt7.tar.gz -C snopt7
-  - mkdir -p /home/travis/build/casadi/testbot
-  - travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xf swig.tar.gz -C swig
-  - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig  swig-install  && popd
-  - travis_retry testbot/recipes/fetch.sh ipopt_mingw64_trusty.tar.gz && mkdir ipopt && tar -xf ipopt_mingw64_trusty.tar.gz -C ipopt && rm ipopt_mingw64_trusty.tar.gz
-  - pushd /home/travis/ && ln -s  /home/travis/build/ipopt ipopt-install  && popd
-  - travis_retry testbot/recipes/fetch.sh bonmin_mingw64_trusty.tar.gz && mkdir bonmin && tar -xf bonmin_mingw64_trusty.tar.gz -C bonmin && rm bonmin_mingw64_trusty.tar.gz
-  - pushd /home/travis/ && ln -s  /home/travis/build/bonmin bonmin-install  && popd
-  - swig_matlab_file=`python testbot/helpers/gitmatch.py testbot/recipes/swig_matlab.yaml /home/travis/build/casadi/binaries/casadi`
-  - travis_retry testbot/recipes/fetch.sh ${swig_matlab_file}.tar.gz && mkdir swig_matlab && tar -xf ${swig_matlab_file}.tar.gz -C swig_matlab
-  - pushd /home/travis/build/casadi/testbot && ln -s  /home/travis/build/swig_matlab  swig-matlab-install  && popd
-  - export PATH=/home/travis/build/swig/bin:$PATH
   - pushd testbot/restricted/cplex && mkdir cplex && tar -xf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xf cplex12.4-concert.tar.gz -C concert && popd
   - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - sudo apt-get update
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake cmake-data liblapack-dev ipython python-dev libxml2-dev
-  - sudo apt-get remove -qq -y mingw32
-  - |
-    cat <<EOF | sudo tee --append  /etc/apt/sources.list
-    deb-src http://archive.ubuntu.com/ubuntu vivid main restricted universe multiverse
-    deb http://archive.ubuntu.com/ubuntu vivid main restricted universe multiverse
-  - |
-    cat <<EOF | sudo tee /etc/apt/preferences.d/mytest
-    Package: *
-    Pin: release n=trusty
-    Pin-priority: 700
-
-    Package: *
-    Pin: release n=vivid
-    Pin-priority: 600
-  - tail /etc/apt/sources.list
-  - tail /etc/apt/preferences.d/mytest
-  - sudo apt-get update
-  - sudo apt-get install -q -y -t vivid mingw-w64
-  - sudo apt-get install -q -y -t vivid mingw-w64 g++-mingw-w64 gcc-mingw-w64 gfortran-mingw-w64
+  - mingw_setup
   - sudo pip install pysftp
   - source /home/travis/build/testbot/restricted/env.sh
   - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
