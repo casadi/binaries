@@ -5,7 +5,6 @@ env:
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
     - LD_LIBRARY_PATH=/Users/travis/build/libhsl;/Users/travis/build/testbot/restricted/worhp;/Users/travis/build/snopt7/lib
-    - secure: "Bu8uBe0emUQyEYWCVnEvH8uvJISDPrCTa7KXVzJnR7GUFKLLnq31Uhjg33VG8/88Is4TP4Volp3QcJadI30D0zfTkI7mZTIwF3JqG7/GjwG5LXSsR2uQM+Rt+hssALubRAlua/5Ml4O8w+tm8IZfvgM3Z2QPiVQ2lMM5DUwFXGatumesKb3SaKj96tSiOIswLqYr/NWEnBaWqm4DUuTUEwN/X6mkS13Lq/3/YqB4r+FwFuyQMWNqV8+/OD2/C+uEBMJCw3vJOPtKlP7+vzrbKobP1t44opPL33HRAhKxJg2Z99OL61QygazX2DoadIapAbrE2y6lnk42o9973C8pIG8TEN0xH0fWtPQDpXzzsgTqtx/Xlw+S0j51wUViLP86OcrVgvTRO2Bt7RAOgWYnOBvPvPfUOdnzSrAL/gh8vg2QsB3FeCuTr31Cf+81FOZy2yDQhTsaWOKUwqmJdV2PL0eatzMPinl0lod7pXBRIDwryv8iVzW3oA9AEwpeXMBx/AibX9/ZEu1BSjxYAVMHCKlR+k2/sGsYVOu9QzPthN7T5S/d/reF/RY19wjIm3L3Hvp7ygEV/xGpvOR8F5dTUxtWLb7+DrNgy3g7texU7YcGJS88atre2BAeZWE1a0GbXQHbB9sgjprVahEXZLVVOiyLOdBqaBspUaIfsmOMcRg="
     - CMAKE_INCLUDE_PATH=/Users/travis/build/testbot/restricted/cplex/cplex/include:/Users/travis/build/testbot/restricted/cplex/concert/include
     - CMAKE_LIBRARY_PATH=/Users/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/Users/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
     - ILOG_LICENSE_FILE=/Users/travis/build/testbot/restricted/cplex/access.ilm
@@ -14,11 +13,8 @@ env:
     - SNOPT=/Users/travis/build/snopt7
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
-    - PKG_CONFIG_PATH=/Users/travis/ipopt-install/lib/pkgconfig:/Users/travis/bonmin-install/lib/pkgconfig
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
-    - CLANG=/Users/travis/build/clang
-    - ECOS=/Users/travis/build/ecos
     - GUROBI_HOME=/Users/travis/build/gurobi
 
   matrix:
@@ -83,12 +79,7 @@ script:
   - python upload.py
 
 after_success:
-  - cd /Users/travis/build/casadi/binaries
-  - git remote add github git@github.com:casadi/binaries.git
-  - git fetch github
-  - git checkout test-osx-matlab
-  - git commit -a -m "automatic runner commit $COMMIT"|| allowfail 1 # perhaps it's already commited
-  - if [ $TESTCOMMIT ]; then git push github test-osx-matlab; fi
+  - test_commit test-osx-matlab
   
 branches:
   except:
@@ -100,27 +91,20 @@ before_install:
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && recipes/setup.sh && popd
+  - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - brew install p7zip
   #- travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /Users/travis/build/casadi/testbot
   #- travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
   #- pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig  swig-install  && popd
-  - swig_matlab_file=`python testbot/helpers/gitmatch.py testbot/recipes/swig_matlab.yaml /Users/travis/build/casadi/binaries/casadi`
-  - echo $swig_matlab_file
-  - 
-  - travis_retry testbot/recipes/fetch.sh ${swig_matlab_file}_osx.tar.gz && mkdir swig_matlab && tar -xf ${swig_matlab_file}_osx.tar.gz -C swig_matlab && rm ${swig_matlab_file}_osx.tar.gz
-  - pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig_matlab  swig-matlab-install  && popd
-  - export PATH=/Users/travis/build/swig_matlab/bin:$PATH
-  - travis_retry testbot/recipes/fetch.sh clang_osx.tar.gz && mkdir clang && tar -xf clang_osx.tar.gz -C clang && rm clang_osx.tar.gz
-  - travis_retry testbot/recipes/fetch.sh ecos_osx.tar.gz && mkdir ecos && tar -xf ecos_osx.tar.gz -C ecos && rm ecos_osx.tar.gz
-  - travis_retry testbot/recipes/fetch.sh ipopt_osx.tar.gz && mkdir ipopt && tar -xvf ipopt_osx.tar.gz -C ipopt && rm ipopt_osx.tar.gz
-  - travis_retry testbot/recipes/fetch.sh bonmin_osx.tar.gz && mkdir bonmin && tar -xvf bonmin_osx.tar.gz -C bonmin && rm bonmin_osx.tar.gz
+  - export SLURP_OS=osx
+  - slurp swig_matlab
+  - slurp clang
+  - slurp ecos
+  - slurp ipopt
+  - slurp bonmin
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
-  - pushd /Users/travis/ && ln -s  /Users/travis/build/ipopt  ipopt-install  && popd
-  - pushd /Users/travis/ && ln -s  /Users/travis/build/bonmin  bonmin-install  && popd
-  - ls /Users/travis/ipopt-install/include/coin
   #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
   #- pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
