@@ -15,6 +15,7 @@ env:
     - OCTAVEPATH=/home/travis/build/octave-install
     - compilerprefix=i686-w64-mingw32
     - GUROBI_HOME=/home/travis/build/gurobi
+    - BITNESS=32
 
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1"
