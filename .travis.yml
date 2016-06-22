@@ -12,22 +12,15 @@ env:
     - WORHP=/home/travis/build/testbot/restricted/worhp
     - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
     - SNOPT=/home/travis/build/snopt7
-    - MATLABPATH=/home/travis/build/matlab-install
-    - MATLAB_ROOT=/home/travis/build/matlab
-    - compilerprefix=x86_64-w64-mingw32
+    - OCTAVEPATH=/home/travis/build/octave-install
+    - compilerprefix=i686-w64-mingw32
     - GUROBI_HOME=/home/travis/build/gurobi
-    - BITNESS=64
 
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
-    - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014a
-    - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2013a
-    #- BUILD_TYPE=Debug NAME_SUFFIX="-Debug" MATLABRELEASE=R2014b
-    #- BUILD_TYPE=RelWithDebInfo NAME_SUFFIX="-dsym" MATLABRELEASE=R2014b
-    #- BUILD_TYPE=Debug NAME_SUFFIX="-Debug" MATLABRELEASE=R2014a
+    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1"
 
 compiler:
-  - x86_64-w64-mingw32-gcc
+  - i686-w64-mingw32
 
 before_script:
   - set -e
@@ -35,37 +28,14 @@ before_script:
 
 script:
   - pushd /home/travis/build/
-  - testbot/recipes/fetch.sh matlab$MATLABRELEASE-win.zip
 
   # travis-wait seems to stop at 20 mins, regardless if output is being generated
   - (while true ; do sleep 60 ; echo "ping" ; done ) &
 
-  - mkdir matlab && unzip matlab$MATLABRELEASE-win.zip -d matlab > /dev/null
+  - wget https://ftp.gnu.org/gnu/octave/windows/octave-4.0.2.zip
+  - unzip octave-4.0.2.zip > /dev/null
   - popd
   - pushd casadi
-    # Fixing issue https://github.com/casadi/casadi/issues/1654
-  - |
-    cat <<EOF >> swig/casadi.i
-    %begin %{
-    #define UINT64_T unsigned long long int
-    %}
-    EOF
-  # Displace find_package(MATLAB)
-  - pushd swig/matlab
-  - |
-    cat <<EOF > CMakeLists2.txt
-    set(MATLAB_LIBRARIES $MATLAB_ROOT/bin/win64/libut.dll $MATLAB_ROOT/bin/win64/libmex.dll $MATLAB_ROOT/bin/win64/libmx.dll $MATLAB_ROOT/bin/win64/libeng.dll)
-    
-    set(MATLAB_INCLUDE_DIR "$MATLAB_ROOT/extern/include")
-    set(MATLAB_EXTRA_CXXFLAGS "-D__STDC_UTF_16__")
-    set(MATLAB_MEX_EXT "mexw64")
-    EOF
-  - grep -v "find_package(MATLAB" CMakeLists.txt >> CMakeLists2.txt
-  - rm CMakeLists.txt && mv CMakeLists2.txt CMakeLists.txt
-  - cat CMakeLists.txt
-  - popd
-  - ls $MATLAB_ROOT
-  - ls $MATLAB_ROOT/extern/include
   - mkdir build
   - pushd build
   - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /usr/share/cmake-3.2/Modules/FindLAPACK.cmake
@@ -96,18 +66,18 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     set(CMAKE_SHARED_LIBRARY_SUFFIX "dll")
     EOF
-  - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DMATLAB_EXTRA_CXXFLAGS="-D__STDC_UTF_16__" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_PYTHON=OFF -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_MATLAB=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../matlab_install -DWITH_EXAMPLES=OFF ..
+  - cmake -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-4.0.2/include/octave-4.0.2/octave/ -DOCTAVE_LIBRARIES="$HOME/build/octave-4.0.2/bin/liboctinterp-3.dll;$HOME/build/octave-4.0.2/bin/liboctave-3.dll" -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_PYTHON=OFF -DWITH_OCTAVE=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF ..
   - make install -j2 VERBOSE=1
   - ls lib
   - make install
   - ls /usr/lib/gcc/$compilerprefix
-  - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../matlab_install
-  - cp /usr/$compilerprefix/lib/*.dll ../matlab_install
-  - cp -RL /usr/$compilerprefix/include ../matlab_install/casadi/jit/mingw
-  - cp -R /home/travis/build/clang/include/c++/v1 ../matlab_install/casadi/jit/mingw/c++
+  - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
+  - cp /usr/$compilerprefix/lib/*.dll ../octave_install
+  - cp -RL /usr/$compilerprefix/include ../octave_install/casadi/jit/mingw
+  - cp -R /home/travis/build/clang/include/c++/v1 ../octave_install/casadi/jit/mingw/c++
   
   - popd
-  - pushd matlab_install && zip -r ../bundle.zip . && popd
+  - pushd octave_install && zip -r ../bundle.zip . && popd
   - |
     cat <<EOF > upload.py
     import pysftp
@@ -122,12 +92,12 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('windows')
           with sftp.cd('windows'):
-            sftp.put("bundle.zip","casadi-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.zip")
+            sftp.put("bundle.zip","casadi-octave-$COMMIT$NAME_SUFFIX.zip")
     EOF
   - sudo python upload.py
 
 after_success:
-  - test_commit test-windows-matlab
+  #- test_commit test-windows-matlab
 
 branches:
   except:
