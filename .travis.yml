@@ -74,8 +74,8 @@ script:
   - ls /usr/lib/gcc/$compilerprefix
   - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
   - cp /usr/$compilerprefix/lib/*.dll ../octave_install
-  - cp -RL /usr/$compilerprefix/include ../octave_install/casadi/jit/mingw
-  - cp -R /home/travis/build/clang/include/c++/v1 ../octave_install/casadi/jit/mingw/c++
+  #- cp -RL /usr/$compilerprefix/include ../octave_install/casadi/jit/mingw
+  #- cp -R /home/travis/build/clang/include/c++/v1 ../octave_install/casadi/jit/mingw/c++
   
   - popd
   - pushd octave_install && zip -r ../bundle.zip . && popd
