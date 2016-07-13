@@ -121,7 +121,7 @@ before_install:
   - slurp swig_matlab
   - #slurp ipopt
   - #slurp bonmin
-  - #slurp mingw_octave
+  - slurp mingw_octave
   - ${compilerprefix}-g++ -v
   - #slurp hsl
   - #travis_retry testbot/recipes/fetch.sh gurobi650_mingw64.zip && mkdir gurobi && unzip gurobi650_mingw64.zip -d gurobi
