@@ -56,7 +56,7 @@ script:
     set(CMAKE_RC_COMPILER $compilerprefix-windres)
     
     # where is the target environment 
-    SET(CMAKE_FIND_ROOT_PATH  /usr/$compilerprefix)
+    SET(CMAKE_FIND_ROOT_PATH  $MINGW_ROOT/$compilerprefix)
     SET(CMAKE_CXX_FLAGS "-fno-ipa-cp-clone" CACHE STRING "" FORCE)
     SET(CMAKE_C_FLAGS "-fno-ipa-cp-clone" CACHE STRING "" FORCE)
     
@@ -71,9 +71,9 @@ script:
   - make install -j2 VERBOSE=1
   - ls lib
   - make install
-  - ls /usr/lib/gcc/$compilerprefix
-  - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
-  - cp /usr/$compilerprefix/lib/*.dll ../octave_install
+  - ls $MINGW_ROOT/lib/gcc/$compilerprefix
+  - cp $MINGW_ROOT/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
+  - cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
   #- cp -RL /usr/$compilerprefix/include ../octave_install/casadi/jit/mingw
   #- cp -R /home/travis/build/clang/include/c++/v1 ../octave_install/casadi/jit/mingw/c++
   
