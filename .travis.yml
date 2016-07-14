@@ -72,8 +72,8 @@ script:
   - ls lib
   - make install
   - ls $MINGW_ROOT/lib/gcc/$compilerprefix
-  - cp $MINGW_ROOT/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
-  - cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
+  #- cp $MINGW_ROOT/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
+  #- cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
   #- cp -RL /usr/$compilerprefix/include ../octave_install/casadi/jit/mingw
   #- cp -R /home/travis/build/clang/include/c++/v1 ../octave_install/casadi/jit/mingw/c++
   
