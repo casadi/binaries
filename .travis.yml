@@ -22,6 +22,7 @@ before_script:
   - set -e
   - set -o pipefail  # otherwise, piping with grep discards exit statuses
 
+
 script:
   # travis-wait seems to stop at 20 mins, regardless if output is being generated
   - (while true ; do sleep 60 ; echo "ping" ; done ) &
