@@ -86,5 +86,3 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib coinor-libipopt-dev libmumps-seq-dev libblas-dev liblapack-dev
 
-
-language: cpp
