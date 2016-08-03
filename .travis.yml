@@ -38,7 +38,7 @@ script:
   - sudo apt-get install graphviz python-lxml python-ipdb python-docutils doxygen -y
   - git clone https://github.com/jgillis/pyreport.git
   - pushd pyreport && sudo python setup.py install && popd
-  - sudo apt-get install python-lxml python-ipdb python-docutils texlive-science latex2html doxygen texlive-font-utils texlive-latex-recommended texlive-fonts-recommended etoolbox graphviz -y
+  - sudo apt-get install python-ipdb graphviz python-lxml texlive-science texlive-latex-base texlive-latex-recommended texlive-latex-extra -y
   - "mkdir -p ~/.matplotlib && echo 'backend : Agg' > ~/.matplotlib/matplotlibrc"
   - pushd docs/api && cp /home/travis/build/testbot/docs.Makefile  Makefile && make full | grep -v "file loc from" && make export && popd
   - echo "Options +Indexes" > docs/api/export/tutorials/.htaccess
