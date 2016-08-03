@@ -20,7 +20,7 @@ before_script:
   - set -e
 
 script:
-  - sudo apt-get install python-lxml
+  - sudo apt-get install -y python-lxml
   - pushd casadi
   - mkdir build
   - pushd build
@@ -76,5 +76,3 @@ before_install:
   - sudo apt-get install -y fakeroot rpm alien
   - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
-  
-language: cpp
