@@ -24,8 +24,8 @@ before_script:
 
 
 script:
-  - pinning wily
-  - sudo apt-get install -y -t wily doxygen
+  - pinning vivid
+  - sudo apt-get install -y -t vivid doxygen
   
   # travis-wait seems to stop at 20 mins, regardless if output is being generated
   - (while true ; do sleep 60 ; echo "ping" ; done ) &
