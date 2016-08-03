@@ -36,7 +36,9 @@ script:
   - popd
   - sudo pip install texttable
   - sudo pip install pydot2
-  - sudo apt-get install graphviz python-lxml python-ipdb python-docutils doxygen -y
+  - pinning wily
+  - apt-get install -y -t wily doxygen
+  - sudo apt-get install graphviz python-lxml python-ipdb python-docutils -y
   - git clone https://github.com/jgillis/pyreport.git
   - pushd pyreport && sudo python setup.py install && popd
   - sudo apt-get install python-ipdb graphviz python-lxml latex2html texlive-science texlive-latex-base texlive-fonts-recommended texlive-latex-recommended texlive-latex-extra -y
