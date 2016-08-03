@@ -135,5 +135,4 @@ before_install:
   - source /home/travis/build/testbot/restricted/env.sh
   - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
 
-language: cpp
 
