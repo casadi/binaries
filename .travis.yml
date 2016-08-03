@@ -24,6 +24,9 @@ before_script:
 
 
 script:
+  - pinning wily
+  - sudo apt-get install -y -t wily doxygen
+  
   # travis-wait seems to stop at 20 mins, regardless if output is being generated
   - (while true ; do sleep 60 ; echo "ping" ; done ) &
 
@@ -36,8 +39,7 @@ script:
   - popd
   - sudo pip install texttable
   - sudo pip install pydot2
-  - pinning wily
-  - apt-get install -y -t wily doxygen
+
   - sudo apt-get install graphviz python-lxml python-ipdb python-docutils -y
   - git clone https://github.com/jgillis/pyreport.git
   - pushd pyreport && sudo python setup.py install && popd
