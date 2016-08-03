@@ -70,7 +70,7 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pwd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && recipes/setup.sh && popd
+  - pushd testbot && git checkout merged && recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
   - slurp hsl
