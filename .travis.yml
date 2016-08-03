@@ -41,6 +41,7 @@ script:
   - pushd pyreport && sudo python setup.py install && popd
   - sudo apt-get install python-ipdb graphviz python-lxml texlive-science texlive-latex-base texlive-latex-recommended texlive-latex-extra -y
   - "mkdir -p ~/.matplotlib && echo 'backend : Agg' > ~/.matplotlib/matplotlibrc"
+  - python -c "import casadi;print casadi.__version__"
   - pushd docs/api && cp /home/travis/build/testbot/docs.Makefile  Makefile && make fulllocal | grep -v "file loc from" && make export && popd
   - sudo pip install pysftp
   - sudo apt-get install zip
