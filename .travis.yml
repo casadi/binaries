@@ -32,7 +32,7 @@ script:
   - cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_PYTHON=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OOQP=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
   - make -j2
   - sudo make -j2 install
-  - pop
+  - popd
   - sudo pip install texttable
   - sudo pip install pydot2
   - sudo apt-get install graphviz python-lxml python-ipdb python-docutils doxygen -y
