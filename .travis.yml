@@ -66,7 +66,7 @@ before_install:
   - slurp clang
   - slurp ecos
   - slurp ipopt
-  - slurp bomin
+  - slurp bonmin
   - slurp swig
   - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
   - pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
