@@ -24,8 +24,7 @@ before_script:
 
 
 script:
-  - pinning vivid
-  - sudo apt-get install -y -t vivid doxygen
+
   
   # travis-wait seems to stop at 20 mins, regardless if output is being generated
   - (while true ; do sleep 60 ; echo "ping" ; done ) &
@@ -44,6 +43,8 @@ script:
   - git clone https://github.com/jgillis/pyreport.git
   - pushd pyreport && sudo python setup.py install && popd
   - sudo apt-get install python-ipdb graphviz python-lxml latex2html texlive-science texlive-latex-base texlive-fonts-recommended texlive-latex-recommended texlive-latex-extra -y
+  - pinning vivid
+  - sudo apt-get install -y -t vivid doxygen
   - "mkdir -p ~/.matplotlib && echo 'backend : Agg' > ~/.matplotlib/matplotlibrc"
   - pushd docs/api && cp /home/travis/build/testbot/docs.Makefile  Makefile && make full | grep -v "file loc from" && make export && popd
   - echo "Options +Indexes" > docs/api/export/tutorials/.htaccess
