@@ -27,7 +27,6 @@ script:
   - sudo apt-get install octave liboctave-dev -y
   - sudo apt-get install -y xvfb
   - Xvfb :1 &
-  - popd
   - |
     cat <<EOF > download.py
     import pysftp
