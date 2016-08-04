@@ -116,11 +116,11 @@ before_install:
   - export SLURP_OS=trusty
   - export SLURP_CROSS=mingwoct
   - #slurp ecos
-  - #slurp clang
-  - #slurp lapack
+  - slurp clang
+  - slurp lapack
   - slurp swig_matlab
   - slurp ipopt
-  - #slurp bonmin
+  - slurp bonmin
   - slurp mingw_octave
   - ${compilerprefix}-g++ -v
   - #slurp hsl
