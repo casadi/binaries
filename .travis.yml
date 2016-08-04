@@ -26,7 +26,6 @@ script:
   - sudo apt-get update -qq
   - sudo apt-get install octave liboctave-dev -y
   - sudo apt-get install -y xvfb
-  - Xvfb :1 &
   - |
     cat <<EOF > download.py
     import pysftp
@@ -47,6 +46,8 @@ script:
   - ls
   - echo "casadi-octave-$COMMIT.tar.gz"
   - mkdir octave && tar -xvf octave.tar.gz -C octave
+  - Xvfb :1 &
+  - export DISPLAY=:1
   - octave --no-gui --eval "addpath('/home/travis/build/casadi/binaries/octave'),savepath,exit"
   - pushd casadi/test && make unittests_octave && popd
   - octave --no-gui --eval "cd casadi/test/octave,callback,exit"
