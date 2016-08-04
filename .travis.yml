@@ -58,7 +58,7 @@ script:
   - python upload.py
 
 after_success:
- #- test_commit tests-debian-octave
+ - test_commit test-debian-octave
   
 branches:
   except:
