@@ -8,10 +8,8 @@ env:
     - ILOG_LICENSE_FILE=/home/travis/build/testbot/restricted/cplex/access.ilm
     - WORHP=/home/travis/build/testbot/restricted/worhp
     - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
-    - MATLAB_ROOT=/home/travis/build/matlab
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
-    - MATLABRELEASE=R2014b
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - GUROBI_HOME=/home/travis/build/gurobi
     - GRB_LICENSE_FILE=/home/travis/gurobi.lic
@@ -24,12 +22,12 @@ os: linux
 language: generic
 
 script:
-  - pushd /home/travis/build/
-  - testbot/recipes/fetch.sh matlab$MATLABRELEASE.tar.gz
-  - mkdir matlab && tar -xvf matlab$MATLABRELEASE.tar.gz -C matlab > /dev/null
-  - ls -al /home/travis/build/
+  - sudo apt-add-repository ppa:octave/stable -y
+  - sudo apt-get update -qq
+  - sudo apt-get install octave liboctave-dev -y
+  - sudo apt-get install -y xvfb
+  - Xvfb :1 &
   - popd
-  - matlabtunnel
   - |
     cat <<EOF > download.py
     import pysftp
@@ -44,16 +42,15 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('linux')
           with sftp.cd('linux'):
-            sftp.get("casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz","matlab.tar.gz")
+            sftp.get("casadi-octave-$COMMIT.tar.gz","octave.tar.gz")
     EOF
   - python download.py
   - ls
-  - echo "casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz"
-  - mkdir matlab && tar -xvf matlab.tar.gz -C matlab
-  - ls matlab.tar.gz
-  - PATH=/home/travis/build/matlab/bin/:$PATH matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/home/travis/build/casadi/binaries/matlab'),savepath,exit"
-  - pushd casadi/test && PATH=/home/travis/build/matlab/bin/:$PATH make unittests_matlab && popd
-  - PATH=/home/travis/build/matlab/bin/:$PATH matlab -nodisplay -nosplash -nodesktop -nojvm -r "cd casadi/test/matlab,callback,exit"
+  - echo "casadi-octave-$COMMIT.tar.gz"
+  - mkdir octave && tar -xvf octave.tar.gz -C octave
+  - octave --no-gui --eval "addpath('/home/travis/build/casadi/binaries/octave'),savepath,exit"
+  - pushd casadi/test && make unittests_octave && popd
+  - octave --no-gui --eval "cd casadi/test/octave,callback,exit"
 
   
 branches:
