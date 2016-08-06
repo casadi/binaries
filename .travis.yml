@@ -163,8 +163,7 @@ before_install:
   - slurp swig
   
   # Fix for #1477 (part 1)
-  - ls -al /home/travis/build/swig/
-  - sed -i -e 's/\"SwigPyObject\"/\"SwigPyCasadiObject\"/g' /home/travis/build/swig/share/swig/2.0.12/python/pyrun.swg
+  - sed -i -e 's/\"SwigPyObject\"/\"SwigPyCasadiObject\"/g' $SWIG_HOME/share/swig/2.0.12/python/pyrun.swg
 
   - slurp ecos
   - slurp clang
