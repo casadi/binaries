@@ -106,7 +106,7 @@ script:
   - make install
   
   # Fix for #1477 (part 2)
-  - sed -i -e "s/'SwigPyObject'/'SwigPyCasadiObject'/g" ../python_install/casadi/casadi.py
+  - swig_patch_pyobject
   
   - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../python_install/casadi
   - cp /usr/$compilerprefix/lib/*.dll ../python_install/casadi
