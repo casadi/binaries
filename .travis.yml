@@ -106,7 +106,7 @@ script:
   - make install
   
   # Fix for #1477 (part 2)
-  - swig_patch_pyobject
+  - sed -i -e "s/'SwigPyObject'/'SwigPyCasadiObject'/g" ../python_install/casadi/casadi.py
   
   - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../python_install/casadi
   - cp /usr/$compilerprefix/lib/*.dll ../python_install/casadi
@@ -163,7 +163,7 @@ before_install:
   - slurp swig
   
   # Fix for #1477 (part 1)
-  - sed -i -e 's/\"SwigPyObject\"/\"SwigPyCasadiObject\"/g' $SWIG_HOME/share/swig/2.0.12/python/pyrun.swg
+  - swig_patch_pyobject
 
   - slurp ecos
   - slurp clang
