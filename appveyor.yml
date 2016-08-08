@@ -62,9 +62,11 @@ install:
         $a = @"
         import pysftp
         import os
+        cnopts = pysftp.CnOpts()
+        cnopts.hostkeys = None    # disable host key checking.
         sftp = pysftp.Connection('web.sourceforge.net', 
                               username='casaditestbot,casadi',
-                              private_key='id_rsa_travis')
+                              private_key='id_rsa_travis',cnopts=cnopts)
         
         with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
           with sftp.cd('commits'):
