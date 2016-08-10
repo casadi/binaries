@@ -171,7 +171,7 @@ before_install:
   - slurp bonmin
   #- slurp gurobi
   - slurp lapack
-  #- slurp hsl
+  - slurp hsl
 
   - popd
 
