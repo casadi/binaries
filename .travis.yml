@@ -87,6 +87,9 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  # travis-wait seems to stop at 20 mins, regardless if output is being generated
+  - (while true ; do sleep 60 ; echo "ping" ; done ) &
+  
   - brew install binutils pcre
   - which gobjdump
   - pwd
