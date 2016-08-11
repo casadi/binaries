@@ -101,8 +101,8 @@ install:
   - dir C:\projects\binaries\matlab\bin
   #- matlab -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "disp(123),savepath,exit"
   #- type out.txt
-  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
-  - type out.txt
+  #- matlab.exe -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
+  #- type out.txt
   - make unittests_matlab
 
 branches: 
