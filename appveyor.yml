@@ -18,9 +18,6 @@ install:
   - for /f "delims=" %%a in ('git rev-parse --short HEAD') do @set COMMIT=%%a
   - ECHO "%COMMIT%"
   - cd ..
-  - python -c "from restricted import *; download('hsl_mingw64_trusty.zip')"
-  - 7z x -y "hsl_mingw64_trusty.zip" > nul
-  - dir
   - set PATH=%PATH%;C:\projects\binaries
   - git clone https://github.com/casadi/testbot.git
   - openssl aes-256-cbc -k "%keyA%" -in testbot/id_rsa_travis.enc -out id_rsa_travis -d
@@ -28,6 +25,10 @@ install:
   - openssl aes-256-cbc -k "%keyA%" -in testbot/env.bat.enc -out env.bat -d
   - openssl aes-256-cbc -k "%keyA%" -in testbot/id_rsa_travis.pkk.enc -out id_rsa_travis.pkk -d
   - env.bat
+  - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
+  - python -c "from restricted import *; download('hsl_mingw64_trusty.zip')"
+  - 7z x -y "hsl_mingw64_trusty.zip" > nul
+  - dir
   - dir C:\MinGW\msys\1.0
   - tree C:\MinGW\msys\1.0
   - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
