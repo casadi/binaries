@@ -18,7 +18,6 @@ install:
   - for /f "delims=" %%a in ('git rev-parse --short HEAD') do @set COMMIT=%%a
   - ECHO "%COMMIT%"
   - cd ..
-  - set PATH=%PATH%;C:\projects\binaries
   - git clone https://github.com/casadi/testbot.git
   - cd testbot
   - git checkout merged
@@ -34,7 +33,8 @@ install:
   - pip install requests
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - python -c "from restricted import *; download('hsl_mingw64_trusty.zip')"
-  #- 7z x -y "hsl_mingw64_trusty.zip" > nul
+  - 7z x -y "hsl_mingw64_trusty.zip" > nul
+  - set PATH=%PATH%;C:\projects\binaries
   - dir
   - dir C:\MinGW\msys\1.0
   - tree C:\MinGW\msys\1.0
