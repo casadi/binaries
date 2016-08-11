@@ -92,10 +92,11 @@ install:
   - 7z x %ZIPFILE% -ocasadimatlab > nul
   - pushd casadi\\test
   - set PATH=C:\projects\binaries\matlab\bin;%PATH%
-  - echo "SERVER %FLEX_SERVER% ANY 1715" > license.lic
+  - echo "SERVER %FLEX_SERVER% ANY 1725" > license.lic
   - echo "USE_SERVER" >> license.lic
   - dir C:\projects\binaries\matlab\bin
-  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
+  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -wait -outfile out.txt -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
+  - type out.txt
   - make unittests_matlab
 
 branches: 
