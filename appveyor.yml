@@ -18,8 +18,8 @@ install:
   - for /f "delims=" %%a in ('git rev-parse --short HEAD') do @set COMMIT=%%a
   - ECHO "%COMMIT%"
   - cd ..
-  - python -c "from restricted import *; download('hsl_mingw32_trusty.zip')"
-  - 7z x -y "hsl_mingw32_trusty.zip" > nul
+  - python -c "from restricted import *; download('hsl_mingw64_trusty.zip')"
+  - 7z x -y "hsl_mingw64_trusty.zip" > nul
   - dir
   - set PATH=%PATH%;C:\projects\binaries
   - git clone https://github.com/casadi/testbot.git
