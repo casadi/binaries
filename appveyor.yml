@@ -29,6 +29,11 @@ install:
   - python -c "from restricted import *; download('prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip')"
   - 7z x -y "prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip" > nul
   - xcopy /Y /i /E tmp C:\tmp
+  - python -c "from restricted import *; download('hsl_mingw32_trusty.zip')"
+  - 7z x -y "hsl_mingw32_trusty.zip" > nul
+  - dir
+  - set PATH=%PATH%;C:\projects\binaries
+  - pwd
   
   - ECHO "Installed SDKs:"
   - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
