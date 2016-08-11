@@ -96,8 +96,8 @@ install:
   - 7z x %ZIPFILE% -ocasadimatlab > nul
   - pushd casadi\\test
   - set PATH=C:\projects\binaries\matlab\bin;%PATH%
-  - echo "SERVER %FLEX_SERVER% ANY 1725" > C:\projects\binaries\matlab\licenses\license.lic
-  - echo "USE_SERVER" >> C:\projects\binaries\matlab\licenses\license.lic
+  - echo "SERVER %FLEX_SERVER% ANY 1725" > C:\projects\binaries\matlab\licenses\network.lic
+  - echo "USE_SERVER" >> C:\projects\binaries\matlab\licenses\network.lic
   - dir C:\projects\binaries\matlab\bin
   #- matlab -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "disp(123),savepath,exit"
   #- type out.txt
