@@ -45,7 +45,6 @@ install:
   - pip install requests==2.6.0
   - echo 127.0.0.1 %FLEX_SERVER% >> c:\Windows\System32\Drivers\etc\hosts
   - echo 127.0.0.1 %FLEX_HOSTNAME% >> c:\Windows\System32\Drivers\etc\hosts
-  - type c:\Windows\System32\Drivers\etc\hosts
   # Change hostname
   - ps: |
         $ComputerName = "$Env:FLEX_HOSTNAME"
@@ -106,12 +105,8 @@ install:
   - netstat -a   
   - echo SERVER %FLEX_SERVER% ANY 1725 > C:\projects\binaries\matlab\licenses\network.lic
   - echo USE_SERVER >> C:\projects\binaries\matlab\licenses\network.lic
-  - type C:\projects\binaries\matlab\licenses\network.lic
   - dir C:\projects\binaries\matlab\bin
-  #- matlab -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "disp(123),savepath,exit"
-  #- type out.txt
-  #- matlab.exe -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
-  #- type out.txt
+  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
   - make unittests_matlab
 
 branches: 
