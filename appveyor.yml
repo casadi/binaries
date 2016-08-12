@@ -45,6 +45,7 @@ install:
   - pip install requests==2.6.0
   - echo "127.0.0.1 %FLEX_SERVER%" >> c:\Windows\System32\Drivers\etc\hosts
   - echo '127.0.0.1 %FLEX_HOSTNAME%' >> c:\Windows\System32\Drivers\etc\hosts
+  - type c:\Windows\System32\Drivers\etc\hosts
   # Change hostname
   - ps: |
         $ComputerName = "$Env:FLEX_HOSTNAME"
@@ -99,9 +100,12 @@ install:
   - ps: |
         New-NetFirewallRule -DisplayName 'matlab out' -Direction Outbound -Program 'C:\projects\binaries\matlab\bin\matlab.exe' -RemoteAddress Any -Action Allow
         New-NetFirewallRule -DisplayName 'matlab in' -Direction Inbound -Program 'C:\projects\binaries\matlab\bin\matlab.exe' -RemoteAddress Any -Action Allow
+        New-NetFirewallRule -DisplayName 'matlab out' -Direction Outbound -Program 'C:\projects\binaries\matlab\bin\win64\MATLAB.exe' -RemoteAddress Any -Action Allow
+        New-NetFirewallRule -DisplayName 'matlab in' -Direction Inbound -Program 'C:\projects\binaries\matlab\bin\win64\MATLAB.exe' -RemoteAddress Any -Action Allow
         
   - echo "SERVER %FLEX_SERVER% ANY 1725" > C:\projects\binaries\matlab\licenses\network.lic
   - echo "USE_SERVER" >> C:\projects\binaries\matlab\licenses\network.lic
+  - type C:\projects\binaries\matlab\licenses\network.lic
   - dir C:\projects\binaries\matlab\bin
   #- matlab -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "disp(123),savepath,exit"
   #- type out.txt
