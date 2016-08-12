@@ -102,7 +102,8 @@ install:
         New-NetFirewallRule -DisplayName 'matlab in' -Direction Inbound -Program 'C:\projects\binaries\matlab\bin\matlab.exe' -RemoteAddress Any -Action Allow
         New-NetFirewallRule -DisplayName 'matlab out' -Direction Outbound -Program 'C:\projects\binaries\matlab\bin\win64\MATLAB.exe' -RemoteAddress Any -Action Allow
         New-NetFirewallRule -DisplayName 'matlab in' -Direction Inbound -Program 'C:\projects\binaries\matlab\bin\win64\MATLAB.exe' -RemoteAddress Any -Action Allow
-        
+     
+  - netstat -a   
   - echo "SERVER %FLEX_SERVER% ANY 1725" > C:\projects\binaries\matlab\licenses\network.lic
   - echo "USE_SERVER" >> C:\projects\binaries\matlab\licenses\network.lic
   - type C:\projects\binaries\matlab\licenses\network.lic
