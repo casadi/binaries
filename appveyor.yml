@@ -66,13 +66,15 @@ install:
   - ps: |
         Invoke-WebRequest  https://ftp.gnu.org/gnu/octave/windows/octave-$Env:OCTAVEVERSION.zip -OutFile octave.zip
   - 7z x -y "octave.zip" -ooctave > nul
-  - pwd
+  - pwd4e114b2
   - dir
   - 7z x %ZIPFILE% -ocasadioctave > nul
   - pushd casadi\\test
   - dir C:\projects\binaries\octave
   - set PATH=C:\projects\binaries\octave\octave-%OCTAVEVERSION%\bin;C:\projects\binaries\casadioctave;%PATH%
   - octave.exe --no-gui --eval "addpath('C:\projects\binaries\casadioctave'),savepath,exit"
+  - octave.exe --no-gui --eval "addpath('C:\projects\binaries\casadioctave'),import casadi.*,savepath,exit"
+  - octave.exe --no-gui --eval "import casadi.*,savepath,exit"
   - make octave
 
 branches: 
