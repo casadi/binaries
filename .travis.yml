@@ -91,10 +91,10 @@ before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - brew install p7zip
-  #- travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /Users/travis/build/casadi/testbot
   - export SLURP_OS=osx
+  - slurp hsl
   - slurp clang
   - slurp ecos
   - slurp ipopt
