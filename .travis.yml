@@ -98,7 +98,7 @@ script:
   - sudo python upload.py
 
 after_success:
-  #- test_commit test-windows-matlab
+  - test_commit test-windows-octave
 
 branches:
   except:
