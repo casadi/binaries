@@ -123,7 +123,7 @@ before_install:
   - slurp bonmin
   - slurp mingw_octave
   - ${compilerprefix}-g++ -v
-  - #slurp hsl
+  - slurp hsl
   - #travis_retry testbot/recipes/fetch.sh gurobi650_mingw64.zip && mkdir gurobi && unzip gurobi650_mingw64.zip -d gurobi
   - #travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xf snopt7.tar.gz -C snopt7
   - #pushd testbot/restricted/cplex && mkdir cplex && tar -xf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xf cplex12.4-concert.tar.gz -C concert && popd
