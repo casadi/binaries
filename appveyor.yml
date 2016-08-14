@@ -71,7 +71,7 @@ install:
   - 7z x %ZIPFILE% -ocasadioctave > nul
   - pushd casadi\\test
   - dir C:\projects\binaries\octave
-  - export OCTAVE_PATH=C:\projects\binaries\casadioctave
+  - set OCTAVE_PATH=C:\projects\binaries\casadioctave
   - set PATH=C:\projects\binaries\octave\octave-%OCTAVEVERSION%\bin;C:\projects\binaries\casadioctave;%PATH%
   - octave --no-gui --no-window-system --eval "import casadi.*,disp(SX.sym('x')),exit"
   - echo import casadi.*,disp(SX.sym('x')),exit | octave --no-gui --no-window-system
