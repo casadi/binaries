@@ -73,9 +73,9 @@ install:
   - dir C:\projects\binaries\octave
   - set PATH=C:\projects\binaries\octave\octave-%OCTAVEVERSION%\bin;C:\projects\binaries\casadioctave;%PATH%
   - octave --no-gui --no-window-system --eval "addpath('C:\projects\binaries\casadioctave'),savepath,exit"
-  - octave --no-gui --no-window-system --eval "addpath('C:\projects\binaries\casadioctave'),import casadi.*,disp(SX.sym('x')),savepath,exit"
-  - octave --no-gui --no-window-system --eval "import casadi.*,disp(SX.sym('x')),savepath,exit"
-  - echo import casadi.*,disp(SX.sym('x')),savepath,exit | octave --no-gui --no-window-system
+  - octave --no-gui --no-window-system --eval "import casadi.*,disp(SX.sym('x')),exit"
+  - echo import casadi.*,disp(SX.sym('x')),exit | octave --no-gui --no-window-system
+  - octave --no-gui --no-window-system --eval "cd matlab,asorted_tests,exit"
   - make octave
 
 branches: 
