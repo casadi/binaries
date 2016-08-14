@@ -72,9 +72,10 @@ install:
   - pushd casadi\\test
   - dir C:\projects\binaries\octave
   - set PATH=C:\projects\binaries\octave\octave-%OCTAVEVERSION%\bin;C:\projects\binaries\casadioctave;%PATH%
-  - octave.exe --no-gui --eval "addpath('C:\projects\binaries\casadioctave'),savepath,exit"
-  - octave.exe --no-gui --eval "addpath('C:\projects\binaries\casadioctave'),import casadi.*,disp(SX.sym('x')),savepath,exit"
-  - octave.exe --no-gui --eval "import casadi.*,disp(SX.sym('x')),savepath,exit"
+  - octave --no-gui --no-window-system --eval "addpath('C:\projects\binaries\casadioctave'),savepath,exit"
+  - octave --no-gui --no-window-system --eval "addpath('C:\projects\binaries\casadioctave'),import casadi.*,disp(SX.sym('x')),savepath,exit"
+  - octave --no-gui --no-window-system --eval "import casadi.*,disp(SX.sym('x')),savepath,exit"
+  - echo import casadi.*,disp(SX.sym('x')),savepath,exit | octave --no-gui --no-window-system
   - make octave
 
 branches: 
