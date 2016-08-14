@@ -70,7 +70,7 @@ install:
   - dir
   - 7z x %ZIPFILE% -ocasadioctave > nul
   - pushd casadi\\test
-  - set PATH=C:\projects\binaries\octave;C:\projects\binaries\octave\bin;C:\projects\binaries\casadioctave;%PATH%
+  - set PATH=C:\projects\binaries\octave\octave;C:\projects\binaries\octave\octave\bin;C:\projects\binaries\casadioctave;%PATH%
   - octave.exe --no-gui --eval "addpath('C:\projects\binaries\casadioctave'),savepath,exit"
   - make octave
 
