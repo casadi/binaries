@@ -85,7 +85,7 @@ before_install:
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
-  - export SLURP_GCC=4.7
+  - export SLURP_GCC=4.6
   - slurp ecos
   - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   - slurp clang
