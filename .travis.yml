@@ -13,6 +13,7 @@ env:
     - SNOPT=/home/travis/build/snopt75
     - GUROBI_HOME=/home/travis/build/gurobi
     - DEBIAN_FRONTEND=noninteractive
+    - DISABLE_KNITRO=1
 
 os: linux
 dist: trusty
@@ -41,7 +42,7 @@ matrix:
         - popd
         - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
         - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-        #- pushd test && make unittests_py && popd
+        - pushd test && make unittests_py && popd
         - pushd python_install && tar -czf ../bundle.tar.gz . && popd
         - export RESULT_TAR="$PWD/bundle.tar.gz"
         - |
