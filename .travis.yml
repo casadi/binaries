@@ -20,7 +20,7 @@ env:
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
     - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014a
-
+    
 os: linux
 dist: trusty
 language: generic
