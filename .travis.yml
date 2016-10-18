@@ -26,6 +26,8 @@ before_script:
 compiler: clang
 
 script:
+  - ls /usr/local/Cellar/gcc
+  - find -name *libgfortran* /usr/local/Cellar/gcc
   - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgfortran.3.dylib
   - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib
   - pkg-config --libs --cflags ipopt
