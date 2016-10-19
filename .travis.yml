@@ -92,7 +92,7 @@ branches:
 before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - brew install binutils
-  - wget https://bootstrap.pypa.io/get-pip.py
+  - wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py
   - python get-pip.py
   - which gobjdump
   - pwd
