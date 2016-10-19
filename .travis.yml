@@ -115,6 +115,8 @@ before_install:
   - brew update
   - brew tap homebrew/science
   - brew outdated swig ; brew install swig
+  - ls -al /usr/local/Cellar/gcc
+  - find / -name libgfortran.3.dylib
   - brew install gcc49
   - swig -version 
   #- brew doctor
