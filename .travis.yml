@@ -109,6 +109,7 @@ before_install:
   - brew update
   - brew tap homebrew/science
   - brew outdated swig ; brew install swig
+  - brew install gcc
   - swig -version 
   #- brew doctor
   
