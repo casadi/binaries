@@ -1,5 +1,6 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 os: osx
+osx_image: xcode6.4
 
 env: 
   global: 
