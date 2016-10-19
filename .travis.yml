@@ -15,6 +15,7 @@ env:
     - MATLAB_ROOT=/Users/travis/build/matlab
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
+    - GCC_VERSION=6.2.0
     
   matrix:
     - PYTHONVERSION=27 PSF="" CMAKE_FLAG="" TESTCOMMIT=ON
@@ -27,9 +28,9 @@ compiler: clang
 
 script:
   - ls /usr/local/Cellar/gcc
-  - find -name *libgfortran* /usr/local/Cellar/gcc
-  - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgfortran.3.dylib
-  - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib
+  - find /usr/local/Cellar/gcc -name *libgfortran* 
+  - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" /usr/local/Cellar/gcc/$GCC_VERSION/lib/gcc/x86_64-apple-darwin13.3.0/$GCC_VERSION/libgfortran.3.dylib
+  - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" /usr/local/Cellar/gcc/$GCC_VERSION/lib/gcc/x86_64-apple-darwin13.3.0/$GCC_VERSION/libquadmath.0.dylib
   - pkg-config --libs --cflags ipopt
   - pushd casadi
   - grep -v PYTHON_LIBRARIES swig/python/CMakeLists.txt > tmp && mv tmp swig/python/CMakeLists.txt
