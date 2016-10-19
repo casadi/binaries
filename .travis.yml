@@ -31,7 +31,7 @@ compiler: clang
 script:
   - ls /usr/local/Cellar/gcc
   - find /usr/local/Cellar/gcc -name *libgcc_s* 
-  - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" FORTRAN_FULL
+  - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" $FORTRAN_FULL
   - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" $QUADMATH_FULL
   - pkg-config --libs --cflags ipopt
   - pushd casadi
