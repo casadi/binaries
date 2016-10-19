@@ -91,7 +91,7 @@ branches:
 
 before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  - brew install binutils
+  - brew install binutils pip
   - which gobjdump
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
