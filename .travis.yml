@@ -93,7 +93,7 @@ before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - brew install binutils
   - wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py
-  - python get-pip.py
+  - sudo python get-pip.py
   - which gobjdump
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
