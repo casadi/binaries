@@ -29,7 +29,8 @@ before_script:
 compiler: clang
 
 script:
-  - ls /usr/local/Cellar/gcc
+  - ls /usr/local/lib/gcc/
+  - ls /usr/local/lib/gcc/4.9/libgfortran.3.dylib
   #- find /usr/local/Cellar/gcc -name *libgcc_s* 
   - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" $FORTRAN_FULL
   - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" $QUADMATH_FULL
@@ -90,7 +91,7 @@ branches:
 
 before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  - brew install binutils gcc49
+  - brew install binutils
   #- wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py
   #- sudo python get-pip.py
   - which gobjdump
