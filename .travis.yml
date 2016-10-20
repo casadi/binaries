@@ -15,9 +15,9 @@ env:
     - MATLAB_ROOT=/Users/travis/build/matlab
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
-    - FORTRAN_FULL=/usr/local/Cellar/gcc/6.2.0/lib/gcc/6/libgfortran.3.dylib
-    - QUADMATH_FULL=/usr/local/Cellar/gcc/6.2.0/lib/gcc/6/libquadmath.0.dylib
-    - GCC_FULL=/usr/local/Cellar/gcc/6.2.0/lib/gcc/6/libgcc_s.1.dylib
+    - FORTRAN_FULL=/usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgfortran.3.dylib
+    - QUADMATH_FULL=/usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib
+    - GCC_FULL=/usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgcc_s.1.dylib
     
   matrix:
     - PYTHONVERSION=27 PSF="" CMAKE_FLAG="" TESTCOMMIT=ON
@@ -114,8 +114,6 @@ before_install:
   - brew update
   - brew tap homebrew/science
   - brew outdated swig ; brew install swig
-  - find / -name libgfortran.3.dylib
-  - brew install gcc49
   - swig -version 
   #- brew doctor
   
