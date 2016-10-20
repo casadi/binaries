@@ -15,9 +15,9 @@ env:
     - MATLAB_ROOT=/Users/travis/build/matlab
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
-    - FORTRAN_FULL=/usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgfortran.3.dylib
-    - QUADMATH_FULL=/usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib
-    - GCC_FULL=/usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgcc_s.1.dylib
+    - FORTRAN_FULL=/usr/local/lib/gcc/4.9/libgfortran.3.dylib
+    - QUADMATH_FULL=/usr/local/lib/gcc/4.9/libquadmath.0.dylib
+    - GCC_FULL=/usr/local/lib/gcc/4.9/libgcc_s.1.dylib
     
   matrix:
     - PYTHONVERSION=27 PSF="" CMAKE_FLAG="" TESTCOMMIT=ON
@@ -30,8 +30,8 @@ compiler: clang
 
 script:
   - ls /usr/local/lib/gcc/
-  - find /usr/local/lib/gcc/ -name *libgfortran*
-  - ls /usr/local/lib/gcc/4.9/libgfortran.3.dylib
+  - ls /usr/local/lib/gcc/4.9
+
   #- find /usr/local/Cellar/gcc -name *libgcc_s* 
   - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" $FORTRAN_FULL
   - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" $QUADMATH_FULL
