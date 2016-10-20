@@ -30,6 +30,7 @@ compiler: clang
 
 script:
   - ls /usr/local/lib/gcc/
+  - find /usr/local/lib/gcc/ -name *libgfortran*
   - ls /usr/local/lib/gcc/4.9/libgfortran.3.dylib
   #- find /usr/local/Cellar/gcc -name *libgcc_s* 
   - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" $FORTRAN_FULL
