@@ -17,9 +17,10 @@ env:
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
-    - FORTRAN_FULL=/usr/local/Cellar/gcc/6.2.0/lib/gcc/6/libgfortran.3.dylib
-    - QUADMATH_FULL=/usr/local/Cellar/gcc/6.2.0/lib/gcc/6/libquadmath.0.dylib
-    - GCC_FULL=/usr/local/Cellar/gcc/6.2.0/lib/gcc/6/libgcc_s.1.dylib
+    - SLURP_GCC=4.9
+    - FORTRAN_FULL=/usr/local/lib/gcc/4.9/libgfortran.3.dylib
+    - QUADMATH_FULL=/usr/local/lib/gcc/4.9/libquadmath.0.dylib
+    - GCC_FULL=/usr/local/lib/gcc/4.9/libgcc_s.1.dylib
     
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2015a
@@ -50,7 +51,7 @@ script:
   - make VERBOSE=1
   - make install
   - popd
-  - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $MATLABPATH && popd
+  - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $MATLABPATH
   - sudo install_name_tool -change $QUADMATH_FULL "@rpath/libquadmath.0.dylib" $MATLABPATH/libgfortran.3.dylib  
   - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" $MATLABPATH/libgfortran.3.dylib  
   - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" $MATLABPATH/libquadmath.0.dylib 
@@ -118,7 +119,7 @@ before_install:
   - popd
   - brew update
   - brew tap homebrew/science
-  - brew install gcc
+  - brew reinstall gcc49 --with-fortran
   #- brew doctor
   - sudo easy_install pip
   - sudo pip install ipython matplotlib numpy scipy pysftp cryptography==1.2.1
