@@ -1,6 +1,7 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 os: osx
 
+
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
