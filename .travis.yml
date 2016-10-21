@@ -15,6 +15,7 @@ env:
     - MATLAB_ROOT=/Users/travis/build/matlab
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
+    - GCCVERSION=4.9
     - FORTRAN_FULL=/usr/local/lib/gcc/4.9/libgfortran.3.dylib
     - QUADMATH_FULL=/usr/local/lib/gcc/4.9/libquadmath.0.dylib
     - GCC_FULL=/usr/local/lib/gcc/4.9/libgcc_s.1.dylib
