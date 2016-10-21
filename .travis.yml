@@ -65,6 +65,7 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - sudo apt-add-repository ppa:octave/stable -y
   - sudo apt-get update -qq
   - sudo apt-get install octave liboctave-dev -y
