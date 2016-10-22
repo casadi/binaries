@@ -82,6 +82,7 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - brew install binutils pcre
   - which gobjdump
   - pwd
