@@ -52,7 +52,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y python-dev
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
-  - sudo apt-get install -y python-numpy
+  - sudo apt-get install -y python-numpy libslicot0
   - sudo pip install pysftp
   - sudo apt-get install p7zip-full -y
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
