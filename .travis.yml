@@ -108,7 +108,6 @@ script:
   # Fix for #1477 (part 2)
   - sed -i -e "s/'SwigPyObject'/'SwigPyCasadiObject'/g" ../python_install/casadi/casadi.py
   
-  - cp $BUILD/slicot/libslicot.dll ../python_install/casadi
   - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../python_install/casadi
   - cp /usr/$compilerprefix/lib/*.dll ../python_install/casadi
   - cp -RL /usr/$compilerprefix/include ../python_install/casadi/casadi/jit/mingw
