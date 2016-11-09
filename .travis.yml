@@ -112,14 +112,13 @@ before_install:
   - slurp ecos
   - slurp ipopt
   - slurp bonmin
+  - slurp swig_matlab
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
   #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
   #- pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - brew update
   - brew tap homebrew/science
-  - brew outdated swig ; brew install swig
-  - swig -version 
   #- brew doctor
   
   - if [ $PY3 ]; then brew install $FORMULA ; fi
