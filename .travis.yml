@@ -101,13 +101,14 @@ script:
   - $compilerprefix-dlltool --input-def python$PYTHONVERSION.def --dllname  /home/travis/.wine/drive_c/Python$PYTHONVERSION/python$PYTHONVERSION.dll --output-lib libpython$PYTHONVERSION.a
   - popd
   
-  - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_SLICOT=ON -DWITH_BLOCK_GPL=ON -DWITH_SNOPT=OFF -DWITH_CPLEX=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - make VERBOSE=1
   - make install
   
   # Fix for #1477 (part 2)
   - sed -i -e "s/'SwigPyObject'/'SwigPyCasadiObject'/g" ../python_install/casadi/casadi.py
   
+  - cp $BUILD/slicot/libslicot.dll ../python_install/casadi
   - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../python_install/casadi
   - cp /usr/$compilerprefix/lib/*.dll ../python_install/casadi
   - cp -RL /usr/$compilerprefix/include ../python_install/casadi/casadi/jit/mingw
@@ -172,6 +173,7 @@ before_install:
   #- slurp gurobi
   - slurp lapack
   - slurp hsl
+  - slurp slicot
 
   - popd
 
