@@ -59,7 +59,7 @@ script:
   #- ssh -R 2245:localhost:22 u0052373@gate.mech.kuleuven.be
   - cp $GCC_FULL $QUADMATH_FULL $FORTRAN_FULL /Users/travis/build/casadi/binaries/casadi/python_install/casadi
   - sudo install_name_tool -change $QUADMATH_FULL "@rpath/libquadmath.0.dylib" python_install/casadi/libgfortran.3.dylib  
-  - sudo install_name_tool -change /usr/local/Cellar/gcc49/4.9.3/lib/gcc/4.9/libquadmath.0.dylib python_install/casadi/libgfortran.3.dylib 
+  - sudo install_name_tool -change /usr/local/Cellar/gcc49/4.9.3/lib/gcc/4.9/libquadmath.0.dylib "@rpath/libgcc_s.1.dylib" python_install/casadi/libgfortran.3.dylib 
   - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" python_install/casadi/libgfortran.3.dylib  
   - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" python_install/casadi/libquadmath.0.dylib
   
