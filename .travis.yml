@@ -46,6 +46,12 @@ script:
   - sudo install_name_tool -change $QUADMATH_FULL "@rpath/libquadmath.0.dylib" $OCTAVEPATH/libgfortran.3.dylib  
   - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" $OCTAVEPATH/libgfortran.3.dylib  
   - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" $OCTAVEPATH/libquadmath.0.dylib 
+  
+  - sudo install_name_tool -change /usr/local/Cellar/gcc49/4.9.3/lib/gcc/4.9/libquadmath.0.dylib "@rpath/libgcc_s.1.dylib" $OCTAVEPATH/libgfortran.3.dylib 
+  
+  - otool -l $OCTAVEPATH/libgfortran.3.dylib | grep /usr/local || assertfail
+  - otool -l $OCTAVEPATH/libgcc_s.1.dylib | grep /usr/local || assertfail
+  - otool -l $OCTAVEPATH/libquadmath.0.dylib | grep /usr/local || assertfail
   #- otool -l /Users/travis/build/casadi/binaries/casadi/build/lib/libcasadi_nlpsolver_ipopt.dylib
   #- otool -l $MATLABPATH/libcasadi_nlpsolver_ipopt.dylib
   #- ssh-keyscan gate.mech.kuleuven.be >> ~/.ssh/known_hosts
