@@ -32,7 +32,7 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install requests
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
-  - python -c "from restricted import *; download('hsl_mingw64_trusty.zip')"
+  - python -c "from restricted import *; download('hsl_mingw32_trusty.zip')"
   - 7z x -y "hsl_mingw64_trusty.zip" > nul
   - set PATH=%PATH%;C:\projects\binaries
   - dir
