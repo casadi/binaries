@@ -31,6 +31,8 @@ install:
   - xcopy /Y /i /E tmp C:\tmp
   - python -c "from restricted import *; download('hsl_mingw32_trusty.zip')"
   - 7z x -y "hsl_mingw32_trusty.zip" > nul
+  - python -c "from restricted import *; download('slicot_mingw32_trusty.zip')"
+  - 7z x -y "slicot_mingw32_trusty.zip" > nul
   - dir
   - set PATH=%PATH%;C:\projects\binaries
   - pwd
