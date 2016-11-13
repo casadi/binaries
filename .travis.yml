@@ -64,9 +64,6 @@ script:
   - rm CMakeLists.txt && mv CMakeLists2.txt CMakeLists.txt
   - cat CMakeLists.txt
   - popd
-
-- ls $MATLAB_ROOT
-  - ls $MATLAB_ROOT/extern/include
   - mkdir build
   - pushd build
   - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /usr/share/cmake-3.2/Modules/FindLAPACK.cmake
