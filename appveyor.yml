@@ -108,7 +108,7 @@ install:
   - echo USE_SERVER >> C:\projects\binaries\matlab\licenses\network.lic
   - dir C:\projects\binaries\matlab\bin
   - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
-  - make unittests_matlab
+  - make matlab
 
 branches: 
   except:
