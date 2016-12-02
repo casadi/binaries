@@ -24,14 +24,14 @@ before_script:
 matrix:
   include:
     - compiler: gcc
-      env: GCCVERSION=5.1
+      env: GCCVERSION=5
       script:
         - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
         - sudo apt-get update
-        - export CC=gcc-5
-        - export CXX=g++-5
-        - export FC=gfortran-5
-        - sudo apt-get install -y libslicot-dev binutils gcc-5 g++-5 gfortran-5 git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+        - export CC=gcc-$GCCVERSION
+        - export CXX=g++-$GCCVERSION
+        - export FC=gfortran-$GCCVERSION
+        - sudo apt-get install -y libslicot-dev binutils gcc-$GCCVERSION g++-$GCCVERSION gfortran-$GCCVERSION git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
         - sudo apt-get install -y fakeroot rpm alien
         - pushd casadi
         - mkdir build
