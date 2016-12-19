@@ -2,7 +2,6 @@
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - LD_LIBRARY_PATH=/home/travis/build/libhsl
     - CMAKE_INCLUDE_PATH=/home/travis/build/testbot/restricted/cplex/cplex/include:/home/travis/build/testbot/restricted/cplex/concert/include
     - CMAKE_LIBRARY_PATH=/home/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/home/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
     - ILOG_LICENSE_FILE=/home/travis/build/testbot/restricted/cplex/access.ilm
@@ -87,7 +86,7 @@ before_install:
   - export SLURP_OS=trusty
   - export SLURP_GCC=4.7
   - slurp ecos
-  - travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
+  - slurp hsl
   - slurp clang
   - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
   - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
