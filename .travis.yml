@@ -30,14 +30,13 @@ matrix:
         - export CC=gcc-$GCCVERSION
         - export CXX=g++-$GCCVERSION
         - export FC=gfortran-$GCCVERSION
-        - export CXXFLAGS=-D_GLIBCXX_USE_CXX11_ABI=-
         - sudo apt-get install -t xenial gcc-$GCCVERSION g++-$GCCVERSION gfortran-$GCCVERSION
         - sudo apt-get install -y binutils git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
         - sudo apt-get install -y fakeroot rpm alien
         - pushd casadi
         - mkdir build
         - pushd build
-        - cmake -DWITH_OPENMP=ON -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_PYTHON=ON -DWITH_MOSEK=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=OFF -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../install ..
+        - cmake -DWITH_OPENMP=OFF -DWITH_ECOS=OFF -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=OFF -DWITH_SLICOT=OFF -DWITH_PYTHON=OFF -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../install ..
         - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
         - echo "::$HVERSION::"
         - grep -i ipopt CMakeCache.txt
@@ -89,7 +88,6 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - mkdir -p /home/travis/build/casadi/testbot
   - slurp ipopt
-  - slurp bonmin
   - slurp swig
   - pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
   - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
