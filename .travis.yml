@@ -31,9 +31,9 @@ matrix:
         - export CC=gcc-$GCCVERSION
         - export CXX=g++-$GCCVERSION
         - export FC=gfortran-$GCCVERSION
-        - export FFLAGS=-D_GLIBCXX_USE_CXX11_ABI=1
-        - export CFLAGS=-D_GLIBCXX_USE_CXX11_ABI=1
-        - export CXXFLAGS=-D_GLIBCXX_USE_CXX11_ABI=1
+        - export FFLAGS=-D_GLIBCXX_USE_CXX11_ABI=-
+        - export CFLAGS=-D_GLIBCXX_USE_CXX11_ABI=-
+        - export CXXFLAGS=-D_GLIBCXX_USE_CXX11_ABI=-
         - sudo apt-get install -y libslicot-dev binutils gcc-$GCCVERSION g++-$GCCVERSION gfortran-$GCCVERSION git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
         - sudo apt-get install -y fakeroot rpm alien
         - pushd casadi
