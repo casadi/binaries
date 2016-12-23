@@ -26,7 +26,7 @@ matrix:
     - compiler: gcc
       env: GCCVERSION=5
       script:
-        - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        - sudo add-apt-repository -y ppa:tigerite/kernel
         - sudo apt-get update
         - export CC=gcc-$GCCVERSION
         - export CXX=g++-$GCCVERSION
