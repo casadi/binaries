@@ -49,7 +49,7 @@ script:
   - sudo apt-get update -q
   - sudo apt-get install -y doxygen
   - "mkdir -p ~/.matplotlib && echo 'backend : Agg' > ~/.matplotlib/matplotlibrc"
-  - pushd docs/api && cp /home/travis/build/testbot/docs.Makefile  Makefile && make full | grep -v "file loc from" && make export && popd
+  - pushd docs/api && make full | grep -v "file loc from" && make export && popd
   - sudo pip install pysftp
   - |
     cat <<EOF > upload.py
