@@ -31,7 +31,8 @@ before_script:
 
 script:
   - pushd /home/travis/build/
-  - if [ "$BITNESS" -eq "32" ]]; then export MATLABFETCH_SUFFIX=32; fi
+  - if [ "$BITNESS" -eq "32" ]; then export MATLABFETCH_SUFFIX=32; fi
+  - echo $MATLABFETCH_SUFFIX
   - testbot/recipes/fetch.sh matlab$MATLABRELEASE-win$MATLABFETCH_SUFFIX.zip
 
   # travis-wait seems to stop at 20 mins, regardless if output is being generated
