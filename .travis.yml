@@ -12,7 +12,7 @@ before_script:
   - set -e
 
 script:
-  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
+  - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - cat .git/config
   - git --version
   - |
