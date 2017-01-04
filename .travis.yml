@@ -14,20 +14,16 @@ env:
     - SNOPT=/home/travis/build/snopt7
     - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab
-    - compilerprefix=x86_64-w64-mingw32
     - GUROBI_HOME=/home/travis/build/gurobi
-    - BITNESS=64
 
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
-    - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014a
-    - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2013a
+    - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=x86_64-w64-mingw32 BITNESS=64 TESTCOMMIT="1" MATLABRELEASE=R2014b
+    - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=x86_64-w64-mingw32 BITNESS=64 MATLABRELEASE=R2014a
+    - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=x86_64-w64-mingw32 BITNESS=64 MATLABRELEASE=R2013a
+    - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 MATLABRELEASE=R2013a
     #- BUILD_TYPE=Debug NAME_SUFFIX="-Debug" MATLABRELEASE=R2014b
     #- BUILD_TYPE=RelWithDebInfo NAME_SUFFIX="-dsym" MATLABRELEASE=R2014b
     #- BUILD_TYPE=Debug NAME_SUFFIX="-Debug" MATLABRELEASE=R2014a
-
-compiler:
-  - x86_64-w64-mingw32-gcc
 
 before_script:
   - set -e
@@ -35,7 +31,8 @@ before_script:
 
 script:
   - pushd /home/travis/build/
-  - testbot/recipes/fetch.sh matlab$MATLABRELEASE-win.zip
+  - if [ "$BITNESS" -eq "32" ]]; then export MATLABFETCH_SUFFIX=32; fi
+  - testbot/recipes/fetch.sh matlab$MATLABRELEASE-win$MATLABFETCH_SUFFIX.zip
 
   # travis-wait seems to stop at 20 mins, regardless if output is being generated
   - (while true ; do sleep 60 ; echo "ping" ; done ) &
@@ -52,13 +49,14 @@ script:
     EOF
   # Displace find_package(MATLAB)
   - pushd swig/matlab
+  - export MATLAB_BINDIR=$MATLAB_ROOT/bin/win$BITNESS
   - |
     cat <<EOF > CMakeLists2.txt
-    set(MATLAB_LIBRARIES $MATLAB_ROOT/bin/win64/libut.dll $MATLAB_ROOT/bin/win64/libmex.dll $MATLAB_ROOT/bin/win64/libmx.dll $MATLAB_ROOT/bin/win64/libeng.dll)
+    set(MATLAB_LIBRARIES $MATLAB_BINDIR/libut.dll $MATLAB_BINDIR/libmex.dll $MATLAB_BINDIR/libmx.dll $MATLAB_BINDIR/libeng.dll)
     
     set(MATLAB_INCLUDE_DIR "$MATLAB_ROOT/extern/include")
     set(MATLAB_EXTRA_CXXFLAGS "-D__STDC_UTF_16__")
-    set(MATLAB_MEX_EXT "mexw64")
+    set(MATLAB_MEX_EXT "mexw$BITNESS")
     EOF
   - grep -v "find_package(MATLAB" CMakeLists.txt >> CMakeLists2.txt
   - rm CMakeLists.txt && mv CMakeLists2.txt CMakeLists.txt
