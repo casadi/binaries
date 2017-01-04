@@ -69,7 +69,7 @@ before_install:
   - sudo apt-add-repository ppa:octave/stable -y
   - sudo apt-get update -qq
   - sudo apt-get install octave liboctave-dev -y
-  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
+  - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - sudo apt-get install p7zip-full -y
