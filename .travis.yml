@@ -38,7 +38,7 @@ script:
   # travis-wait seems to stop at 20 mins, regardless if output is being generated
   - (while true ; do sleep 60 ; echo "ping" ; done ) &
 
-  - mkdir matlab && unzip matlab$MATLABRELEASE-win.zip -d matlab > /dev/null
+  - mkdir matlab && unzip matlab$MATLABRELEASE-win$MATLABFETCH_SUFFIX.zip -d matlab > /dev/null
   - popd
   - pushd casadi
     # Fixing issue https://github.com/casadi/casadi/issues/1654
