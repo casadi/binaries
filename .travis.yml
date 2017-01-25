@@ -99,6 +99,8 @@ before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - brew install binutils
   - brew reinstall gcc49 --with-fortran libgfortran
+  - brew install findutils --with-default-names
+  - sudo updatedb
   - locate libgfortran
   #- wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py
   #- sudo python get-pip.py
