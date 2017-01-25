@@ -18,7 +18,7 @@ install:
   - cd casadi
   - git status
   - git rev-parse --short=7 HEAD
-  - for /f "delims=" %%a in ('git rev-parse --short=7 HEAD') do @set COMMIT=%%a
+  - for /f "delims=" %%a in ('git rev-parse --short\=7 HEAD') do @set COMMIT=%%a
   - ECHO "%COMMIT%"
   - cd ..
   - git clone https://github.com/casadi/testbot.git
