@@ -17,6 +17,7 @@ install:
   - git submodule update
   - cd casadi
   - git status
+  - git rev-parse --short=7 HEAD
   - for /f "delims=" %%a in ('git rev-parse --short=7 HEAD') do @set COMMIT=%%a
   - ECHO "%COMMIT%"
   - cd ..
