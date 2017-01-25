@@ -20,9 +20,7 @@ install:
   - ECHO "%COMMIT%"
   - cd ..
   - git clone https://github.com/casadi/testbot.git
-  - cd testbot
-  - git checkout merged
-  - cd ..
+  - cd testbot && git checkout merged && cd ..
   - openssl aes-256-cbc -k "%keyA%" -in testbot/id_rsa_travis.enc -out id_rsa_travis -d
   - openssl aes-256-cbc -k "%keyA%" -in testbot/testbotcredentials.py.enc -out testbotcredentials.py -d
   - openssl aes-256-cbc -k "%keyA%" -in testbot/env.bat.enc -out env.bat -d
@@ -33,8 +31,8 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install requests
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
-  - python -c "from restricted import *; download('hsl_mingw32_trusty.zip')"
-  - 7z x -y "hsl_mingw32_trusty.zip" > nul
+  - set BITNESS=32
+  - call testbot/fetch_common.bat
   - set PATH=%PATH%;C:\projects\binaries
   - dir
   - dir C:\MinGW\msys\1.0
