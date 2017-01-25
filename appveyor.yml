@@ -16,7 +16,9 @@ install:
   - git submodule init
   - git submodule update
   - cd casadi
-  - for /f "delims=" %%a in ('git rev-parse --short=7 HEAD') do @set COMMIT=%%a
+  - git --version
+  - git --help
+  - for /f "delims=" %%a in ('git rev-parse HEAD') do @set COMMIT=%%a
   - ECHO "%COMMIT%"
   - cd ..
   - git clone https://github.com/casadi/testbot.git
