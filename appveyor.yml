@@ -22,6 +22,7 @@ install:
   - ECHO "%COMMIT%"
   - cd ..
   - git clone https://github.com/casadi/testbot.git
+  - cd testbot && git checkout merged && cd ..
   - openssl aes-256-cbc -k "%keyA%" -in testbot/id_rsa_travis.enc -out id_rsa_travis -d
   - openssl aes-256-cbc -k "%keyA%" -in testbot/testbotcredentials.py.enc -out testbotcredentials.py -d
   - "powershell testbot/helpers/install.ps1"
@@ -31,15 +32,18 @@ install:
   - python -c "from restricted import *; download('prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip')"
   - 7z x -y "prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip" > nul
   - xcopy /Y /i /E tmp C:\tmp
-  - python -c "from restricted import *; download('hsl_mingw32_trusty.zip')"
-  - 7z x -y "hsl_mingw32_trusty.zip" > nul
-  - python -c "from restricted import *; download('slicot_mingw32_trusty.zip')"
-  - 7z x -y "slicot_mingw32_trusty.zip" > nul
-  - python -c "from restricted import *; download('libworhp_vs2013_1.9-1_16_10.7z')"
-  - 7z x -y "libworhp_vs2013_1.9-1_16_10.7z" > nul
-  - dir
-  - set PATH=%PATH%;C:\projects\binaries\;C:\projects\binaries\vs2013-Release\bin32
+  - set BITNESS=32
+  - call testbot/fetch_common.bat
+#  - python -c "from restricted import *; download('hsl_mingw32_trusty.zip')"
+#  - 7z x -y "hsl_mingw32_trusty.zip" > nul
+#  - python -c "from restricted import *; download('slicot_mingw32_trusty.zip')"
+#  - 7z x -y "slicot_mingw32_trusty.zip" > nul
+#  - python -c "from restricted import *; download('libworhp_vs2013_1.9-1_16_10.7z')"
+#  - 7z x -y "libworhp_vs2013_1.9-1_16_10.7z" > nul
+#  - dir
+#  - set PATH=%PATH%;C:\projects\binaries\;C:\projects\binaries\vs2013-Release\bin32
   - pwd
+  - ECHO "%PATH%"
   
   - ECHO "Installed SDKs:"
   - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
