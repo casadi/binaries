@@ -102,8 +102,7 @@ before_install:
   #- brew install findutils --with-default-names
   #- sudo updatedb
   #- locate libgfortran
-  - ls /usr/local/lib/gcc
-  - ls /usr/local/Cellar/gcc
+  - ls /usr/local/lib/gcc/4.9
   #- wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py
   #- sudo python get-pip.py
   - which gobjdump
