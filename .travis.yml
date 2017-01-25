@@ -65,8 +65,7 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     set(CMAKE_SHARED_LIBRARY_SUFFIX "dll")
     EOF
-  - cmake -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-4.0.2/include/octave-4.0.2/octave/ -DOCTAVE_LIBRARIES="$HOME/build/octave-4.0.2/bin/liboctinterp-3.dll;$HOME/build/octave-4.0.2/bin/liboctave-3.dll" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_PYTHON=OFF -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF ..
-  - make install -j2 VERBOSE=1
+  - cmake -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-4.0.2/include/octave-4.0.2/octave/ -DOCTAVE_LIBRARIES="$HOME/build/octave-4.0.2/bin/liboctinterp-3.dll;$HOME/build/octave-4.0.2/bin/liboctave-3.dll" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_PYTHON=OFF -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DWITH_WORHP=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF ..  - make install -j2 VERBOSE=1
   - ls lib
   - make install
   - ls $MINGW_ROOT/lib/gcc/$compilerprefix
