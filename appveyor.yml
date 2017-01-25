@@ -91,8 +91,13 @@ install:
         $a | out-file -Encoding ascii -FilePath download.py
   - python download.py
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
+  - cd testbot && git checkout merged && cd ..
   - python -c "from restricted import *; download('matlab%MATLABRELEASE%-win.zip')"
   - 7z x -y "matlab%MATLABRELEASE%-win.zip" -omatlab > nul
+  
+  - set BITNESS=64
+  - call testbot/fetch_common.bat
+ 
   - pwd
   - dir
   - 7z x %ZIPFILE% -ocasadimatlab > nul
