@@ -22,7 +22,7 @@ install:
   - ECHO "%COMMIT%"
   - cd ..
   - git clone https://github.com/casadi/testbot.git
-  - cd testbot && git checkout merged && call recipes\setup.sh && cd ..
+  - cd testbot && git checkout merged && call recipes\setup.bat && cd ..
   - "powershell testbot/helpers/install.ps1"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install requests
