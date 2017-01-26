@@ -95,6 +95,8 @@ install:
   - 7z x %FILE%.zip -ocasadipython
   - "SET PYTHONPATH=%PYTHONPATH%;C:\\projects\\binaries\\casadipython"
   - cd casadi\\test
+  - echo %WORHP_LICENSE_FILE%
+  - dir %WORHP_LICENSE_FILE%
   - make unittests_py
   - cd ..\\..
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
