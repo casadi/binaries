@@ -34,6 +34,8 @@ script:
   - tar -xvf casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz -C casadi_python
   - echo "$PWD/casadi_python"
   - export PYTHONPATH=$PYTHONPATH:$PWD/casadi_python
+  - echo $DYLD_LIBRARY_PATH
+  - ls $WORHP
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd /Users/travis/build/casadi/binaries/casadi/test && make unittests_py && popd
   - pushd /Users/travis/build/casadi/binaries/casadi/test && make examples_code_py && popd
