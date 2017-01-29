@@ -1,9 +1,8 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 env: 
   global: 
-    - DYLD_LIBRARY_PATH=/Users/travis/build/testbot/restricted/worhp:/Users/travis/build/snopt7/lib:/Users/travis/build/mosek/7/tools/platform/linux64x86/bin/:/Users/travis/build/gurobi/lib
+    - DYLD_LIBRARY_PATH=/Users/travis/build/snopt7/lib:/Users/travis/build/mosek/7/tools/platform/linux64x86/bin/:/Users/travis/build/gurobi/lib
     - MATLABRELEASE=R2015a
-    - WORHP_LICENSE_FILE=/Users/travis/build/testbot/restricted/worhp/unlocked.lic
     - MOSEKLM_LICENSE_FILE=/Users/travis/build/testbot/restricted/mosek.lic
     
 before_script:
@@ -39,7 +38,7 @@ script:
   - mkdir matlab && tar -xvf matlab.tar.gz -C matlab
   
   # We have no gurobi license presently
-  - pushd matlab && find -name *gurobi* | xargs rm && popd
+  #- pushd matlab && find -name *gurobi* | xargs rm && popd
   
   - ls matlab.tar.gz
   #- remote_access
@@ -65,10 +64,10 @@ before_install:
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   - export SLURP_OS=osx
   - slurp hsl
+  - slurp worhp
   - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
-  - pushd testbot/restricted && mkdir -p worhp && cd worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - sudo rm -rf /usr/local/lib/gcc/*darwin*/*
   - sudo rm -rf /usr/local/Cellar/gcc/*/lib/gcc/*darwin*/*
   
