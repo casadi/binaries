@@ -41,9 +41,12 @@ script:
   #- pushd matlab && find -name *gurobi* | xargs rm && popd
   
   - ls matlab.tar.gz
-  - remote_access
+  # - remote_access
   #- otool -l matlab/libcasadi_nlpsolver_ipopt.dylib
-  - PATH=/Users/travis/build/matlab/bin/:$PATH matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/Users/travis/build/casadi/binaries/matlab'),savepath,exit"
+  - echo $DYLD_LIBRARY_PATH
+  - chmod +x /Users/travis/build/matlab/bin/.matlab*
+  - echo "LDPATH_PREFIX=$DYLD_LIBRARY_PATH:\$LDPATH_PREFIX" >> /Users/travis/build/matlab/bin/.matlab*
+  - PATH=/Users/travis/build/matlab/bin/:$PATH matlab -n -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/Users/travis/build/casadi/binaries/matlab'),savepath,exit"
   - pushd casadi/test && PATH=/Users/travis/build/matlab/bin/:$PATH make matlab && popd
   
 branches:
