@@ -28,7 +28,7 @@ matrix:
       script:
         - sudo apt-get install g++-arm-linux-gnueabihf
         - export CC=arm-linux-gnueabihf-gcc
-        - export GCC=arm-linux-gnueabihf-g++
+        - export CXX=arm-linux-gnueabihf-g++
         - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
         - sudo apt-get install -y fakeroot rpm alien
         - pushd casadi
