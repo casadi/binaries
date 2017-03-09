@@ -24,34 +24,29 @@ before_script:
 matrix:
   include:
     - compiler: gcc
+      services: docker
       env: PYTHONVERSION=27 NUMPYVERSION=1.9.1 TESTCOMMIT=1
       script:
-        - sudo apt-get install g++-arm-linux-gnueabihf
-        - export CC=arm-linux-gnueabihf-gcc
-        - export CXX=arm-linux-gnueabihf-g++
-        - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+        - docker run --rm "dockcross/linux-armv6" > dockcross
+        - chmod +x dockcross
+
+        - ./dockcross cc --version
+        - ./dockcross c++ --version
+        - ./dockcross cmake --version
+        
+        - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev ipython libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
         - sudo apt-get install -y fakeroot rpm alien
         - pushd casadi
-        - sudo dpkg --add-architecture armhf
-        - |
-          cat <<EOF | sudo tee -a /etc/apt/sources.list
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty-updates main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty universe
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty-updates universe
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty-security main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty-security universe
-          EOF
         - sudo apt-get update || echo "okay"
-        - sudo apt-get install python-dev:armhf python-numpy:armhf
+        - sudo apt-get install -y python-dev:armhf python-numpy:armhf
         - mkdir build
         - pushd build
-        - cmake -DWITH_OPENMP=OFF -DWITH_ECOS=OFF -DOLD_LLVM=OFF -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=OFF -DWITH_SLICOT=OFF -DWITH_PYTHON=ON -DWITH_JSON=OFF -DWITH_IPOPT=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+        - ./dockcross cmake -DWITH_OPENMP=OFF -DWITH_ECOS=OFF -DOLD_LLVM=OFF -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=OFF -DWITH_SLICOT=OFF -DWITH_PYTHON=ON -DWITH_JSON=OFF -DWITH_IPOPT=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
         - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
         - echo "::$HVERSION::"
         - grep -i ipopt CMakeCache.txt
-        - make VERBOSE=1
-        - make install
+        - ./dockcross make VERBOSE=1
+        - ./dockcross make install
         #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
         - popd
         - pushd python_install && tar -czf ../bundle.tar.gz . && popd
