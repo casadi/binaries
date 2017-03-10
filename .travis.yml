@@ -38,15 +38,12 @@ matrix:
         - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev ipython libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
         - sudo apt-get install -y fakeroot rpm alien
         - mkdir build
-        - pushd build
-        - ../dockcross cmake -DWITH_OPENMP=OFF -DWITH_ECOS=OFF -DOLD_LLVM=OFF -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=OFF -DWITH_SLICOT=OFF -DWITH_PYTHON=ON -DWITH_JSON=OFF -DWITH_IPOPT=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+        - ./dockcross cmake -B/work/build -H/work -DWITH_OPENMP=OFF -DWITH_ECOS=OFF -DOLD_LLVM=OFF -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=OFF -DWITH_SLICOT=OFF -DWITH_PYTHON=ON -DWITH_JSON=OFF -DWITH_IPOPT=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
         - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
         - echo "::$HVERSION::"
-        - grep -i ipopt CMakeCache.txt
-        - ../dockcross make VERBOSE=1
-        - ../dockcross make install
+        - ./dockcross make -C /work/build  VERBOSE=1
+        - ./dockcross make -C /work/build install
         #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
-        - popd
         - pushd python_install && tar -czf ../bundle.tar.gz . && popd
         - export RESULT_TAR="$PWD/bundle.tar.gz"
         - |
