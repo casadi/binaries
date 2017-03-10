@@ -29,7 +29,6 @@ matrix:
       script:
         - docker run --rm "dockcross/linux-armv6" > dockcross
         - chmod +x dockcross
-        - ls /work
 
         - ./dockcross cc --version
         - ./dockcross c++ --version
