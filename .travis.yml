@@ -27,6 +27,7 @@ matrix:
       services: docker
       env: PYTHONVERSION=27 NUMPYVERSION=1.9.1 TESTCOMMIT=1
       script:
+        - pushd casadi
         - docker run --rm "dockcross/linux-armv6" > dockcross
         - chmod +x dockcross
 
