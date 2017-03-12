@@ -34,7 +34,7 @@ matrix:
         - ./dockcross c++ --version
         - ./dockcross cmake --version
         - ./dockcross ls
-        - ./dockcross apt-get install -y python-dev python-numpy
+        - sudo ./dockcross apt-get install -y python-dev python-numpy
         
         - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev ipython libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
         - sudo apt-get install -y fakeroot rpm alien
