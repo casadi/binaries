@@ -32,18 +32,7 @@ matrix:
         - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
         - sudo apt-get install -y fakeroot rpm alien
         - pushd casadi
-        - sudo dpkg --add-architecture armhf
-        - |
-          cat <<EOF | sudo tee -a /etc/apt/sources.list
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty-updates main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty universe
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty-updates universe
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty-security main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ trusty-security universe
-          EOF
-        - sudo apt-get update || echo "okay"
-        - sudo apt-get install python-dev:armhf python-numpy:armhf
+        - sudo apt-get install -y python-all-dev
         - mkdir build
         - pushd build
         - cmake -DWITH_OPENMP=OFF -DWITH_ECOS=OFF -DOLD_LLVM=OFF -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=OFF -DWITH_SLICOT=OFF -DWITH_PYTHON=ON -DWITH_JSON=OFF -DWITH_IPOPT=OFF -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
