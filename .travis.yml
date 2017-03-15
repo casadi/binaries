@@ -26,6 +26,11 @@ matrix:
     - compiler: gcc
       env: PYTHONVERSION=27 NUMPYVERSION=1.9.1 TESTCOMMIT=1
       script:
+        - sudo dpkg --add-architecture armhf
+        - sudo apt-get update
+        - apt-get install --reinstall --print-uris -qq python-dev:armhf | cut -d"'" -f2
+        #- wget http://ftp.us.debian.org/debian/pool/main/p/python2.7/libpython2.7-minimal_2.7.9-2+deb8u1_armhf.deb
+        #- dpkg -x libpython2.7-minimal_2.7.9-2+deb8u1_armhf.deb $HOME/sys
         - sudo apt-get install g++-arm-linux-gnueabihf
         - export CC=arm-linux-gnueabihf-gcc
         - export CXX=arm-linux-gnueabihf-g++
