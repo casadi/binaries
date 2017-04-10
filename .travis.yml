@@ -259,6 +259,64 @@ matrix:
         - cat upload.py
         - python upload.py
 
+ - compiler: gcc
+      env:
+        - PYTHONVERSION=36
+        - NUMPYVERSION=1.9.1
+        - WITH_PYTHON3=ON
+      script:
+        - sudo apt-get install git binutils gcc g++ gfortran cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
+        - pinning yakkety
+        - tail /etc/apt/sources.list
+        - tail /etc/apt/preferences.d/mytest
+        - sudo apt-get update
+        - sudo apt-get --yes --force-yes install -q -t yakkety -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" python3.6-dev
+        - sudo apt-get install cmake valgrind libgomp1 -y
+        - wget https://bootstrap.pypa.io/get-pip.py
+        - python3.6 get-pip.py
+        - pip3.6 install numpy
+        - pushd casadi
+        - mkdir build
+        - pushd build
+        - export CC=gcc-4.8
+        - export CXX=g++-4.8
+        - export FC=gfortran-4.8
+        - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_PYTHON3=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+        - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
+        - echo "::$HVERSION::"
+        - grep -i ipopt CMakeCache.txt
+        - make VERBOSE=1
+        - make install
+        #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
+        - popd
+        - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+        - python3.6 -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        #- pushd test && make unittests_py && popd # SOME ERRORS
+        
+        - pushd python_install && tar -czf ../bundle.tar.gz . && popd
+        - export RESULT_TAR="$PWD/bundle.tar.gz"
+        - |
+          cat <<EOF > upload.py
+          import pysftp
+          sftp = pysftp.Connection('web.sourceforge.net', 
+                                username='casaditestbot,casadi',
+                                private_key='/home/travis/build/testbot/id_rsa_travis')
+          
+          binaries_dir = '/home/jg/binaries'
+          
+          
+          with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+            sftp.makedirs('commits')
+            with sftp.cd('commits'):
+              sftp.makedirs("$COMMIT")
+              with sftp.cd("$COMMIT"):
+                sftp.makedirs('linux')
+                with sftp.cd('linux'):
+                  sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+          EOF
+        - cat upload.py
+        - python upload.py
+
   
 after_success:
   - test_commit tests-debian
