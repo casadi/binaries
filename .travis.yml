@@ -213,7 +213,7 @@ matrix:
         - cat upload.py
         - python upload.py
 
- - compiler: gcc
+    - compiler: gcc
       env:
         - PYTHONVERSION=36
         - NUMPYVERSION=1.9.1
