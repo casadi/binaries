@@ -20,7 +20,25 @@ language: python
 
 before_script:
   - set -e
-  
+ 
+script:
+  - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+  - sudo apt-get install -y fakeroot rpm alien
+  - pushd casadi
+  - mkdir build
+  - pushd build
+  - cmake -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
+  - echo "::$HVERSION::"
+  - grep -i ipopt CMakeCache.txt
+  - make VERBOSE=1
+  - make install
+  #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
+  - popd
+  - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+  - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+  - pushd test && make unittests_py && popd
+
 after_script:
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
   - export RESULT_TAR="$PWD/bundle.tar.gz"
@@ -48,107 +66,14 @@ after_script:
 
 matrix:
   include:
-    - compiler: gcc
+    - python: 2.7
       env: PYTHONVERSION=27 NUMPYVERSION=1.9.1 TESTCOMMIT=1
-      python: 2.7
-      script:
-        - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev ipython libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
-        - sudo apt-get install -y fakeroot rpm alien
-        - pushd casadi
-        - mkdir build
-        - pushd build
-        - cmake -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-        - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
-        - echo "::$HVERSION::"
-        - grep -i ipopt CMakeCache.txt
-        - make VERBOSE=1
-        - make install
-        #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
-        - popd
-        - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-        - pushd test && make unittests_py && popd
-
-    - compiler: gcc
-      python: 3.4
-      env:
-        - PYTHONVERSION=34
-        - NUMPYVERSION=1.9.1
-        - WITH_PYTHON3=ON
-      script:
-        - sudo apt-get install binutils gcc g++ gfortran git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
-        - sudo apt-get install valgrind libgomp1 -y
-        - pushd casadi
-        - mkdir build
-        - pushd build
-        - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_PYTHON3=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-        - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
-        - echo "::$HVERSION::"
-        - grep -i ipopt CMakeCache.txt
-        - make VERBOSE=1
-        - make install
-        #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
-        - popd
-        - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-        - pushd test && make unittests_py && popd 
-
-    - compiler: gcc
-      python: 3.5
-      env:
-        - PYTHONVERSION=35
-        - NUMPYVERSION=1.9.1
-        - WITH_PYTHON3=ON
-      script:
-        - sudo apt-get install git binutils gcc g++ gfortran cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
-        - sudo apt-get install cmake valgrind libgomp1 -y
-        - pushd casadi
-        - mkdir build
-        - pushd build
-        - export CC=gcc-4.8
-        - export CXX=g++-4.8
-        - export FC=gfortran-4.8
-        - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_PYTHON3=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-        - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
-        - echo "::$HVERSION::"
-        - grep -i ipopt CMakeCache.txt
-        - make VERBOSE=1
-        - make install
-        #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
-        - popd
-        - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-        - pushd test && make unittests_py && popd # SOME ERRORS
-        
-
-    - compiler: gcc
-      python: 3.6
-      env:
-        - PYTHONVERSION=36
-        - NUMPYVERSION=1.9.1
-        - WITH_PYTHON3=ON
-      script:
-        - sudo apt-get install git binutils gcc g++ gfortran cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
-        - sudo apt-get install cmake valgrind libgomp1 -y
-        - pushd casadi
-        - mkdir build
-        - pushd build
-        - export CC=gcc-4.8
-        - export CXX=g++-4.8
-        - export FC=gfortran-4.8
-        - cmake -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_PYTHON3=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-        - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
-        - echo "::$HVERSION::"
-        - grep -i ipopt CMakeCache.txt
-        - make VERBOSE=1
-        - make install
-        #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
-        - popd
-        - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-        - pushd test && make unittests_py && popd # SOME ERRORS
-        
-
+    - python: 3.4
+      env: PYTHONVERSION=34 NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
+    - python: 3.5
+      env: PYTHONVERSION=35 NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
+    - python: 3.6
+      env: PYTHONVERSION=36 NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
   
 after_success:
   - test_commit tests-debian
