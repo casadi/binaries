@@ -64,6 +64,9 @@ after_script:
   - cat upload.py
   - python upload.py
 
+
+python: 3.2
+
 matrix:
   include:
     - python: 2.7
@@ -74,9 +77,12 @@ matrix:
       env: PYTHONVERSION=35 NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
     - python: 3.6
       env: PYTHONVERSION=36 NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
+  exclude:
+    - python: 3.2
   
 after_success:
   - test_commit tests-debian
+
 
 branches:
   except:
