@@ -89,12 +89,13 @@ branches:
 
 before_install:
   - export PYTHONVERSION_DOT3=`python -c "import sys;print('%s.%s.%s' % sys.version_info[:3])"`
-  - echo $PYTHONVERSION_DOT3
+  - echo :$PYTHONVERSION_DOT3:
   - export PYTHONVERSION_DOT2=`python -c "import sys;print('%s.%s' % sys.version_info[:2])"`
-  - echo $PYTHONVERSION_DOT2
+  - echo :$PYTHONVERSION_DOT2:
   - export PYTHONVERSION=`python -c "import sys;print('%s%s' % sys.version_info[:2])"`
-  - echo $PYTHONVERSION
+  - echo :$PYTHONVERSION:
   - export PYTHONVERSION1=`python -c "import sys;print(sys.version_info[0])"`
+  - echo :$PYTHONVERSION1:
   - |
     if [[ $PYTHONVERSION1 == 3 ]]
     then
@@ -103,7 +104,7 @@ before_install:
     else
       export PYTHONLIB_MOD=
     fi
-  - export $PYTHONLIB_MOD
+  - echo $PYTHONLIB_MOD
   - pip install requests
   - pip install pyyaml
   - pip install numpy
