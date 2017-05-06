@@ -63,7 +63,7 @@ after_script:
           sftp.makedirs('linux')
           with sftp.cd('linux'):
             sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
-  - sed -i "s/^\s*//g" upload.py 
+  - sed -i "s/^\s\s//g" upload.py 
   - cat upload.py
   - python upload.py
 
