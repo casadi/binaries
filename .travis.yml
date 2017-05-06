@@ -27,7 +27,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DPYTHON_LIBRARY=/opt/python/${PYTHONVERSION_DOT3}/lib/libpython${PYTHONVERSION_DOT2}m.so -DPYTHON_INCLUDE_DIR=/opt/python/${PYTHONVERSION_DOT3}/include/python${PYTHONVERSION_DOT2}m/ -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
   - grep -i ipopt CMakeCache.txt
@@ -68,13 +68,13 @@ python: 3.2
 matrix:
   include:
     - python: 2.7
-      env: PYTHONVERSION=27 NUMPYVERSION=1.9.1 TESTCOMMIT=1
+      env: NUMPYVERSION=1.9.1 TESTCOMMIT=1
     - python: 3.4
-      env: PYTHONVERSION=34 NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
+      env: NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
     - python: 3.5
-      env: PYTHONVERSION=35 NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
+      env: NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
     - python: 3.6
-      env: PYTHONVERSION=36 NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
+      env: NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
   exclude:
     - python: 3.2
   
@@ -87,6 +87,9 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - export PYTHONVERSION_DOT3=`python -c "import sys;print('%s.%s.%s' % sys.version_info[:3])"`
+  - export PYTHONVERSION_DOT2=`python -c "import sys;print('%s.%s' % sys.version_info[:2])"`
+  - export PYTHONVERSION=`python -c "import sys;print('%s%s' % sys.version_info[:2])"`
   - pip install requests
   - pip install pyyaml
   - pip install numpy
