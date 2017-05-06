@@ -90,7 +90,7 @@ matrix:
         #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
         - popd
         - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-        - python3 -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
         - pushd test && make unittests_py && popd 
 
     - compiler: gcc
@@ -100,7 +100,6 @@ matrix:
         - NUMPYVERSION=1.9.1
         - WITH_PYTHON3=ON
       script:
-        - python --version
         - sudo apt-get install git binutils gcc g++ gfortran cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
         - sudo apt-get install cmake valgrind libgomp1 -y
         - pushd casadi
@@ -118,8 +117,8 @@ matrix:
         #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
         - popd
         - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-        - python3 -c "from casadi.tools import *;loadAllCompiledPlugins()"
-        #- pushd test && make unittests_py && popd # SOME ERRORS
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test && make unittests_py && popd # SOME ERRORS
         
 
     - compiler: gcc
@@ -129,7 +128,6 @@ matrix:
         - NUMPYVERSION=1.9.1
         - WITH_PYTHON3=ON
       script:
-        - python --version
         - sudo apt-get install git binutils gcc g++ gfortran cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
         - sudo apt-get install cmake valgrind libgomp1 -y
         - pushd casadi
@@ -147,8 +145,8 @@ matrix:
         #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
         - popd
         - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-        - python3.6 -c "from casadi.tools import *;loadAllCompiledPlugins()"
-        #- pushd test && make unittests_py && popd # SOME ERRORS
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test && make unittests_py && popd # SOME ERRORS
         
 
   
