@@ -39,7 +39,6 @@ script:
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-  - remote_access
   - pushd test
   - python internal/test_py.py python -skipfiles="alltests.py helpers.py complexity.py speed.py"
   - popd
@@ -115,6 +114,7 @@ before_install:
   - pip install numpy
   - pip install matplotlib
   - pip install scipy
+  - pip install pysftp
   - sudo apt-get update
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
