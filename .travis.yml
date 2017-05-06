@@ -20,7 +20,6 @@ language: python
 
 before_script:
   - set -e
-  - pip install requests
   
 after_script:
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
@@ -200,6 +199,7 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - pip install requests
   - sudo apt-get update
   - sudo apt-get install python-dev -y
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
