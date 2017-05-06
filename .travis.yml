@@ -43,29 +43,29 @@ script:
   - popd
   - pushd test && make unittests_py && popd
 
-after_script: |
-  pushd python_install && tar -czf ../bundle.tar.gz . && popd
-  export RESULT_TAR="$PWD/bundle.tar.gz"
-  cat <<EOF > upload.py
-  import pysftp
-  sftp = pysftp.Connection('web.sourceforge.net', 
-                        username='casaditestbot,casadi',
-                        private_key='/home/travis/build/testbot/id_rsa_travis')
+after_script:
+  - pushd python_install && tar -czf ../bundle.tar.gz . && popd
+  - export RESULT_TAR="$PWD/bundle.tar.gz"
+  - cat <<EOF > upload.py
+    import pysftp
+    sftp = pysftp.Connection('web.sourceforge.net', 
+                          username='casaditestbot,casadi',
+                          private_key='/home/travis/build/testbot/id_rsa_travis')
 
-  binaries_dir = '/home/jg/binaries'
+    binaries_dir = '/home/jg/binaries'
 
 
-  with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-    sftp.makedirs('commits')
-    with sftp.cd('commits'):
-      sftp.makedirs("$COMMIT")
-      with sftp.cd("$COMMIT"):
-        sftp.makedirs('linux')
-        with sftp.cd('linux'):
-          sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
-  EOF
-  cat upload.py
-  python upload.py
+    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
+      sftp.makedirs('commits')
+      with sftp.cd('commits'):
+        sftp.makedirs("$COMMIT")
+        with sftp.cd("$COMMIT"):
+          sftp.makedirs('linux')
+          with sftp.cd('linux'):
+            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+  - sed -i "s/^\s*//g" upload.py 
+  - cat upload.py
+  - python upload.py
 
 python: 3.2
 
