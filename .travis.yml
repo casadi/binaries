@@ -16,11 +16,10 @@ env:
 
 os: linux
 dist: trusty
-language: generic
+language: python
 
 before_script:
   - set -e
-  - pyenv versions
   
 after_script:
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
@@ -51,6 +50,7 @@ matrix:
   include:
     - compiler: gcc
       env: PYTHONVERSION=27 NUMPYVERSION=1.9.1 TESTCOMMIT=1
+      python: 2.7
       script:
         - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
         - sudo apt-get install -y fakeroot rpm alien
@@ -70,6 +70,7 @@ matrix:
         - pushd test && make unittests_py && popd
 
     - compiler: gcc
+      python: 3.2
       env:
         - PYTHONVERSION=32
         - NUMPYVERSION=1.9.1
@@ -95,6 +96,7 @@ matrix:
 
 
     - compiler: gcc
+      python: 3.4
       env:
         - PYTHONVERSION=34
         - NUMPYVERSION=1.9.1
@@ -118,11 +120,13 @@ matrix:
         - pushd test && make unittests_py && popd 
 
     - compiler: gcc
+      python: 3.5
       env:
         - PYTHONVERSION=35
         - NUMPYVERSION=1.9.1
         - WITH_PYTHON3=ON
       script:
+        - python --version
         - sudo apt-get install git binutils gcc g++ gfortran cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
         - pinning xenial
         - tail /etc/apt/sources.list
@@ -150,11 +154,13 @@ matrix:
         
 
     - compiler: gcc
+      python: 3.6
       env:
         - PYTHONVERSION=36
         - NUMPYVERSION=1.9.1
         - WITH_PYTHON3=ON
       script:
+        - python --version
         - sudo apt-get install git binutils gcc g++ gfortran cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev -y
         - pinning yakkety
         - tail /etc/apt/sources.list
