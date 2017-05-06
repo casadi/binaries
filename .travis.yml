@@ -187,7 +187,7 @@ branches:
 
 before_install:
   - pip install requests
-  - pip install yaml
+  - pip install pyyaml
   - pip install numpy
   - pip install matplotlib
   - pip install scipy
