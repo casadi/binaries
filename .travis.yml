@@ -27,6 +27,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
+  - ls /opt/python/${PYTHONVERSION_DOT3}/include/python${PYTHONVERSION_DOT2}m/
   - cmake -DPYTHON_LIBRARY=/opt/python/${PYTHONVERSION_DOT3}/lib/libpython${PYTHONVERSION_DOT2}m.so -DPYTHON_INCLUDE_DIR=/opt/python/${PYTHONVERSION_DOT3}/include/python${PYTHONVERSION_DOT2}m/ -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
@@ -88,8 +89,11 @@ branches:
 
 before_install:
   - export PYTHONVERSION_DOT3=`python -c "import sys;print('%s.%s.%s' % sys.version_info[:3])"`
+  - echo $PYTHONVERSION_DOT3
   - export PYTHONVERSION_DOT2=`python -c "import sys;print('%s.%s' % sys.version_info[:2])"`
+  - echo $PYTHONVERSION_DOT2
   - export PYTHONVERSION=`python -c "import sys;print('%s%s' % sys.version_info[:2])"`
+  - echo $PYTHONVERSION
   - pip install requests
   - pip install pyyaml
   - pip install numpy
