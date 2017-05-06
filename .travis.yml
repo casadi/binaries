@@ -38,6 +38,9 @@ script:
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+  - pushd test
+  - python internal/test_py.py python -skipfiles="alltests.py helpers.py complexity.py speed.py"
+  - popd
   - pushd test && make unittests_py && popd
 
 after_script: |
