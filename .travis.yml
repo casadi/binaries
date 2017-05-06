@@ -39,6 +39,7 @@ script:
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+  - remote_access
   - pushd test
   - python internal/test_py.py python -skipfiles="alltests.py helpers.py complexity.py speed.py"
   - popd
