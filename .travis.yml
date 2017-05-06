@@ -47,15 +47,15 @@ script:
 after_script:
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
   - export RESULT_TAR="$PWD/bundle.tar.gz"
-  - cat <<EOF > upload.py
+  - |
+    cat <<EOF > upload.py
     import pysftp
     sftp = pysftp.Connection('web.sourceforge.net', 
                           username='casaditestbot,casadi',
                           private_key='/home/travis/build/testbot/id_rsa_travis')
-
+    
     binaries_dir = '/home/jg/binaries'
-
-
+    
     with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
       sftp.makedirs('commits')
       with sftp.cd('commits'):
@@ -93,13 +93,13 @@ branches:
 
 before_install:
   - export PYTHONVERSION_DOT3=`python -c "import sys;print('%s.%s.%s' % sys.version_info[:3])"`
-  - echo :$PYTHONVERSION_DOT3:
+  - echo ":$PYTHONVERSION_DOT3:"
   - export PYTHONVERSION_DOT2=`python -c "import sys;print('%s.%s' % sys.version_info[:2])"`
-  - echo :$PYTHONVERSION_DOT2:
+  - echo ":$PYTHONVERSION_DOT2:"
   - export PYTHONVERSION=`python -c "import sys;print('%s%s' % sys.version_info[:2])"`
-  - echo :$PYTHONVERSION:
+  - echo ":$PYTHONVERSION:"
   - export PYTHONVERSION1=`python -c "import sys;print(sys.version_info[0])"`
-  - echo :$PYTHONVERSION1:
+  - echo ":$PYTHONVERSION1:"
   - |
     if [[ $PYTHONVERSION1 == 3 ]]
     then
