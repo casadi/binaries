@@ -75,9 +75,9 @@ matrix:
     - python: 2.7
       env: NUMPYVERSION=1.9.1 TESTCOMMIT=1
     - python: 3.4
-      env: NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
+      env: NUMPYVERSION=1.9.1
     - python: 3.5
-      env: NUMPYVERSION=1.9.1 WITH_PYTHON3=ON
+      env: NUMPYVERSION=1.9.1
     - python: 3.6
       env: NUMPYVERSION=1.9.1 
   exclude:
