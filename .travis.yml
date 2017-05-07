@@ -97,7 +97,10 @@ before_install:
   - ./miniconda.sh -b
   - export PATH=/home/travis/miniconda2/bin:$PATH
   - conda update --yes conda
-  - conda install --yes python=$TRAVIS_PYTHON_VERSION requests pyyaml numpy=$NUMPYVERSION scipy matplotlib pysftp
+  - conda create --yes -n condaenv python=$TRAVIS_PYTHON_VERSION requests pyyaml numpy=$NUMPYVERSION scipy matplotlib
+  - conda install --yes -n condaenv pip
+  - source activate condaenv
+  - pip install pysftp
   - export PYTHONVERSION_DOT3=`python -c "import sys;print('%s.%s.%s' % sys.version_info[:3])"`
   - echo ":$PYTHONVERSION_DOT3:"
   - export PYTHONVERSION_DOT2=`python -c "import sys;print('%s.%s' % sys.version_info[:2])"`
