@@ -66,6 +66,8 @@ script:
   - otool -l python_install/casadi/libgcc_s.1.dylib | grep /usr/local || assertfail
   - otool -l /usr/local/opt/gcc@4.9/lib/gcc/4.9/libgcc_s.1.dylib | grep /usr/local || assertfail
   - otool -l python_install/casadi/libquadmath.0.dylib | grep /usr/local || assertfail
+  - otool -l python_install/casadi/libcasadi.dylib
+  - otool -l python_install/casadi/_casadi.so
   
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
   - export RESULT_TAR="$PWD/bundle.tar.gz"
