@@ -12,7 +12,6 @@ env:
     - SNOPT=/Users/travis/build/snopt7
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
-    - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
     - SLURP_GCC=4.9
     - FORTRAN_FULL=/usr/local/lib/gcc/4.9/libgfortran.3.dylib
@@ -20,8 +19,8 @@ env:
     - GCC_FULL=/usr/local/lib/gcc/4.9/libgcc_s.1.dylib
     
   matrix:
-    - PYTHONVERSION=27 PSF="" CMAKE_FLAG="" TESTCOMMIT=ON
-    - CMAKE_FLAG="-DWITH_PYTHON3=ON" WITH_PYTHON3=ON PY3=ON PSF=3 PYTHONVERSION=35 FORMULA=https://raw.githubusercontent.com/Homebrew/homebrew-core/2aab554b46257cacadd25ea3aa2ee1336273954a/Formula/python3.rb
+    - TRAVIS_PYTHON_VERSION=2.7 NUMPYVERSION=1.9 CMAKE_FLAG="" TESTCOMMIT=ON
+    - TRAVIS_PYTHON_VERSION=3.5 NUMPYVERSION=1.9 CMAKE_FLAG="-DWITH_PYTHON3=ON" WITH_PYTHON3=ON
 
 before_script:
   - set -e
@@ -100,6 +99,31 @@ branches:
 
 before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
+  - wget http://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh
+  - chmod +x miniconda.sh
+  - ./miniconda.sh -b
+  - export PATH=$HOME/miniconda2/bin:$PATH
+  - conda update --yes conda
+  - conda create --yes -n condaenv python=$TRAVIS_PYTHON_VERSION requests pyyaml numpy=$NUMPYVERSION scipy matplotlib
+  - conda install --yes -n condaenv pip
+  - source activate condaenv
+  - export PYTHONVERSION_DOT3=`python -c "import sys;print('%s.%s.%s' % sys.version_info[:3])"`
+  - echo ":$PYTHONVERSION_DOT3:"
+  - export PYTHONVERSION_DOT2=`python -c "import sys;print('%s.%s' % sys.version_info[:2])"`
+  - echo ":$PYTHONVERSION_DOT2:"
+  - export PYTHONVERSION=`python -c "import sys;print('%s%s' % sys.version_info[:2])"`
+  - echo ":$PYTHONVERSION:"
+  - export PYTHONVERSION1=`python -c "import sys;print(sys.version_info[0])"`
+  - echo ":$PYTHONVERSION1:"
+  - |
+    if [[ $PYTHONVERSION1 == 3 ]]
+    then
+      export WITH_PYTHON3=ON
+      export PYTHONLIB_MOD=m
+    else
+      export PYTHONLIB_MOD=
+    fi
+  - pip install pysftp
   - brew install binutils
   - brew reinstall gcc49 --with-fortran
   #- brew install findutils --with-default-names
@@ -134,9 +158,5 @@ before_install:
   - brew update
   - brew tap homebrew/science
   #- brew doctor
-  
-  - if [ $PY3 ]; then brew install $FORMULA ; fi
-  - sudo pip$PSF install ipython matplotlib numpy scipy 2>/dev/null
-  - sudo pip install pysftp cryptography==1.2.1 >/dev/null 2>&1
   
 language: cpp
