@@ -10,6 +10,8 @@ before_script:
 os: osx
 
 script:
+  - popd
+  - pwd
   - |
     cat <<EOF > download.py
     import pysftp
