@@ -3,7 +3,7 @@ env:
   global: 
     - DYLD_LIBRARY_PATH=/Users/travis/build/snopt7/lib:/Users/travis/build/mosek/7/tools/platform/linux64x86/bin/:/Users/travis/build/gurobi/lib
     - PYTHONVERSION=27
-    - NUMPYVERSION=1.9.1
+    - NUMPYVERSION=1.9
     - MOSEKLM_LICENSE_FILE=/Users/travis/build/testbot/restricted/mosek.lic
 
 before_script:
