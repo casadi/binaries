@@ -99,44 +99,18 @@ branches:
 
 before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  - wget http://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh
-  - chmod +x miniconda.sh
-  - ./miniconda.sh -b
-  - export PATH=$HOME/miniconda2/bin:$PATH
-  - conda update --yes conda
-  - conda create --yes -n condaenv python=$TRAVIS_PYTHON_VERSION requests pyyaml numpy=$NUMPYVERSION scipy matplotlib
-  - conda install --yes -n condaenv pip
-  - source activate condaenv
-  - export PYTHONVERSION_DOT3=`python -c "import sys;print('%s.%s.%s' % sys.version_info[:3])"`
-  - echo ":$PYTHONVERSION_DOT3:"
-  - export PYTHONVERSION_DOT2=`python -c "import sys;print('%s.%s' % sys.version_info[:2])"`
-  - echo ":$PYTHONVERSION_DOT2:"
-  - export PYTHONVERSION=`python -c "import sys;print('%s%s' % sys.version_info[:2])"`
-  - echo ":$PYTHONVERSION:"
-  - export PYTHONVERSION1=`python -c "import sys;print(sys.version_info[0])"`
-  - echo ":$PYTHONVERSION1:"
-  - |
-    if [[ $PYTHONVERSION1 == 3 ]]
-    then
-      export WITH_PYTHON3=ON
-      export PYTHONLIB_MOD=m
-    else
-      export PYTHONLIB_MOD=
-    fi
-  - pip install pysftp
   - brew install binutils
   - brew reinstall gcc49 --with-fortran
   #- brew install findutils --with-default-names
   #- sudo updatedb
   #- locate libgfortran
   - ls /usr/local/lib/gcc/4.9
-  #- wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py
-  #- sudo python get-pip.py
   - which gobjdump
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
+  - python_setup
   - brew install p7zip
   #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /Users/travis/build/casadi/testbot
