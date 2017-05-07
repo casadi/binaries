@@ -18,9 +18,6 @@ env:
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
     - SLURP_GCC=4.9
-    - FORTRAN_FULL=/usr/local/lib/gcc/4.9/libgfortran.3.dylib
-    - QUADMATH_FULL=/usr/local/lib/gcc/4.9/libquadmath.0.dylib
-    - GCC_FULL=/usr/local/lib/gcc/4.9/libgcc_s.1.dylib
     
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2015a
@@ -33,8 +30,6 @@ before_script:
 compiler: clang
 
 script:
-  - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" $FORTRAN_FULL
-  - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" $QUADMATH_FULL
   - pushd /Users/travis/build
   - echo $MATLABRELEASE
   - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
@@ -48,23 +43,11 @@ script:
   - mkdir build
   - pushd build
   - cmake -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_MATLAB=ON -DWITH_PYTHON=OFF -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH ..
+  - osx_rpath
   - make VERBOSE=1
   - make install
   - popd
   - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $MATLABPATH
-  - sudo install_name_tool -change $QUADMATH_FULL "@rpath/libquadmath.0.dylib" $MATLABPATH/libgfortran.3.dylib  
-  - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" $MATLABPATH/libgfortran.3.dylib  
-  - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" $MATLABPATH/libquadmath.0.dylib 
-  - sudo install_name_tool -change /usr/local/Cellar/gcc49/4.9.3/lib/gcc/4.9/libquadmath.0.dylib "@rpath/libgcc_s.1.dylib" $MATLABPATH/libgfortran.3.dylib 
-
-  - otool -l $MATLABPATH/libgfortran.3.dylib | grep /usr/local || assertfail
-  - otool -l $MATLABPATH/libgcc_s.1.dylib | grep /usr/local || assertfail
-  - otool -l $MATLABPATH/libquadmath.0.dylib | grep /usr/local || assertfail
-  #- otool -l /Users/travis/build/casadi/binaries/casadi/build/lib/libcasadi_nlpsolver_ipopt.dylib
-  #- otool -l $MATLABPATH/libcasadi_nlpsolver_ipopt.dylib
-  #- ssh-keyscan gate.mech.kuleuven.be >> ~/.ssh/known_hosts
-  #- echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA3mEl1i8wiojyJdJnwrmC3RTWCIGgUM4lmtWNWu4p4QyiBry2iB7y2qno48pZqkV/EFRsyWWeEDvbdA4etYlceKZaGJFAdqJig/247qPbamU5W5++d7zkGwA5nQDH147/+JMYk4na9RoGl2iOHMyxi7Wq0WkN11u0Slp2awluvV9UXpBl/XD74eYmUfOFop6y+Hkg/K2hyytg8vAkp33x/vy8JxSK93vbnLGsrVOVjp6Epf7Jo2C8ZHX9eVL2sfi7icjNbt6s9AnU076tBURBIEQbg+Sa8nK7v6zzJNZbn9G85t0M64BKMvcRH1BXf0VvIeBQs/yv9uZLaC9SFvj+4Q== u0052373@xen-vm03.mech.kuleuven.be" >> ~/.ssh/authorized_keys
-  #- ssh -R 2245:localhost:22 u0052373@gate.mech.kuleuven.be
   - pushd $MATLABPATH && tar -czf ../bundle.tar.gz .  && popd
   - export RESULT_TAR="$MATLABPATH/../bundle.tar.gz"
   - |
