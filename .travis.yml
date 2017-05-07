@@ -30,6 +30,7 @@ compiler: clang
 script:
   - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" $FORTRAN_FULL
   - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" $QUADMATH_FULL
+  - sudo install_name_tool -id "@rpath/liboctinterp.4.dylib" /usr/local/opt/octave/lib/octave/4.2.1/liboctinterp.4.dylib
   - pushd /Users/travis/build
   - source testbot/shellhelpers
   - ls -al
