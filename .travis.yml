@@ -3,7 +3,7 @@ env:
   global: 
     - LD_LIBRARY_PATH=/home/travis/build/libhsl:/home/travis/build/testbot/restricted/worhp:/home/travis/build/snopt75/lib:/home/travis/build/mosek/7/tools/platform/linux64x86/bin/:/home/travis/build/gurobi/lib
     - PYTHONVERSION=27
-    - NUMPYVERSION=1.9.1
+    - NUMPYVERSION=1.9
     - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
 
