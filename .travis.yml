@@ -2,7 +2,6 @@
 env: 
   global: 
     - DYLD_LIBRARY_PATH=/Users/travis/build/snopt7/lib:/Users/travis/build/mosek/7/tools/platform/linux64x86/bin/:/Users/travis/build/gurobi/lib
-    - MATLABRELEASE=R2015a
     - MOSEKLM_LICENSE_FILE=/Users/travis/build/testbot/restricted/mosek.lic
     
 before_script:
@@ -11,16 +10,6 @@ before_script:
 os: osx
 
 script:
-  - echo $MATLABRELEASE
-  - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
-  - ls
-  - mkdir matlab
-  - travis_wait unzip matlab${MATLABRELEASE}_osx.zip -d matlab > /dev/null
-  - popd
-  - matlabtunnel
-  - ls
-  - pushd casadi
-  - popd
   - |
     cat <<EOF > download.py
     import pysftp
@@ -32,22 +21,13 @@ script:
       with sftp.cd('commits'):
         with sftp.cd("$COMMIT"):
           with sftp.cd('osx'):
-            sftp.get("casadi-matlab$MATLABRELEASE-$COMMIT.tar.gz","matlab.tar.gz")
+            sftp.get("casadi-octave-$COMMIT.tar.gz","octave.tar.gz")
     EOF
   - python download.py
-  - mkdir matlab && tar -xvf matlab.tar.gz -C matlab
+  - mkdir octave && tar -xvf octave.tar.gz -C octave
   
-  # We have no gurobi license presently
-  #- pushd matlab && find -name *gurobi* | xargs rm && popd
-  
-  - ls matlab.tar.gz
-  # - remote_access
-  #- otool -l matlab/libcasadi_nlpsolver_ipopt.dylib
-
-  - chmod +x /Users/travis/build/matlab/bin/.matlab*
-  - echo "LDPATH_PREFIX=$DYLD_LIBRARY_PATH:\$LDPATH_PREFIX" | sudo tee -a /Users/travis/build/matlab/bin/.matlab*
-  - PATH=/Users/travis/build/matlab/bin/:$PATH matlab -nodisplay -nosplash -nodesktop -nojvm -r "addpath('/Users/travis/build/casadi/binaries/matlab'),savepath,exit"
-  - pushd casadi/test && PATH=/Users/travis/build/matlab/bin/:$PATH make matlab && popd
+  - octave --no-gui --eval "addpath('$HOME/build/casadi/binaries/octave'),savepath,exit"
+  - pushd casadi/test && make octave && popd
   
 branches:
   except:
@@ -60,6 +40,7 @@ before_install:
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - brew update
   - brew tap homebrew/science
+  - brew install octave
   - brew install p7zip
   #- brew doctor
   - sudo easy_install pip
