@@ -118,6 +118,6 @@ before_install:
   - brew reinstall gcc49 --with-fortran
   #- brew doctor
   - sudo easy_install pip
-  - sudo pip install ipython matplotlib numpy scipy pysftp cryptography==1.2.1
+  - sudo pip install pysftp cryptography==1.2.1
   
 language: cpp
