@@ -28,8 +28,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - ls /opt/python/${PYTHONVERSION_DOT3}/include/python${PYTHONVERSION_DOT2}${PYTHONLIB_MOD}/
-  - cmake -DPYTHON_LIBRARY=/opt/python/${PYTHONVERSION_DOT3}/lib/libpython${PYTHONVERSION_DOT2}${PYTHONLIB_MOD}.so -DPYTHON_INCLUDE_DIR=/opt/python/${PYTHONVERSION_DOT3}/include/python${PYTHONVERSION_DOT2}${PYTHONLIB_MOD}/ -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DPYTHON_LIBRARY=/home/travis/miniconda2/envs/condaenv/lib/libpython${PYTHONVERSION_DOT2}.so -DPYTHON_INCLUDE_DIR=/home/travis/miniconda2/envs/condaenv/include/python${PYTHONVERSION_DOT2}/ -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=ON -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
   - grep -i ipopt CMakeCache.txt
@@ -113,16 +112,11 @@ before_install:
     if [[ $PYTHONVERSION1 == 3 ]]
     then
       export WITH_PYTHON3=ON
-      export PYTHONLIB_MOD=m
-    else
-      export PYTHONLIB_MOD=
     fi
-  - echo $PYTHONLIB_MOD
   - sudo apt-get update
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
-  - remote_access
   - export SLURP_OS=trusty
   - sudo apt-get install p7zip-full -y
   - slurp ecos
