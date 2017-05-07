@@ -73,13 +73,13 @@ python: 3.2
 matrix:
   include:
     - python: 2.7
-      env: NUMPYVERSION=1.9.1 TESTCOMMIT=1
+      env: NUMPYVERSION=1.9 TESTCOMMIT=1
     - python: 3.4
-      env: NUMPYVERSION=1.9.1
+      env: NUMPYVERSION=1.9
     - python: 3.5
-      env: NUMPYVERSION=1.9.1
+      env: NUMPYVERSION=1.9
     - python: 3.6
-      env: NUMPYVERSION=1.9.1 
+      env: NUMPYVERSION=1.9 
   exclude:
     - python: 3.2
   
@@ -122,6 +122,7 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
+  - remote_access
   - export SLURP_OS=trusty
   - sudo apt-get install p7zip-full -y
   - slurp ecos
