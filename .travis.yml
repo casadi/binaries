@@ -54,7 +54,7 @@ before_install:
   - brew install p7zip
   #- brew doctor
   - sudo easy_install pip
-  - sudo pip install ipython matplotlib numpy scipy pysftp cryptography==1.2.1 2>/dev/null
+  - sudo pip install matplotlib numpy scipy pysftp cryptography==1.2.1 2>/dev/null
   - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts
   - export SLURP_OS=osx
