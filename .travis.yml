@@ -1,6 +1,7 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 os: osx
 
+
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
@@ -8,13 +9,15 @@ env:
     - CMAKE_INCLUDE_PATH=/Users/travis/build/testbot/restricted/cplex/cplex/include:/Users/travis/build/testbot/restricted/cplex/concert/include
     - CMAKE_LIBRARY_PATH=/Users/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/Users/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
     - ILOG_LICENSE_FILE=/Users/travis/build/testbot/restricted/cplex/access.ilm
-    - WORHP=/Users/travis/build/testbot/restricted/worhp
-    - WORHP_LICENSE_FILE=/Users/travis/build/testbot/restricted/worhp/unlocked.lic
     - SNOPT=/Users/travis/build/snopt7
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
+    - SLURP_GCC=4.9
+    - FORTRAN_FULL=/usr/local/lib/gcc/4.9/libgfortran.3.dylib
+    - QUADMATH_FULL=/usr/local/lib/gcc/4.9/libquadmath.0.dylib
+    - GCC_FULL=/usr/local/lib/gcc/4.9/libgcc_s.1.dylib
     
   matrix:
     - PYTHONVERSION=27 PSF="" CMAKE_FLAG="" TESTCOMMIT=ON
@@ -26,8 +29,12 @@ before_script:
 compiler: clang
 
 script:
-  - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgfortran.3.dylib
-  - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib
+  - ls /usr/local/lib/gcc/
+  - ls /usr/local/lib/gcc/4.9
+
+  #- find /usr/local/Cellar/gcc -name *libgcc_s* 
+  - sudo install_name_tool -id "@rpath/libgfortran.3.dylib" $FORTRAN_FULL
+  - sudo install_name_tool -id "@rpath/libquadmath.0.dylib" $QUADMATH_FULL
   - pkg-config --libs --cflags ipopt
   - pushd casadi
   - grep -v PYTHON_LIBRARIES swig/python/CMakeLists.txt > tmp && mv tmp swig/python/CMakeLists.txt
@@ -35,24 +42,32 @@ script:
   - echo "swig_link_libraries(casadi casadi)" >> swig/python/CMakeLists.txt
   - mkdir build
   - pushd build
-  - cmake $CMAKE_FLAG -DWITH_OPENMP=ON -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake $CMAKE_FLAG -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - make VERBOSE=1
   - make install
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   #- otool -l /Users/travis/build/casadi/binaries/casadi/python_install/casadi/libcasadi_nlpsolver_ipopt.dylib
-  - otool -l /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgfortran.3.dylib
-  - otool -l /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib
-  - otool -l /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgcc_s.1.dylib
+  - otool -l $FORTRAN_FULL
+  - otool -l $QUADMATH_FULL
+  - otool -l $GCC_FULL
   
   #- ssh-keyscan gate.mech.kuleuven.be >> ~/.ssh/known_hosts
   #- echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA3mEl1i8wiojyJdJnwrmC3RTWCIGgUM4lmtWNWu4p4QyiBry2iB7y2qno48pZqkV/EFRsyWWeEDvbdA4etYlceKZaGJFAdqJig/247qPbamU5W5++d7zkGwA5nQDH147/+JMYk4na9RoGl2iOHMyxi7Wq0WkN11u0Slp2awluvV9UXpBl/XD74eYmUfOFop6y+Hkg/K2hyytg8vAkp33x/vy8JxSK93vbnLGsrVOVjp6Epf7Jo2C8ZHX9eVL2sfi7icjNbt6s9AnU076tBURBIEQbg+Sa8nK7v6zzJNZbn9G85t0M64BKMvcRH1BXf0VvIeBQs/yv9uZLaC9SFvj+4Q== u0052373@xen-vm03.mech.kuleuven.be" >> ~/.ssh/authorized_keys
   #- ssh -R 2245:localhost:22 u0052373@gate.mech.kuleuven.be
-  - pushd /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1 && cp libgcc_s.1.dylib libgfortran.3.dylib libquadmath.0.dylib /Users/travis/build/casadi/binaries/casadi/python_install/casadi && popd
-  - sudo install_name_tool -change /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libquadmath.0.dylib "@rpath/libquadmath.0.dylib" python_install/casadi/libgfortran.3.dylib  
-  - sudo install_name_tool -change /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgcc_s.1.dylib "@rpath/libgcc_s.1.dylib" python_install/casadi/libgfortran.3.dylib  
-  - sudo install_name_tool -change /usr/local/Cellar/gcc/4.9.1/lib/gcc/x86_64-apple-darwin13.3.0/4.9.1/libgcc_s.1.dylib "@rpath/libgcc_s.1.dylib" python_install/casadi/libquadmath.0.dylib 
+  - cp $GCC_FULL $QUADMATH_FULL $FORTRAN_FULL /Users/travis/build/casadi/binaries/casadi/python_install/casadi
+  - sudo install_name_tool -change $QUADMATH_FULL "@rpath/libquadmath.0.dylib" python_install/casadi/libgfortran.3.dylib  
+  - sudo install_name_tool -change /usr/local/Cellar/gcc@4.9/4.9.3_1/lib/gcc/4.9/libquadmath.0.dylib "@rpath/libgcc_s.1.dylib" python_install/casadi/libgfortran.3.dylib 
+  - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" python_install/casadi/libgfortran.3.dylib  
+  - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" python_install/casadi/libquadmath.0.dylib
+  - sudo install_name_tool -change $GCC_FULL "@rpath/libgcc_s.1.dylib" python_install/casadi/libquadmath.0.dylib
+  - sudo install_name_tool -id "@rpath/libgcc_s.1.dylib" python_install/casadi/libgcc_s.1.dylib
 
+  - otool -l python_install/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
+  - otool -l python_install/casadi/libgcc_s.1.dylib | grep /usr/local || assertfail
+  - otool -l /usr/local/opt/gcc@4.9/lib/gcc/4.9/libgcc_s.1.dylib | grep /usr/local || assertfail
+  - otool -l python_install/casadi/libquadmath.0.dylib | grep /usr/local || assertfail
+  
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
   - export RESULT_TAR="$PWD/bundle.tar.gz"
   - |
@@ -84,29 +99,40 @@ branches:
     - /.*appveyor.*/
 
 before_install:
+  - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - brew install binutils
+  - brew reinstall gcc49 --with-fortran
+  #- brew install findutils --with-default-names
+  #- sudo updatedb
+  #- locate libgfortran
+  - ls /usr/local/lib/gcc/4.9
+  #- wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py
+  #- sudo python get-pip.py
   - which gobjdump
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - brew install p7zip
-  #- travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /Users/travis/build/casadi/testbot
   - export SLURP_OS=osx
+  #- slurp hsl
   - slurp clang
   - slurp ecos
   - slurp ipopt
   - slurp bonmin
+  - slurp worhp
+  - slurp swig_matlab
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
   #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
   #- pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
+  - echo $WORHP
+  - ls $HOME
+  - ls $HOME/build/worhp
   - popd
   - brew update
   - brew tap homebrew/science
-  - brew outdated swig ; brew install swig
-  - swig -version 
   #- brew doctor
   
   - if [ $PY3 ]; then brew install $FORMULA ; fi
