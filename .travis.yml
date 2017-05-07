@@ -90,7 +90,7 @@ branches:
 
 before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  - brew install binutils pcre
+  - brew install binutils #pcre
   - which gobjdump
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
