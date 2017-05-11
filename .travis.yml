@@ -10,7 +10,7 @@ env:
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
-    - OCTAVEPATH=/Users/travis/build/octave-install/casadi
+    - OCTAVEPATH=/Users/travis/build/octave-install
     - SLURP_GCC=4.9
     - TESTCOMMIT="1"
 
@@ -43,7 +43,7 @@ script:
   #- otool -l /Users/travis/build/casadi/binaries/casadi/build/lib/libcasadi_nlpsolver_ipopt.dylib
   #- otool -l $MATLABPATH/libcasadi_nlpsolver_ipopt.dylib
 
-  - pushd $OCTAVEPATH && tar -czf ../bundle.tar.gz .  && popd
+  - pushd $OCTAVEPATH/casadi && tar -czf ../../bundle.tar.gz .  && popd
   - export RESULT_TAR="$OCTAVEPATH/../bundle.tar.gz"
   - |
     cat <<EOF > upload.py
