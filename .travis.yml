@@ -91,10 +91,10 @@ script:
   - cmake $casadi_build_flags -DMATLAB_EXTRA_CXXFLAGS="-D__STDC_UTF_16__" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_MATLAB=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../matlab_install -DWITH_EXAMPLES=OFF ..
   - make install -j2 VERBOSE=1
   - ls /usr/lib/gcc/$compilerprefix
-  - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../matlab_install
-  - cp /usr/$compilerprefix/lib/*.dll ../matlab_install
-  - cp -RL /usr/$compilerprefix/include ../matlab_install/casadi/jit/mingw
-  - cp -R /home/travis/build/clang/include/c++/v1 ../matlab_install/casadi/jit/mingw/c++
+  - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../matlab_install/casadi
+  - cp /usr/$compilerprefix/lib/*.dll ../matlab_install/casadi
+  - cp -RL /usr/$compilerprefix/include ../matlab_install/casadi/casadi/jit/mingw
+  - cp -R /home/travis/build/clang/include/c++/v1 ../matlab_install/casadi/casadi/jit/mingw/c++
   
   - popd
   - pushd matlab_install/casadi && zip -r ../../bundle.zip . && popd
@@ -154,4 +154,5 @@ before_install:
   - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
 
 language: cpp
+
 
