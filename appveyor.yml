@@ -10,6 +10,7 @@ environment:
     PYTHON_VERSION: "2.7.8"
     PYTHON_ARCH: "32"
     MATLABRELEASE: "R2014b"
+    GIT_ALLOW_PROTOCOL: "file:git:http:https:ssh:ext"
 
 install:
   - git submodule init
