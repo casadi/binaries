@@ -5,17 +5,12 @@ os: osx
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - LD_LIBRARY_PATH=/Users/travis/build/libhsl;/Users/travis/build/testbot/restricted/worhp;/Users/travis/build/snopt7/lib
-    - CMAKE_INCLUDE_PATH=/Users/travis/build/testbot/restricted/cplex/cplex/include:/Users/travis/build/testbot/restricted/cplex/concert/include
-    - CMAKE_LIBRARY_PATH=/Users/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/Users/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
-    - ILOG_LICENSE_FILE=/Users/travis/build/testbot/restricted/cplex/access.ilm
-    - WORHP=/Users/travis/build/testbot/restricted/worhp
-    - WORHP_LICENSE_FILE=/Users/travis/build/testbot/restricted/worhp/unlocked.lic
+    - LD_LIBRARY_PATH=/Users/travis/build/libhsl;/Users/travis/build/snopt7/lib
     - SNOPT=/Users/travis/build/snopt7
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
-    - OCTAVEPATH=/Users/travis/build/octave-install
+    - OCTAVEPATH=/Users/travis/build/octave-install/casadi
     - SLURP_GCC=4.9
     - TESTCOMMIT="1"
 
@@ -35,7 +30,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DWITH_PYTHON=OFF -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=$OCTAVEPATH ..
+  - cmake -DWITH_COMMON=ON $casadi_build_flags -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=$OCTAVEPATH ..
   - osx_rpath
   - make VERBOSE=1
   - make install
@@ -94,13 +89,13 @@ before_install:
   #- pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig  swig-install  && popd
   - export SLURP_OS=osx
   - slurp swig_matlab
-  - slurp clang
+  #- slurp clang
   - slurp ecos
   - slurp ipopt
+  - slurp worhp
   - slurp bonmin
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
   #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
-  #- pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - brew update
   - brew tap homebrew/science
