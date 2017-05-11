@@ -107,7 +107,7 @@ before_install:
   - slurp bonmin
   - slurp swig
   - slurp cplex
-  - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
+  - slurp worhp
   - popd
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   
