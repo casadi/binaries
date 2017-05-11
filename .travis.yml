@@ -33,7 +33,7 @@ script:
   - echo "swig_link_libraries(casadi casadi)" >> swig/python/CMakeLists.txt
   - mkdir build
   - pushd build
-  - cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake -DWITH_COMMON=ON $casadi_build_flags -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - osx_rpath
   - make VERBOSE=1
   - make install
@@ -101,7 +101,7 @@ before_install:
   - mkdir -p /Users/travis/build/casadi/testbot
   - export SLURP_OS=osx
   #- slurp hsl
-  - slurp clang
+  #- slurp clang
   - slurp ecos
   - slurp ipopt
   - slurp bonmin
