@@ -20,8 +20,8 @@ install:
   - ECHO "%COMMIT%"
   - cd ..
   - git clone https://github.com/casadi/testbot.git
-  - echo %GIT_EXT_SERVICE%
-  - echo %GIT_EXT_SERVICE_NOPREFIX%
+  - echo "%GIT_EXT_SERVICE%"
+  - echo "%GIT_EXT_SERVICE_NOPREFIX%"
   - set GIT_TRANSLOOP_DEBUG=true
   - cd testbot && git checkout merged && call recipes\setup.bat && cd ..
   - testbot/env.bat
