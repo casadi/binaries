@@ -11,6 +11,7 @@ environment:
     NUMPYVERSION: "1.9.1"
     keyA:
       secure: 44jgfY+doJx9eHLCweOl6Mf7qoeeRlA2Dch0cLUGbvRorXaqr6bs8tVsJ/KXGPVIA4DrXLlpaEeb2eJ5LM4Mdeq5Ux2txHsQpTAnBDSihWQ=
+    GIT_ALLOW_PROTOCOL: "file:git:http:https:ssh:ext"
 
 install:
   - git submodule init
