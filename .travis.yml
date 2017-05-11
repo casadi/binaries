@@ -75,7 +75,7 @@ before_install:
   - slurp ipopt
   - slurp bonmin
   - slurp swig_matlab
-  - slutp cplex
+  - slurp cplex
   - slurp worhp
   - popd
   - sudo apt-get update -qq
