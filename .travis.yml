@@ -97,7 +97,7 @@ script:
   - cp -R /home/travis/build/clang/include/c++/v1 ../matlab_install/casadi/jit/mingw/c++
   
   - popd
-  - pushd matlab_install && zip -r ../bundle.zip . && popd
+  - pushd matlab_install/casadi && zip -r ../../bundle.zip . && popd
   - |
     cat <<EOF > upload.py
     import pysftp
