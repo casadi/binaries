@@ -26,10 +26,11 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_PYTHON=ON -DWITH_COMMON=ON $casadi_build_flags -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../python_install -DWITH_PYTHON=ON -DWITH_COMMON=ON $casadi_build_flags -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON ..
   - make -j2
   - sudo make -j2 install
   - popd
+  - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - sudo pip install texttable
   - sudo pip install pydot2
   - sudo apt-get install graphviz python-lxml python-ipdb python-docutils -y
