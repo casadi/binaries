@@ -4,6 +4,7 @@ env:
     - DYLD_LIBRARY_PATH=/Users/travis/build/snopt7/lib:/Users/travis/build/mosek/7/tools/platform/linux64x86/bin/:/Users/travis/build/gurobi/lib
     - MATLABRELEASE=R2015a
     - MOSEKLM_LICENSE_FILE=/Users/travis/build/testbot/restricted/mosek.lic
+    - SLURP_GCC=4.9
     
 before_script:
   - set -e
