@@ -8,12 +8,12 @@ env:
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
     - SNOPT=/home/travis/build/snopt7
     - OCTAVEPATH=/home/travis/build/octave-install
-    - compilerprefix=i686-w64-mingw32
     - GUROBI_HOME=/home/travis/build/gurobi
-    - BITNESS=32
+    - OCTAVE_VERSION=4.2.1
 
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1"
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-mingw32 TESTCOMMIT="1" 
 
 compiler:
   - i686-w64-mingw32
@@ -28,8 +28,8 @@ script:
   # travis-wait seems to stop at 20 mins, regardless if output is being generated
   - (while true ; do sleep 60 ; echo "ping" ; done ) &
 
-  - wget https://ftp.gnu.org/gnu/octave/windows/octave-4.0.2.zip
-  - unzip octave-4.0.2.zip > /dev/null
+  - wget https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w${BITNESS}.zip
+  - unzip octave-${OCTAVE_VERSION}-w${BITNESS}.zip > /dev/null
   - popd
   - pushd casadi
   - mkdir build
@@ -62,7 +62,7 @@ script:
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
     set(CMAKE_SHARED_LIBRARY_SUFFIX "dll")
     EOF
-  - cmake $casadi_build_flags -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-4.0.2/include/octave-4.0.2/octave/ -DOCTAVE_LIBRARIES="$HOME/build/octave-4.0.2/bin/liboctinterp-3.dll;$HOME/build/octave-4.0.2/bin/liboctave-3.dll" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DWITH_WORHP=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF .. 
+  - cmake $casadi_build_flags -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-${OCTAVE_VERSION}/include/octave-${OCTAVE_VERSION}/octave/ -DOCTAVE_LIBRARIES="$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctinterp-4.dll;$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctave-4.dll" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DWITH_WORHP=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF .. 
   - make install -j2 VERBOSE=1
   - ls lib
   - make install
@@ -88,7 +88,7 @@ script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('windows')
           with sftp.cd('windows'):
-            sftp.put("bundle.zip","casadi-octave-$COMMIT$NAME_SUFFIX.zip")
+            sftp.put("bundle.zip","casadi-octave-${OCTAVE_VERSION}-w${BITNESS}-$COMMIT$NAME_SUFFIX.zip")
     EOF
   - sudo python upload.py
 
