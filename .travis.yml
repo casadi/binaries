@@ -40,7 +40,7 @@ script:
   - make VERBOSE=1
   - make install
   - popd
-  - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $MATLABPATH
+  - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $MATLABPATH/casadi
   - pushd $MATLABPATH/casadi && tar -czf ../../bundle.tar.gz .  && popd
   - export RESULT_TAR="$MATLABPATH/../bundle.tar.gz"
   - |
