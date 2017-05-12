@@ -6,16 +6,9 @@ env:
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
     - LD_LIBRARY_PATH=/Users/travis/build/libhsl;/Users/travis/build/testbot/restricted/worhp;/Users/travis/build/snopt7/lib
-    - CMAKE_INCLUDE_PATH=/Users/travis/build/testbot/restricted/cplex/cplex/include:/Users/travis/build/testbot/restricted/cplex/concert/include
-    - CMAKE_LIBRARY_PATH=/Users/travis/build/testbot/restricted/cplex/cplex/lib/x86-64_sles10_4.1/static_pic/:/Users/travis/build/testbot/restricted/cplex/concert/lib/x86-64_sles10_4.1/static_pic/
-    - ILOG_LICENSE_FILE=/Users/travis/build/testbot/restricted/cplex/access.ilm
-    - WORHP=/Users/travis/build/testbot/restricted/worhp
-    - WORHP_LICENSE_FILE=/Users/travis/build/testbot/restricted/worhp/unlocked.lic
     - SNOPT=/Users/travis/build/snopt7
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
-    - PYTHONVERSION=27
-    - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
     - SLURP_GCC=4.9
     
@@ -42,13 +35,13 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_OPENMP=OFF -DWITH_ECOS=ON -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_WORHP=ON -DWITH_SLICOT=ON -DWITH_MATLAB=ON -DWITH_PYTHON=OFF -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH ..
+  - cmake $casadi_build_flags -DWITH_OPENMP=OFF  -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH ..
   - osx_rpath
   - make VERBOSE=1
   - make install
   - popd
   - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $MATLABPATH
-  - pushd $MATLABPATH && tar -czf ../bundle.tar.gz .  && popd
+  - pushd $MATLABPATH/casadi && tar -czf ../../bundle.tar.gz .  && popd
   - export RESULT_TAR="$MATLABPATH/../bundle.tar.gz"
   - |
     cat <<EOF > upload.py
@@ -90,20 +83,18 @@ before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - brew install p7zip
-  #- travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /Users/travis/build/casadi/testbot
   #- travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
   #- pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig  swig-install  && popd
   - export SLURP_OS=osx
   - slurp swig_matlab
-  - slurp clang
+  - slurp hsl
+  #- slurp clang
   - slurp ecos
   - slurp ipopt
   - slurp bonmin
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
-  #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
-  #- pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - brew update
   - brew tap homebrew/science
