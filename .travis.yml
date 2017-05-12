@@ -13,7 +13,6 @@ env:
     - casadi_build_flags=-DWITH_COMMON=ON
 
 os: linux
-dist: trusty
 language: python
 
 
