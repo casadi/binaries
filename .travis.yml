@@ -35,11 +35,11 @@ script:
   - make VERBOSE=1
   - make install
   - popd
-  - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $OCTAVEPATH
+  - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $OCTAVEPATH/casadi
   
-  - otool -l $OCTAVEPATH/libgfortran.3.dylib | grep /usr/local || assertfail
-  - otool -l $OCTAVEPATH/libgcc_s.1.dylib | grep /usr/local || assertfail
-  - otool -l $OCTAVEPATH/libquadmath.0.dylib | grep /usr/local || assertfail
+  - otool -l $OCTAVEPATH/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
+  - otool -l $OCTAVEPATH/casadi/libgcc_s.1.dylib | grep /usr/local || assertfail
+  - otool -l $OCTAVEPATH/casadi/libquadmath.0.dylib | grep /usr/local || assertfail
   #- otool -l /Users/travis/build/casadi/binaries/casadi/build/lib/libcasadi_nlpsolver_ipopt.dylib
   #- otool -l $MATLABPATH/libcasadi_nlpsolver_ipopt.dylib
 
