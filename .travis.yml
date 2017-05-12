@@ -61,6 +61,6 @@ before_install:
   - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
   - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
-  - pushd testbot/restricted && mkdir -p worhp && cd worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
+  - slurp worhp
   - sudo hostname JGLAB
   
