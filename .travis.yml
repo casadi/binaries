@@ -30,7 +30,8 @@ script:
   - echo "swig_link_libraries(casadi casadi)" >> swig/python/CMakeLists.txt
   - mkdir build
   - pushd build
-  - cmake -DWITH_COMMON=ON $casadi_build_flags -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake --version
+  - cmake $casadi_build_flags -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
   - osx_rpath
   - make VERBOSE=1
   - make install
