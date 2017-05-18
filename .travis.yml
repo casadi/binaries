@@ -124,7 +124,7 @@ before_install:
   - #pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - sudo apt-get update
-  - sudo apt-get install -y binutils git cmake cmake-data python-dev
+  - sudo apt-get install -y binutils git cmake cmake-data python-dev gfortran # trick cmake into looking for fortran support
   - sudo pip install pysftp
   - source /home/travis/build/testbot/restricted/env.sh
   - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
