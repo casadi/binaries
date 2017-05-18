@@ -111,13 +111,13 @@ before_install:
   - export SLURP_OS=trusty
   - export SLURP_CROSS=mingwoct
   - #slurp ecos
-  - slurp clang
   - slurp lapack
   - slurp swig_matlab
   - slurp ipopt
   - slurp bonmin
   - slurp worhp
   - slurp mingw_octave
+  - slurp clang  
   - ${compilerprefix}-g++ -v
   - slurp hsl
   - #travis_retry testbot/recipes/fetch.sh gurobi650_mingw64.zip && mkdir gurobi && unzip gurobi650_mingw64.zip -d gurobi
