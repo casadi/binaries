@@ -98,15 +98,14 @@ before_install:
   - mkdir -p /Users/travis/build/casadi/testbot
   - export SLURP_OS=osx
   - slurp hsl
-  #- slurp clang
+  - slurp clang
   - slurp ecos
   - slurp ipopt
   - slurp bonmin
   - slurp worhp
+  # - slurp cplex
   - slurp swig_matlab
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
-  #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
-  #- pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - echo $WORHP
   - ls $HOME
   - ls $HOME/build/worhp
