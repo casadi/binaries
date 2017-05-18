@@ -97,7 +97,7 @@ before_install:
   #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /Users/travis/build/casadi/testbot
   - export SLURP_OS=osx
-  #- slurp hsl
+  - slurp hsl
   #- slurp clang
   - slurp ecos
   - slurp ipopt
