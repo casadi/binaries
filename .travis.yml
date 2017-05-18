@@ -5,6 +5,7 @@ env:
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9
     - MOSEKLM_LICENSE_FILE=/Users/travis/build/testbot/restricted/mosek.lic
+    - SLURP_GCC=4.9
 
 before_script:
   - set -e
