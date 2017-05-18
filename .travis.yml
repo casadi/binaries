@@ -35,7 +35,7 @@ script:
   - make VERBOSE=1
   - make install
   - popd
-  - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $OCTAVEPATH/casadi
+  - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $CXX_FULL $OCTAVEPATH/casadi
   
   - otool -l $OCTAVEPATH/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
   - otool -l $OCTAVEPATH/casadi/libgcc_s.1.dylib | grep /usr/local || assertfail
