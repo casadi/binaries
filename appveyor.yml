@@ -9,7 +9,8 @@ environment:
     PYTHON: "C:\\Python27"
     PYTHON_VERSION: "2.7.8"
     PYTHON_ARCH: "32"
-    OCTAVEVERSION: "4.0.3"
+    BITNESS: "32"
+    OCTAVEVERSION: "4.2.1"
 
 install:
   - git submodule init
@@ -42,7 +43,7 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install pysftp
   - pip install requests==2.6.0
-  - "SET ZIPFILE=casadi-octave-%COMMIT%.zip"
+  - "SET ZIPFILE=casadi-octave-%COMMIT%-w%BITNESS%.zip"
   - ps: |
         $a = @"
         import pysftp
@@ -63,7 +64,7 @@ install:
   - python download.py
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - ps: |
-        Invoke-WebRequest  https://ftp.gnu.org/gnu/octave/windows/octave-$Env:OCTAVEVERSION.zip -OutFile octave.zip
+        Invoke-WebRequest  https://ftp.gnu.org/gnu/octave/windows/octave-$Env:OCTAVEVERSION-w$Env:BITNESS.zip -OutFile octave.zip
   - 7z x -y "octave.zip" -ooctave > nul
   - pwd
   - dir
