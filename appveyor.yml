@@ -43,7 +43,8 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install pysftp
   - pip install requests==2.6.0
-  - "SET ZIPFILE=casadi-octave-w%BITNESS%-%COMMIT%.zip"
+  - "SET ZIPFILE=casadi-octave-%OCTAVEVERSION%-w%BITNESS%-%COMMIT%.zip"
+  - echo %ZIPFILE%
   - ps: |
         $a = @"
         import pysftp
