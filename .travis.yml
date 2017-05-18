@@ -60,11 +60,8 @@ script:
     set(CMAKE_SHARED_LIBRARY_SUFFIX "dll")
     EOF
   - echo $CMAKE_LIBRARY_PATH
-  - /usr/bin/cmake -DWITH_COMMON=ON $casadi_build_flags -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-${OCTAVE_VERSION}/include/octave-${OCTAVE_VERSION}/octave/ -DOCTAVE_LIBRARIES="$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctinterp-4.dll;$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctave-4.dll" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF .. 
+  - /usr/bin/cmake -DFORTRAN_REQUIRED=ON -DWITH_COMMON=ON $casadi_build_flags -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-${OCTAVE_VERSION}/include/octave-${OCTAVE_VERSION}/octave/ -DOCTAVE_LIBRARIES="$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctinterp-4.dll;$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctave-4.dll" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF .. 
   - make install -j2 VERBOSE=1
-  - ls lib
-  - make install
-  - ls $MINGW_ROOT/lib/gcc/$compilerprefix
   #- cp $MINGW_ROOT/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
   #- cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
   #- cp -RL /usr/$compilerprefix/include ../octave_install/casadi/jit/mingw
