@@ -41,7 +41,7 @@ script:
   - otool -l $QUADMATH_FULL
   - otool -l $GCC_FULL
 
-  - cp $GCC_FULL $QUADMATH_FULL $FORTRAN_FULL /Users/travis/build/casadi/binaries/casadi/python_install/casadi
+  - cp $GCC_FULL $QUADMATH_FULL $FORTRAN_FULL $CXX_FULL /Users/travis/build/casadi/binaries/casadi/python_install/casadi
 
   - otool -l python_install/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
   - otool -l python_install/casadi/libgcc_s.1.dylib | grep /usr/local || assertfail
