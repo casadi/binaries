@@ -13,7 +13,7 @@ env:
 
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-mingw32 TESTCOMMIT="1" 
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 TESTCOMMIT="1" 
 
 compiler:
   - i686-w64-mingw32
