@@ -5,7 +5,7 @@ os: osx
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - LD_LIBRARY_PATH=/Users/travis/build/libhsl;/Users/travis/build/testbot/restricted/worhp;/Users/travis/build/snopt7/lib
+    - LD_LIBRARY_PATH=/Users/travis/build/snopt7/lib
     - SNOPT=/Users/travis/build/snopt7
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
