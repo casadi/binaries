@@ -89,7 +89,7 @@ before_install:
   - slurp ecos
   - slurp hsl
   - slurp ipopt
-  #- slurp worhp
+  - slurp worhp
   - slurp bonmin
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
   #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
