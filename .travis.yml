@@ -103,7 +103,7 @@ before_install:
   - slurp ecos
   - slurp ipopt
   - slurp bonmin
-  - slurp worhp
+  #- slurp worhp
   # - slurp cplex
   - slurp swig_matlab
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
