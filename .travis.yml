@@ -30,7 +30,7 @@ script:
   - mkdir octave && tar -xvf octave.tar.gz -C octave
   
   - octave --no-gui --eval "addpath('$HOME/build/casadi/binaries/octave'),savepath,exit"
-  #- remote_access
+  - remote_access
   - pushd casadi/test && make octave && popd
   
 branches:
