@@ -5,7 +5,6 @@ os: osx
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - LD_LIBRARY_PATH=/Users/travis/build/libhsl;/Users/travis/build/snopt7/lib
     - SNOPT=/Users/travis/build/snopt7
     - PYTHONVERSION=27
     - NUMPYVERSION=1.9.1
