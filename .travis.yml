@@ -82,17 +82,15 @@ before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - brew install p7zip
-  #- travis_retry testbot/recipes/fetch.sh libhsl.tar.gz && mkdir libhsl && tar -xvf libhsl.tar.gz -C libhsl
   #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
   - mkdir -p /Users/travis/build/casadi/testbot
-  #- travis_retry testbot/recipes/fetch.sh swig.tar.gz && mkdir swig && tar -xvf swig.tar.gz -C swig
-  #- pushd /Users/travis/build/casadi/testbot && ln -s  /Users/travis/build/swig  swig-install  && popd
   - export SLURP_OS=osx
   - slurp swig_matlab
   #- slurp clang
   - slurp ecos
+  - slurp hsl
   - slurp ipopt
-  - slurp worhp
+  #- slurp worhp
   - slurp bonmin
   - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
   #- pushd testbot/restricted/cplex && mkdir cplex && tar -xvf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xvf cplex12.4-concert.tar.gz -C concert && popd
