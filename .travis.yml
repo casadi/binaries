@@ -36,7 +36,7 @@ script:
   - export PYTHONPATH=$PYTHONPATH:$PWD/casadi_python
   - echo $DYLD_LIBRARY_PATH
   - ls $WORHP
-  - otool -l $WORHP/lib/libworhp.dylib
+  #- otool -l $WORHP/lib/libworhp.dylib
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd /Users/travis/build/casadi/binaries/casadi/test && make unittests_py && popd
   - pushd /Users/travis/build/casadi/binaries/casadi/test && make examples_code_py && popd
