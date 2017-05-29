@@ -21,7 +21,7 @@ before_script:
   - set -e
  
 script:
-  - sudo apt-get install -y libslicot-dev binutils gcc g++ gfortran git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+  - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
   - sudo apt-get install -y fakeroot rpm alien
   - pushd casadi
   - mkdir build
@@ -108,6 +108,7 @@ before_install:
   - slurp swig
   - slurp cplex
   - slurp worhp
+  - slurp slicot
   - popd
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   
