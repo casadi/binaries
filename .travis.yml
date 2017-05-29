@@ -77,9 +77,10 @@ before_install:
   - slurp swig_matlab
   - slurp cplex
   - slurp worhp
+  - slurp slicot
   - popd
   - sudo apt-get update -qq
-  - sudo apt-get install -y libslicot-dev binutils git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+  - sudo apt-get install -y binutils git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
   - sudo apt-get install fakeroot rpm alien
   - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
