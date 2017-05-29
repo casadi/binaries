@@ -16,7 +16,6 @@ os: linux
 dist: trusty
 language: python
 
-
 before_script:
   - set -e
  
