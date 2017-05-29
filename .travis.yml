@@ -4,8 +4,6 @@ env:
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
     - SNOPT=/home/travis/build/snopt75
     - OCTAVEPATH=/home/travis/build/octave-install
-    - PYTHONVERSION=27
-    - NUMPYVERSION=1.9.1
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - GUROBI_HOME=/home/travis/build/gurobi
