@@ -12,6 +12,8 @@ environment:
     MATLABRELEASE: "R2014b"
     GIT_ALLOW_PROTOCOL: "file:git:http:https:ssh:ext"
 
+image: Visual Studio 2013
+
 install:
   - git submodule init
   - git submodule update
