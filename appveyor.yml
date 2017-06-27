@@ -8,7 +8,7 @@ environment:
       secure: 44jgfY+doJx9eHLCweOl6Mf7qoeeRlA2Dch0cLUGbvRorXaqr6bs8tVsJ/KXGPVIA4DrXLlpaEeb2eJ5LM4Mdeq5Ux2txHsQpTAnBDSihWQ=
     PYTHON: "C:\\Python27"
     PYTHON_VERSION: "2.7.8"
-    PYTHON_ARCH: "32"
+    PYTHON_ARCH: "64"
     MATLABRELEASE: "R2014b"
     GIT_ALLOW_PROTOCOL: "file:git:http:https:ssh:ext"
     VisualStudioVersion: 12.0
@@ -76,7 +76,6 @@ install:
   - ps: "Start-Process -FilePath ex.bat"
 #  - start plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:%FLEX_SERVER%:1701 -L 1719:%FLEX_SERVER%:1719 -L 1718:%FLEX_SERVER%:1718 -L 2015:%FLEX_SERVER%:2015 -L 1815:%FLEX_SERVER%:1815 -L 1715:%FLEX_SERVER%:1715 -N
   - "SET ZIPFILE=casadi-matlab%MATLABRELEASE%-%COMMIT%.zip"
-  - call "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Bin\\SetEnv.cmd" /x64
   - call "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat" x86_amd64
   - cl.exe
   - ps: |
