@@ -116,7 +116,7 @@ install:
   - echo SERVER %FLEX_SERVER% ANY 1725 > C:\projects\binaries\matlab\licenses\network.lic
   - echo USE_SERVER >> C:\projects\binaries\matlab\licenses\network.lic
   - dir C:\projects\binaries\matlab\bin
-  - "C:\\Program Files^ (x86)\\Microsoft^ Visual^ Studio^ 12.0\\VC\\vcvarsall.bat"
+  - cmd: "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"
   - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
   - make matlab
 
