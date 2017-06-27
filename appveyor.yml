@@ -119,7 +119,7 @@ install:
   - echo SERVER %FLEX_SERVER% ANY 1725 > C:\projects\binaries\matlab\licenses\network.lic
   - echo USE_SERVER >> C:\projects\binaries\matlab\licenses\network.lic
   - dir C:\projects\binaries\matlab\bin
-  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),savepath,exit"
+  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -wait -logfile out.txt -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),mex -setup c, savepath,exit"
   - make matlab
 
 branches: 
