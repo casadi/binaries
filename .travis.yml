@@ -63,7 +63,7 @@ before_install:
       sudo apt-get install octave liboctave-dev -y
     else
       ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
-      export PATH="$HOME/.linuxbrew/bin:$PATH"
+      export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
       brew install homebrew/science/octave
     fi
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
