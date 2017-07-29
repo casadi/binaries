@@ -66,7 +66,7 @@ before_install:
       export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
       echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.bash_profile
       brew update
-      brew tap homebrew/science
+      brew tap --repair && brew tap homebrew/science
       brew install octave
     fi
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
