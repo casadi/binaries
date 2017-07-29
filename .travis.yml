@@ -65,6 +65,7 @@ before_install:
       ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
       export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
       echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.bash_profile
+      brew update
       brew tap homebrew/science
       brew install octave
     fi
