@@ -64,6 +64,7 @@ before_install:
     else
       ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
       export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+      echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.bash_profile
       brew install homebrew/science/octave
     fi
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
