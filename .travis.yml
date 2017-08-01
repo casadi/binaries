@@ -12,6 +12,8 @@ env:
     - MATLAB_ROOT=/home/travis/build/matlab
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/home/travis/build/gurobi
+    - TRAVIS_PYTHON_VERSION=2.7
+    - NUMPYVERSION=1.9 
     
   matrix:
     - BUILD_TYPE=Release PYTHONVERSION=27 PYTHONVERSIONDOT=2.7 NAME_SUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py27 TESTCOMMIT="1"
@@ -153,6 +155,7 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
+  - python_setup
   - mkdir -p /home/travis/build/casadi/testbot
   - sudo apt-get install p7zip-full zip -y
   - export SLURP_OS=trusty
@@ -176,7 +179,7 @@ before_install:
   - popd
   
   - sudo apt-get update -qq
-  - sudo apt-get install -y binutils gcc g++ gfortran git cmake libpython-dev libxml2-dev
+  - sudo apt-get install -y binutils gcc g++ gfortran git cmake libxml2-dev
   
   - sudo dpkg --add-architecture i386
   - sudo apt-get update
@@ -185,7 +188,7 @@ before_install:
   - "./.travis-setup.sh"
   - wget -O numpy.exe https://github.com/casadi/testbot/releases/download/perpetual/numpy-$NUMPYVERSION-sse2.exe
   - /opt/wine-staging/bin/wine C:/Python$PYTHONVERSION/Scripts/easy_install.exe numpy.exe && rm numpy.exe
-  - sudo pip install pysftp
+  - pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   - mingw_setup
 
