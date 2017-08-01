@@ -13,6 +13,7 @@ env:
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - TRAVIS_PYTHON_VERSION=2.7
+    - NUMPYVERSION=1.9
 
 before_script:
   - set -e
