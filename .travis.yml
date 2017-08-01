@@ -12,6 +12,7 @@ env:
     - SNOPT=/home/travis/build/snopt7
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
+    - TRAVIS_PYTHON_VERSION=2.7
 
 before_script:
   - set -e
@@ -32,13 +33,14 @@ script:
   - sudo make -j2 install
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-  - sudo pip install texttable
-  - sudo pip install pydot2
+  - pip install texttable
+  - pip install pydot2
+  - pip install lxml docutils ipdb
 
-  - sudo apt-get install graphviz python-lxml python-ipdb python-docutils -y
+  - sudo apt-get install graphviz -y
   - git clone https://github.com/jgillis/pyreport.git
   - pushd pyreport && sudo python setup.py install && popd
-  - sudo apt-get install python-ipdb graphviz python-lxml latex2html texlive-science texlive-latex-base texlive-fonts-recommended texlive-latex-recommended texlive-latex-extra -y
+  - sudo apt-get install python-ipdb graphviz latex2html texlive-science texlive-latex-base texlive-fonts-recommended texlive-latex-recommended texlive-latex-extra -y
   #- pinning vivid
   #- sudo apt-get install -y -t vivid doxygen libclang1-3.6 libstdc++6
   - sudo add-apt-repository -y ppa:techzilla/doxygen-backport
@@ -84,6 +86,7 @@ before_install:
   - pwd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
+  - python_setup
   - export SLURP_OS=trusty
   - sudo apt-get install p7zip-full python-dev -y
   - slurp hsl
@@ -97,4 +100,4 @@ before_install:
   - pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - sudo apt-get update -qq
-  - sudo apt-get install -y gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev
+  - sudo apt-get install -y gcc g++ gfortran git cmake liblapack-dev ipython libmumps-seq-dev libblas-dev liblapack-dev
