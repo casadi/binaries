@@ -67,7 +67,7 @@ before_install:
     else
       sudo apt-get update -qq
       pinning artful
-      sudo apt-get install -t artful octave liboctave-devb -y
+      sudo apt-get install -t artful octave liboctave-dev -y
       export CC=gcc-4.8
       export FCC=gfortran-4.8
       export CXX=g++-4.8
