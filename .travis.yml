@@ -31,7 +31,7 @@ script:
   - sudo make -j2 install
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-  - pip install texttable pydot2 lxml
+  - pip install texttable pydot2 lxml docutils
   - sudo apt-get install graphviz -y
   - git clone https://github.com/jgillis/pyreport.git
   - pushd pyreport && python setup.py install && popd
