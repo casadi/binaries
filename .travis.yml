@@ -67,7 +67,10 @@ before_install:
     else
       sudo apt-get update -qq
       pinning artful
-      sudo apt-get install -t artful octave liboctave-dev liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev -y
+      sudo apt-get install -t artful octave liboctave-devb -y
+      export CC=gcc-4.8
+      export FCC=gfortran-4.8
+      export CXX=g++-4.8
       #ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
       #export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
       #echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.bash_profile
