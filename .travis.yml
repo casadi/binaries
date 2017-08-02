@@ -74,7 +74,7 @@ before_install:
       #brew install hello
       #brew update
       #brew tap --repair && brew tap homebrew/science
-      brew install octave
+      #brew install octave
     fi
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
