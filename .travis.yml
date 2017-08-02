@@ -12,8 +12,6 @@ env:
     - MATLAB_ROOT=/home/travis/build/matlab
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/home/travis/build/gurobi
-    - TRAVIS_PYTHON_VERSION=2.7
-    - NUMPYVERSION=1.9 
     
   matrix:
     - BUILD_TYPE=Release PYTHONVERSION=27 PYTHONVERSIONDOT=2.7 NAME_SUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py27 TESTCOMMIT="1"
@@ -155,7 +153,7 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
-  - python_setup
+ 
   - mkdir -p /home/travis/build/casadi/testbot
   - sudo apt-get install p7zip-full zip -y
   - export SLURP_OS=trusty
