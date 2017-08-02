@@ -62,6 +62,7 @@ before_install:
       sudo apt-get update -qq
       sudo apt-get install octave liboctave-dev -y
     else
+      sudo apt-get update -qq
       pinning artful
       sudo apt-get install -t artful octave liboctave-dev -y
       #ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
