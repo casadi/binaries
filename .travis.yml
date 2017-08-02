@@ -15,7 +15,7 @@ before_script:
   - set -e
 
 script:
-  - sudo apt-get install -y python-lxml
+  - pip install lxml
   - pushd casadi
   - mkdir build
   - pushd build
@@ -67,7 +67,6 @@ before_install:
   - slurp swig
   - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
   - popd
-  - sudo apt-get install -y binutils libslicot-dev gcc g++ gfortran git cmake liblapack-dev ipython python-dev python-numpy python-scipy python-matplotlib libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+  - sudo apt-get install -y binutils libslicot-dev gcc g++ gfortran git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
   - sudo apt-get install -y fakeroot rpm alien
-  - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
