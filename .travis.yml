@@ -77,7 +77,7 @@ script:
         sftp.makedirs("$COMMIT")
     EOF
   - travis_wait python upload.py
-  - rsync -avP --delete -e "ssh -i /home/travis/build/testbot/id_rsa_travis" docs/api/export/  casaditestbot,casadi@web.sourceforge.net:/home/groups/c/ca/casadi/htdocs/commits/$COMMIT
+  - rsync -aqP --delete -e "ssh -i /home/travis/build/testbot/id_rsa_travis" docs/api/export/  casaditestbot,casadi@web.sourceforge.net:/home/groups/c/ca/casadi/htdocs/commits/$COMMIT
  
 branches:
   except:
