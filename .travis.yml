@@ -69,7 +69,7 @@ before_install:
       pinning artful
       sudo apt-get install -t artful octave liboctave-dev -y
       export CC=gcc-4.8
-      export FCC=gfortran-4.8
+      export FC=gfortran-4.8
       export CXX=g++-4.8
       #ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
       #export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
