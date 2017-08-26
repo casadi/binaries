@@ -34,8 +34,14 @@ script:
   - echo $PATH > $HOME/pathnew.txt
   - cat $HOME/pathold.txt
   - cat $HOME/pathnew.txt
-  - python -c "n = file('$HOME/pathnew.txt','r').read().split(':');o = file('$HOME/pathold.txt','r').read().split(':');print('export PATH=\$PATH:%s' %':'.join([i for i in n if i not in o]))" > $HOME/path_appends.txt
-  - cat $HOME/path_appends.txt
+  - dockcross bash -c 'echo $PATH' > $HOME/pathcross.txt
+  - python -c "n = file('$HOME/pathnew.txt','r').read().split(':');o = file('$HOME/pathold.txt','r').read().split(':');print(':'.join([i for i in n if i not in o]))" > $HOME/path.txt
+  - cat $HOME/path.txt
+  - echo "export PATH=" >> $HOME/env.txt
+  - cat $HOME/pathcross.txt >> $HOME/env.txt
+  - echo ":" >> $HOME/env.txt
+  - cat $HOME/path.txt >> $HOME/env.txt
+  - dockcross bash -c 'echo $PATH'
   - pwd
   - dockcross echo $PATH
   - dockcross bash -c 'echo $PATH'
