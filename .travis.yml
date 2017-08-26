@@ -11,10 +11,14 @@ env:
     - GUROBI_HOME=/home/travis/build/gurobi
     - DEBIAN_FRONTEND=noninteractive
     - casadi_build_flags=-DWITH_COMMON=ON
+    - ARCH=manylinux-x64
 
 os: linux
 dist: trusty
 language: python
+
+services:
+  - docker
 
 before_script:
   - set -e
@@ -26,13 +30,13 @@ script:
   - mkdir build
   - pushd build
   - echo $casadi_build_flags
-  - cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
+  - dockcross bash -c 'cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..'
   #- cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DCMAKE_BUILD_TYPE=Release -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
   - grep -i ipopt CMakeCache.txt
-  - make VERBOSE=1
-  - make install
+  - dockcross make VERBOSE=1
+  - dockcross make install
   #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
@@ -90,6 +94,10 @@ branches:
     - /.*appveyor.*/
 
 before_install: 
+  - docker pull dockcross
+  - docker run --rm dockcross/$ARCH > ./dockcross
+  - chmod +x ./dockcross
+  - export PATH=`pwd`:$PATH
   - sudo apt-get update
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
