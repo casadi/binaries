@@ -34,12 +34,12 @@ script:
   - echo $PATH > $HOME/pathnew.txt
   - cat $HOME/pathold.txt
   - cat $HOME/pathnew.txt
-  - dockcross bash -c 'echo $PATH' | xargs > $HOME/pathcross.txt
-  - python -c "n = file('$HOME/pathnew.txt','r').read().split(':');o = file('$HOME/pathold.txt','r').read().split(':');print(':'.join([i for i in n if i not in o]))" | xargs > $HOME/path.txt
+  - dockcross bash -c 'echo -n $PATH' > $HOME/pathcross.txt
+  - python -c "n = file('$HOME/pathnew.txt','r').read().split(':');o = file('$HOME/pathold.txt','r').read().split(':');import sys;sys.stdout.write(':'.join([i for i in n if i not in o]))" > $HOME/path.txt
   - cat $HOME/path.txt
-  - echo "export PATH=" >> $HOME/env.txt
+  - echo -n "export PATH=" >> $HOME/env.txt
   - cat $HOME/pathcross.txt >> $HOME/env.txt
-  - echo ":" >> $HOME/env.txt
+  - echo -n ":" >> $HOME/env.txt
   - cat $HOME/path.txt >> $HOME/env.txt
   - dockcross bash -c 'echo $PATH'
   - pwd
