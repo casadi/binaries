@@ -69,9 +69,9 @@ after_script:
       with sftp.cd('commits'):
         sftp.makedirs("$COMMIT")
         with sftp.cd("$COMMIT"):
-          sftp.makedirs('linux')
-          with sftp.cd('linux'):
-            sftp.put("$RESULT_TAR","cross_casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+          sftp.makedirs('manylinux')
+          with sftp.cd('manylinux'):
+            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
   - sed -i "s/^\s\s//g" upload.py 
   - cat upload.py
   - python upload.py
@@ -103,7 +103,7 @@ before_install:
   - echo $PATH > pathold.txt
   - docker pull dockcross/$ARCH
   - docker run --rm dockcross/$ARCH > dockcross
-  - perl -p -i -e 's/^ +-v.*$/    -v \$HOME:\$HOME \\/g;s/^ +\$HOST_VOLUMES .*/    -w \$HOST_PWD --env-file $HOME/env.txt \\/g;s/^ +\$FINAL_IMAGE "\$@"/ $FINAL_IMAGE "source $HOME/path_appends.txt;\$@"/g' dockcross
+  - perl -p -i -e 's/^ +-v.*$/    -v \$HOME:\$HOME \\/g;s/^ +\$HOST_VOLUMES .*/    -w \$HOST_PWD --env-file \$HOME/env.txt \\/g;s/^ +\$FINAL_IMAGE \"\$@\"/ \$FINAL_IMAGE \"source \$HOME/path_appends.txt;\$@\"/g' dockcross
   - cat dockcross
   - chmod +x ./dockcross
   - export PATH=`pwd`:$PATH
