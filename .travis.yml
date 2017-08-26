@@ -35,12 +35,7 @@ script:
   - cat $HOME/pathold.txt
   - cat $HOME/pathnew.txt
   - dockcross bash -c 'echo -n $PATH' > $HOME/pathcross.txt
-  - python -c "n = file('$HOME/pathnew.txt','r').read().split(':');o = file('$HOME/pathold.txt','r').read().split(':');import sys;sys.stdout.write(':'.join([i for i in n if i not in o]))" > $HOME/path.txt
-  - cat $HOME/path.txt
-  - echo -n "export PATH=" >> $HOME/env.txt
-  - cat $HOME/pathcross.txt >> $HOME/env.txt
-  - echo -n ":" >> $HOME/env.txt
-  - cat $HOME/path.txt >> $HOME/env.txt
+  - python -c "n = file('$HOME/pathnew.txt','r').read().split(':');o = file('$HOME/pathold.txt','r').read().split(':');import sys;print('export PATH=%s:%s' % (file('$HOME/pathcross.txt','r').read().rstrip(),':'.join([i.rstrip() for i in n if i not in o])))" >> $HOME/env.txt
   - dockcross bash -c 'echo $PATH'
   - pwd
   - dockcross echo $PATH
