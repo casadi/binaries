@@ -94,7 +94,7 @@ branches:
     - /.*appveyor.*/
 
 before_install: 
-  - docker pull dockcross
+  - docker pull dockcross/$ARCH
   - docker run --rm dockcross/$ARCH > ./dockcross
   - chmod +x ./dockcross
   - export PATH=`pwd`:$PATH
