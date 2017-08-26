@@ -30,7 +30,7 @@ script:
   - mkdir build
   - pushd build
   - echo $casadi_build_flags
-  - dockcross cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
+  - dockcross cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
   #- cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DCMAKE_BUILD_TYPE=Release -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
@@ -107,19 +107,19 @@ before_install:
   - python_setup
   - export SLURP_OS=trusty
   - sudo apt-get install p7zip-full -y
-  - slurp ecos
-  - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
-  - slurp hsl
-  - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
-  - slurp clang
-  - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
-  - mkdir -p /home/travis/build/casadi/testbot
-  - slurp ipopt
-  - slurp bonmin
+  #- slurp ecos
+  #- travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
+  #- slurp hsl
+  #- travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
+  #- slurp clang
+  #- travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
+  #- mkdir -p /home/travis/build/casadi/testbot
+  #- slurp ipopt
+  #- slurp bonmin
   - slurp swig
-  - slurp cplex
-  - slurp worhp
-  - slurp slicot
+  #- slurp cplex
+  #- slurp worhp
+  #- slurp slicot
   - popd
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   
