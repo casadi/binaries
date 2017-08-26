@@ -30,6 +30,12 @@ script:
   - mkdir build
   - pushd build
   - echo $casadi_build_flags
+  - printenv | grep -v PATH | > $HOME/env.txt
+  - echo $PATH > $HOME/pathnew.txt
+  - cat $HOME/pathold.txt
+  - cat $HOME/pathnew.txt
+  - python -c "n = file('$HOME/pathnew.txt','r').read().split(':');o = file('$HOME/pathold.txt','r').read().split(':');print('export PATH=\$PATH:%s' %':'.join([i for i in n if i not in o]))" > $HOME/path_appends.txt
+  - cat $HOME/path_appends.txt
   - dockcross cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_COMMON=OFF -DWITH_IPOPT=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
   #- cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DCMAKE_BUILD_TYPE=Release -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
@@ -94,9 +100,10 @@ branches:
     - /.*appveyor.*/
 
 before_install: 
+  - echo $PATH > pathold.txt
   - docker pull dockcross/$ARCH
   - docker run --rm dockcross/$ARCH > dockcross
-  - perl -p -i -e 's/^ +-v.*$/    -v \$HOME:\$HOME \\/g;s/^ +\$HOST_VOLUMES .*/    -w \$HOST_PWD \\/g;' dockcross
+  - perl -p -i -e 's/^ +-v.*$/    -v \$HOME:\$HOME \\/g;s/^ +\$HOST_VOLUMES .*/    -w \$HOST_PWD --env-file $HOME/env.txt \\/g;s/^ +\$FINAL_IMAGE "\$@"/ $FINAL_IMAGE "source $HOME/path_appends.txt;\$@"/g' dockcross
   - cat dockcross
   - chmod +x ./dockcross
   - export PATH=`pwd`:$PATH
