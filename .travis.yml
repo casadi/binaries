@@ -100,7 +100,7 @@ branches:
     - /.*appveyor.*/
 
 before_install: 
-  - echo $PATH > pathold.txt
+  - echo $PATH > $HOME/pathold.txt
   - docker pull dockcross/$ARCH
   - docker run --rm dockcross/$ARCH > dockcross
   - perl -p -i -e 's/^ +-v.*$/    -v \$HOME:\$HOME \\/g;s/^ +\$HOST_VOLUMES .*/    -w \$HOST_PWD --env-file \$HOME\/env.txt \\/g;s/^ +\$FINAL_IMAGE \"\$@\"/ \$FINAL_IMAGE \"source \$HOME\/path_appends.txt;\$@\"/g' dockcross
