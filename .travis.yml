@@ -39,7 +39,7 @@ script:
   - echo $PATH > $HOME/pathnew.txt
   - echo -n "$MANYLINUX_PYTHON_DIR/bin/:" > $HOME/pathcross.txt
   - dockcross bash -c 'echo -n $PATH' >> $HOME/pathcross.txt
-  - python -c "n = file('$HOME/pathnew.txt','r').read().split(':');o = file('$HOME/pathold.txt','r').read().split(':');print('PATH=%s:%s' % (file('$HOME/pathcross.txt','r').read().rstrip(),':'.join([i.rstrip() for i in n if i not in o and 'miniconda' not in i])))" >> $HOME/env.txt
+  - python -c "n = open('$HOME/pathnew.txt','r').read().split(':');o = open('$HOME/pathold.txt','r').read().split(':');print('PATH=%s:%s' % (open('$HOME/pathcross.txt','r').read().rstrip(),':'.join([i.rstrip() for i in n if i not in o and 'miniconda' not in i])))" >> $HOME/env.txt
   - tail -n 3 $HOME/env.txt
   - dockcross bash -c 'echo $PATH'
   - pwd
