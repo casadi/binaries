@@ -51,7 +51,7 @@ script:
   - echo "::$HVERSION::"
   - grep -i ipopt CMakeCache.txt
   - dockcross  bash -c '$MANYLINUX_PYTHON_DIR/bin/pip install numpy;make VERBOSE=1'
-  - make install
+  - dockcross make install
   #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
