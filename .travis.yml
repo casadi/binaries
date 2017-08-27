@@ -36,8 +36,10 @@ script:
   - mkdir build
   - pushd build
   - dockcross_setup_finish
-  - dockcross bash -c 'echo $PKG_CONFIG_PATH'
-  - dockcross bash -c '$MANYLINUX_PYTHON_DIR/bin/pip install numpy==1.9;cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DSWIG_IMPORT=ON ..'
+  - export BACKUP_PKG_CONFIG_PATH=$PKG_CONFIG_PATH
+  
+  - dockcross bash -c 'echo $BACKUP_PKG_CONFIG_PATH'
+  - dockcross bash -c 'export PKG_CONFIG_PATH=$BACKUP_PKG_CONFIG_PATH;$MANYLINUX_PYTHON_DIR/bin/pip install numpy==1.9;cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DSWIG_IMPORT=ON ..'
   #- cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DCMAKE_BUILD_TYPE=Release -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
