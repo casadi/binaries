@@ -27,6 +27,11 @@ script:
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
   - sudo apt-get install -y fakeroot rpm alien
   - pushd casadi
+  - mkdir build_temp
+  - pushd build_temp
+  - cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_COMMON=OFF -DWITH_IPOPT=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DSWIG_EXPORT=ON ..
+  - make python_source
+  - popd
   - mkdir build
   - pushd build
   - echo $casadi_build_flags
@@ -39,7 +44,7 @@ script:
   - pwd
   - dockcross echo $PATH
   - dockcross bash -c 'echo $PATH'
-  - dockcross cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_COMMON=OFF -DWITH_IPOPT=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
+  - dockcross cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_COMMON=OFF -DWITH_IPOPT=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DSWIG_IMPORT=ON ..
   #- cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DCMAKE_BUILD_TYPE=Release -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
