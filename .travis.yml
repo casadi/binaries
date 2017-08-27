@@ -35,11 +35,10 @@ script:
   - mkdir build
   - pushd build
   - echo $casadi_build_flags
-  - printenv | grep -v PATH > $HOME/env.txt
-  - env | grep miniconda
+  - printenv | grep -v PATH | grep -v miniconda > $HOME/env.txt
   - echo $PATH > $HOME/pathnew.txt
-  - dockcross bash -c 'echo -n $PATH' > $HOME/pathcross.txt
-  - echo -n ":$MANYLINUX_PYTHON_DIR/bin/" >> $HOME/pathcross.txt
+  - echo -n "$MANYLINUX_PYTHON_DIR/bin/:" > $HOME/pathcross.txt
+  - dockcross bash -c 'echo -n $PATH' >> $HOME/pathcross.txt
   - python -c "n = file('$HOME/pathnew.txt','r').read().split(':');o = file('$HOME/pathold.txt','r').read().split(':');print('PATH=%s:%s' % (file('$HOME/pathcross.txt','r').read().rstrip(),':'.join([i.rstrip() for i in n if i not in o and 'miniconda' not in i])))" >> $HOME/env.txt
   - tail -n 3 $HOME/env.txt
   - dockcross bash -c 'echo $PATH'
