@@ -50,8 +50,7 @@ script:
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
   - grep -i ipopt CMakeCache.txt
-  - dockcross  bash -c '$MANYLINUX_PYTHON_DIR/bin/pip install numpy;make VERBOSE=1'
-  - dockcross make install
+  - dockcross  bash -c '$MANYLINUX_PYTHON_DIR/bin/pip install numpy;make install VERBOSE=1'
   #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
