@@ -11,7 +11,8 @@ env:
     - GUROBI_HOME=/home/travis/build/gurobi
     - DEBIAN_FRONTEND=noninteractive
     - casadi_build_flags=-DWITH_COMMON=ON
-    - ARCH=manylinux-x64
+    - DOCKCROSS=manylinux
+    - BITNESS=64
 
 os: linux
 dist: trusty
@@ -34,18 +35,8 @@ script:
   - popd
   - mkdir build
   - pushd build
-  - echo $casadi_build_flags
-  - printenv | grep -v PATH | grep -v miniconda > $HOME/env.txt
-  - echo $PATH > $HOME/pathnew.txt
-  - echo -n "$MANYLINUX_PYTHON_DIR/bin/:" > $HOME/pathcross.txt
-  - dockcross bash -c 'echo -n $PATH' >> $HOME/pathcross.txt
-  - python -c "n = open('$HOME/pathnew.txt','r').read().split(':');o = open('$HOME/pathold.txt','r').read().split(':');print('PATH=%s:%s' % (open('$HOME/pathcross.txt','r').read().rstrip(),':'.join([i.rstrip() for i in n if i not in o and 'miniconda' not in i])))" >> $HOME/env.txt
-  - tail -n 3 $HOME/env.txt
-  - dockcross bash -c 'echo $PATH'
-  - pwd
-  - dockcross echo $PATH
-  - dockcross bash -c 'echo $PATH'
-  - dockcross bash -c '$MANYLINUX_PYTHON_DIR/bin/pip install numpy==1.9;cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_COMMON=OFF -DWITH_IPOPT=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DSWIG_IMPORT=ON ..'
+  - dockcross_setup_finish
+  - dockcross bash -c '$MANYLINUX_PYTHON_DIR/bin/pip install numpy==1.9;cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DSWIG_IMPORT=ON ..'
   #- cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DCMAKE_BUILD_TYPE=Release -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
@@ -108,19 +99,13 @@ branches:
     - /.*appveyor.*/
 
 before_install: 
-  - echo $PATH > $HOME/pathold.txt
-  - docker pull dockcross/$ARCH
-  - docker run --rm dockcross/$ARCH > dockcross
-  - perl -p -i -e 's/^ +-v.*$/    -v \$HOME:\$HOME \\/g;s/^ +\$HOST_VOLUMES .*/    -w \$HOST_PWD --env-file \$HOME\/env.txt \\/g;s/^d +\$FINAL_IMAGE \"\$@\"/ \$FINAL_IMAGE bash -c \"source \$HOME\/path_appends.txt ; \$@\"/g' dockcross
-  - cat dockcross
-  - chmod +x ./dockcross
-  - export PATH=`pwd`:$PATH
+  - dockcross_setup_start
   - sudo apt-get update
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && git checkout merged && source recipes/setup.sh && popd
   - python_setup
-  - export SLURP_OS=trusty
+  - export SLURP_OS=dockcross_$DOCKCROSS
   - sudo apt-get install p7zip-full -y
   #- slurp ecos
   #- travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
@@ -129,7 +114,7 @@ before_install:
   #- slurp clang
   #- travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   #- mkdir -p /home/travis/build/casadi/testbot
-  #- slurp ipopt
+  - slurp ipopt
   #- slurp bonmin
   - slurp swig
   #- slurp cplex
