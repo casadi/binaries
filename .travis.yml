@@ -106,7 +106,9 @@ before_install:
   - dockcross_setup_start
   - python_setup
   - export SLURP_OS=trusty
-  - export SLURP_CROSS=dockcross_$DOCKCROSS
+  - slurp swig
+  - export SLURP_OS=dockcross
+  - export SLURP_CROSS=$DOCKCROSS
   - sudo apt-get install p7zip-full -y
   #- slurp ecos
   #- travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
@@ -117,7 +119,6 @@ before_install:
   #- mkdir -p /home/travis/build/casadi/testbot
   - slurp ipopt
   #- slurp bonmin
-  - slurp swig
   #- slurp cplex
   #- slurp worhp
   #- slurp slicot
