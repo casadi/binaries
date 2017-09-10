@@ -49,6 +49,7 @@ script:
   - otool -l python_install/casadi/libcasadi.dylib
   - otool -l python_install/casadi/_casadi.so
   
+  - echo "this files serves to trick osx unpacker to retain the archive file name as directory" > python_install/dummy.txt
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
   - export RESULT_TAR="$PWD/bundle.tar.gz"
   - |
