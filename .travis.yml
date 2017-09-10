@@ -42,6 +42,7 @@ script:
   - pushd /Users/travis/build/casadi/binaries/casadi/test && make unittests_py && popd
   - pushd /Users/travis/build/casadi/binaries/casadi/test && make examples_code_py && popd
   
+  
 branches:
   except:
     - /.*appveyor.*/
