@@ -55,6 +55,7 @@ install:
   #      Start-FileDownload https://download.microsoft.com/download/2/d/6/2d61c766-107b-409d-8fba-c39e61ca08e8/vcredist_x64.exe vcredist.exe
   #- vcredist.exe /q
   - choco install vcredist2008
+  - choco install make
   # Change hostname
   - ps: |
         $ComputerName = "$Env:FLEX_HOSTNAME"
