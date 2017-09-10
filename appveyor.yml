@@ -53,7 +53,7 @@ install:
   - echo 127.0.0.1 %FLEX_HOSTNAME% >> c:\Windows\System32\Drivers\etc\hosts
   - ps: |
         Start-FileDownload https://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe vcredist.exe
-  - vcredist.exe /qb
+  - vcredist.exe /q
   # Change hostname
   - ps: |
         $ComputerName = "$Env:FLEX_HOSTNAME"
