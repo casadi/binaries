@@ -124,7 +124,7 @@ install:
   - echo USE_SERVER >> C:\projects\binaries\matlab\licenses\network.lic
   - dir C:\projects\binaries\matlab\bin
   # -wait -logfile out.txt 
-  - matlab.exe -noFigureWindows -nosplash -nodesktop -nojvm -wait
+  - matlab.exe -noFigureWindows -nosplash -nodesktop -nojvm -wait -r "disp(123)"
   - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),mex -setup c, savepath,exit"
   - make matlab
 
