@@ -37,7 +37,6 @@ script:
   - echo $DYLD_LIBRARY_PATH
   - ls $WORHP
   #- otool -l $WORHP/lib/libworhp.dylib
-  - remote_access
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd /Users/travis/build/casadi/binaries/casadi/test && make unittests_py && popd
   - pushd /Users/travis/build/casadi/binaries/casadi/test && make examples_code_py && popd
