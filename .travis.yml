@@ -40,12 +40,12 @@ script:
   - grep "CONFIG_PATH" $HOME/env.txt
   
   - dockcross bash -c 'echo $PKG_CONFIG_PATH'
-  - dockcross bash -c 'export PKG_CONFIG_PATH=$BACKUP_PKG_CONFIG_PATH;$MANYLINUX_PYTHON_DIR/bin/pip install numpy==$NUMPYVERSION;cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DSWIG_IMPORT=ON ..'
+  - dockcross bash -c 'export PKG_CONFIG_PATH=$BACKUP_PKG_CONFIG_PATH;$MANYLINUX_PYTHON_DIR/bin/pip install numpy;cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DSWIG_IMPORT=ON ..'
   #- cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DCMAKE_BUILD_TYPE=Release -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
   - echo "::$HVERSION::"
   - grep -i ipopt CMakeCache.txt
-  - dockcross  bash -c '$MANYLINUX_PYTHON_DIR/bin/pip install numpy==1.9;make install VERBOSE=1'
+  - dockcross  bash -c '$MANYLINUX_PYTHON_DIR/bin/pip install numpy;make install VERBOSE=1'
   #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
@@ -74,7 +74,7 @@ after_script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('manylinux')
           with sftp.cd('manylinux'):
-            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-$BITNESS-$COMMIT.tar.gz")
   - sed -i "s/^\s\s//g" upload.py 
   - cat upload.py
   - python upload.py
@@ -84,13 +84,21 @@ python: 3.2
 matrix:
   include:
     - python: 2.7
-      env: NUMPYVERSION=1.9 TESTCOMMIT=1
+      env: BITNESS=64 TESTCOMMIT=1
+    - python: 2.7
+      env: BITNESS=32
     - python: 3.4
-      env: NUMPYVERSION=1.9
+      env: BITNESS=64
+    - python: 3.4
+      env: BITNESS=32
     - python: 3.5
-      env: NUMPYVERSION=1.9
+      env: BITNESS=64
+    - python: 3.5
+      env: BITNESS=32
     - python: 3.6
-      env: NUMPYVERSION=1.11 
+      env: BITNESS=64
+    - python: 3.6
+      env: BITNESS=32
   exclude:
     - python: 3.2
   
@@ -114,18 +122,18 @@ before_install:
   - export SLURP_OS=dockcross
   - export SLURP_CROSS=$DOCKCROSS
   - sudo apt-get install p7zip-full -y
-  #- slurp ecos
-  #- travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
+  - slurp ecos
+  - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
   - slurp hsl
-  #- travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
+  - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
   #- slurp clang
-  #- travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
-  #- mkdir -p /home/travis/build/casadi/testbot
+  - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
+  - mkdir -p /home/travis/build/casadi/testbot
   - slurp ipopt
-  #- slurp bonmin
-  #- slurp cplex
-  #- slurp worhp
-  #- slurp slicot
+  - slurp bonmin
+  - slurp cplex
+  - slurp worhp
+  - slurp slicot
   - echo $PKG_CONFIG_PATH
   - popd
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
