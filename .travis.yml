@@ -27,11 +27,11 @@ script:
       with sftp.cd('commits'):
         with sftp.cd("$COMMIT"):
           with sftp.cd('osx'):
-            sftp.get("casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+            sftp.get("casadi-py$PYTHONVERSION-$COMMIT.tar.gz")
     EOF
   - python download.py
   - mkdir casadi_python
-  - tar -xvf casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz -C casadi_python
+  - tar -xvf casadi-py$PYTHONVERSION-$COMMIT.tar.gz -C casadi_python
   - echo "$PWD/casadi_python"
   - export PYTHONPATH=$PYTHONPATH:$PWD/casadi_python
   - echo $DYLD_LIBRARY_PATH
