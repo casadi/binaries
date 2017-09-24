@@ -85,20 +85,12 @@ matrix:
   include:
     - python: 2.7
       env: BITNESS=64 TESTCOMMIT=1
-    - python: 2.7
-      env: BITNESS=32
     - python: 3.4
       env: BITNESS=64
-    - python: 3.4
-      env: BITNESS=32
     - python: 3.5
       env: BITNESS=64
-    - python: 3.5
-      env: BITNESS=32
     - python: 3.6
       env: BITNESS=64
-    - python: 3.6
-      env: BITNESS=32
   exclude:
     - python: 3.2
   
