@@ -125,7 +125,7 @@ before_install:
   - slurp ipopt
   - slurp bonmin
   - slurp cplex
-  - slurp worhp
+  #- slurp worhp
   - slurp slicot
   - slurp lapack
   - echo $PKG_CONFIG_PATH
