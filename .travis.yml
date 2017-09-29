@@ -121,6 +121,7 @@ script:
   
   - popd
   - export RESULT_ZIP="bundle.zip"
+  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
   - pushd python_install
   - zip -r9 ../bundle.zip .
   - popd
