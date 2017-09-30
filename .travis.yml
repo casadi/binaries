@@ -25,8 +25,8 @@ script:
   - pkg-config --libs --cflags ipopt
   - pushd casadi
   #- grep -v PYTHON_LIBRARIES swig/python/CMakeLists.txt > tmp && mv tmp swig/python/CMakeLists.txt
-  - echo "set_target_properties(_casadi PROPERTIES LINK_FLAGS \"-undefined dynamic_lookup\")" >> swig/python/CMakeLists.txt
-  - echo "swig_link_libraries(casadi casadi)" >> swig/python/CMakeLists.txt
+  # echo "set_target_properties(_casadi PROPERTIES LINK_FLAGS \"-undefined dynamic_lookup\")" >> swig/python/CMakeLists.txt
+  # - echo "swig_link_libraries(casadi casadi)" >> swig/python/CMakeLists.txt
   - mkdir build
   - pushd build
   - cmake --version
