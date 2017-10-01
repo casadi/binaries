@@ -60,7 +60,7 @@ after_script:
   - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
   - export WHEEL=`python $HOME/build/testbot/create_wheel.py $COMMIT $PYTHONVERSION manylinux $BITNESS python_install`
   - echo $WHEEL
-  - dockcross "/opt/python/cp35-cp35m/bin/pip install elftools && git clone https://github.com/jgillis/auditwheel && pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && /opt/python/cp35-cp35m/bin/auditwheel repair -g quadmath -g gfortran -L . --no-update-tags -w . $WHEEL"
+  - dockcross "git clone https://github.com/jgillis/auditwheel && pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && $MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -L . --no-update-tags -w . $WHEEL"
   - rm -rf python_install
   - unzip $WHEEL -d python_install
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
