@@ -50,6 +50,13 @@ script:
   #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
+  - export WHEEL=`python $HOME/build/testbot/create_wheel_local.py $COMMIT $PYTHONVERSION manylinux $BITNESS python_install`
+  - echo $WHEEL
+  - dockcross "git clone https://github.com/jgillis/auditwheel && pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && $MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -L . --no-update-tags -w . $WHEEL"
+  - rm -rf python_install
+  - unzip $WHEEL -d python_install
+  - rm -rf python_install/*dist-info
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd test
   - python internal/test_py.py python -skipfiles="alltests.py helpers.py complexity.py speed.py"
@@ -57,12 +64,6 @@ script:
   - pushd test && make unittests_py && popd
 
 after_script:
-  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
-  - export WHEEL=`python $HOME/build/testbot/create_wheel_local.py $COMMIT $PYTHONVERSION manylinux $BITNESS python_install`
-  - echo $WHEEL
-  - dockcross "git clone https://github.com/jgillis/auditwheel && pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && $MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -L . --no-update-tags -w . $WHEEL"
-  - rm -rf python_install
-  - unzip $WHEEL -d python_install
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
   - export RESULT_TAR="$PWD/bundle.tar.gz"
   - |
