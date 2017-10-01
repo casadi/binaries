@@ -80,8 +80,8 @@ after_script:
       with sftp.cd('commits'):
         sftp.makedirs("$COMMIT")
         with sftp.cd("$COMMIT"):
-          sftp.makedirs('manylinux')
-          with sftp.cd('manylinux'):
+          sftp.makedirs('linux')
+          with sftp.cd('linux'):
             sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-$BITNESS-$COMMIT.tar.gz")
   - sed -i "s/^\s\s//g" upload.py 
   - cat upload.py
