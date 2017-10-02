@@ -56,6 +56,7 @@ script:
   - rm -rf python_install
   - unzip $WHEEL -d python_install
   - rm -rf python_install/*dist-info
+  - pushd python_install/casadi/casadi/jit && bash get_system_includes.sh gcc-4.8 c++ >  system_includes.txt && popd 
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd test
   - python internal/test_py.py python -skipfiles="alltests.py helpers.py complexity.py speed.py"
