@@ -7,6 +7,7 @@ env:
     - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - TRAVIS_PYTHON_VERSION=2.7
+    - BITNESS=64
 
 os: linux
 
