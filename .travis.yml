@@ -31,7 +31,7 @@ script:
       with sftp.cd('commits'):
         with sftp.cd("$COMMIT"):
           with sftp.cd('linux'):
-            sftp.get("casadi-py$PYTHONVERSION-np$NUMPYVERSION-$COMMIT.tar.gz")
+            sftp.get("casadi-py$PYTHONVERSION-$COMMIT-${BITNESS}bit.tar.gz")
     EOF
   - python download.py
   - mkdir casadi_python
