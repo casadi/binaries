@@ -50,7 +50,6 @@ script:
   #- ldd ../python_install/casadi/libcasadi_nlpsolver_worhp.so
   - popd
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
   - export WHEEL=`python $HOME/build/testbot/create_wheel_local.py $COMMIT $PYTHONVERSION manylinux $BITNESS python_install`
   - echo $WHEEL
   - dockcross "git clone https://github.com/jgillis/auditwheel && pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && $MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -L . --no-update-tags -w . $WHEEL"
@@ -64,6 +63,7 @@ script:
   - pushd test && make unittests_py && popd
 
 after_script:
+  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
   - export RESULT_TAR="$PWD/bundle.tar.gz"
   - |
@@ -82,7 +82,7 @@ after_script:
         with sftp.cd("$COMMIT"):
           sftp.makedirs('linux')
           with sftp.cd('linux'):
-            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-$BITNESS-$COMMIT.tar.gz")
+            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-$COMMIT-${BITNESS}bit.tar.gz")
   - sed -i "s/^\s\s//g" upload.py 
   - cat upload.py
   - python upload.py
