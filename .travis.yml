@@ -144,7 +144,7 @@ script:
   - python upload.py
 
 after_success:
-  - test_commit tests-windows
+  - test_commit test-windows
 
 branches:
   except:
