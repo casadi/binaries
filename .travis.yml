@@ -74,7 +74,7 @@ script:
   - python upload.py
 
 after_success:
-  - test_commit tests-osx
+  - test_commit test-osx
 
 branches:
   except:
