@@ -104,7 +104,7 @@ matrix:
     - python: 3.2
   
 after_success:
-  - test_commit tests-debian
+  - test_commit test-debian
 
 
 branches:
