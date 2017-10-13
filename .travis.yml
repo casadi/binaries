@@ -58,7 +58,7 @@ before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && git checkout merged && source recipes/setup.sh && popd
+  - pushd testbot && source recipes/setup.sh && popd
   - brew update
   - brew tap homebrew/science
   - brew install p7zip
