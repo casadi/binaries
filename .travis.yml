@@ -140,7 +140,7 @@ before_install:
   - slurp swig_matlab
   - slurp ipopt
   - slurp bonmin
-  - slurp worhp
+  #- slurp worhp
   - slurp hsl
   - slurp slicot
   - travis_retry testbot/recipes/fetch.sh gurobi650_mingw64.zip && mkdir gurobi && unzip gurobi650_mingw64.zip -d gurobi
