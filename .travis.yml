@@ -145,7 +145,9 @@ script:
 
 after_success:
   - test_commit test-windows
-
+after_failure:
+  - echo "oops"
+  - sleep 10
 branches:
   except:
     - /.*appveyor.*/
