@@ -77,7 +77,7 @@ before_install:
   - sudo apt-get install python-dev -y
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && git checkout merged && source recipes/setup.sh && popd
+  - pushd testbot && source recipes/setup.sh && popd
   - export SLURP_OS=trusty
   - export SLURP_GCC=$GCCVERSION
   - sudo apt-get install p7zip-full -y
