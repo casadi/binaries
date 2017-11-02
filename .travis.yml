@@ -42,6 +42,7 @@ script:
   - Xvfb :1 &
   - export DISPLAY=:1
   - octave --no-gui --eval "addpath('/home/travis/build/casadi/binaries/octave'),savepath,exit"
+  - matlabgcc
   - pushd casadi/test && make octave && popd
 
   
