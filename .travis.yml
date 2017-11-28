@@ -59,9 +59,9 @@ script:
   - pushd python_install/casadi/casadi/jit && bash get_system_includes.sh gcc-4.8 c++ >  system_includes.txt && popd 
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - pushd test
-  - python internal/test_py.py python -skipfiles="alltests.py helpers.py complexity.py speed.py"
+  #- python internal/test_py.py python -skipfiles="alltests.py helpers.py complexity.py speed.py"
   - popd
-  - pushd test && make unittests_py && popd
+  #- pushd test && make unittests_py && popd
 
 after_script:
   - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
