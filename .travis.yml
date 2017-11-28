@@ -8,7 +8,6 @@ env:
     - SNOPT=/Users/travis/build/snopt7
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
-    - GUROBI_HOME=/Users/travis/build/gurobi
     - SLURP_GCC=4.9
     
   matrix:
@@ -105,8 +104,8 @@ before_install:
   - slurp bonmin
   - slurp worhp
   # - slurp cplex
+  - slurp gurboi
   - slurp swig_matlab
-  - travis_retry testbot/recipes/fetch.sh gurobi650_osx.zip && mkdir gurobi && unzip gurobi650_osx.zip -d gurobi && rm gurobi650_osx.zip
   - popd
   - brew update
   - brew tap homebrew/science
