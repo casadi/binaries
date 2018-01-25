@@ -79,7 +79,7 @@ before_install:
   - slurp ecos
   - slurp hsl
   - slurp clang
-  - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
+  - slurp snopt
   - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - mkdir -p /home/travis/build/casadi/testbot
