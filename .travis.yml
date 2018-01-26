@@ -2,13 +2,8 @@
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - LD_LIBRARY_PATH=/home/travis/build/testbot/restricted/worhp:/home/travis/build/snopt75/lib:/home/travis/build/mosek/7/tools/platform/linux64x86/bin/:/home/travis/build/gurobi/lib
-    - WORHP=/home/travis/build/testbot/restricted/worhp
-    - WORHP_LICENSE_FILE=/home/travis/build/testbot/restricted/worhp/unlocked.lic
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
-    - SNOPT=/home/travis/build/snopt75
-    - GUROBI_HOME=/home/travis/build/gurobi
     - DEBIAN_FRONTEND=noninteractive
     - casadi_build_flags=-DWITH_COMMON=ON
     - DOCKCROSS=manylinux
@@ -123,19 +118,7 @@ before_install:
   - export SLURP_OS=dockcross
   - export SLURP_CROSS=$DOCKCROSS
   - sudo apt-get install p7zip-full -y
-  - slurp ecos
-  - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
-  - slurp hsl
-  - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
-  - slurp clang
-  - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
-  - mkdir -p /home/travis/build/casadi/testbot
-  - slurp ipopt
-  - slurp bonmin
-  - slurp cplex
-  - slurp worhp
-  - slurp slicot
-  - slurp lapack
+  - slurp_common
   
   - echo $PKG_CONFIG_PATH
   - popd
