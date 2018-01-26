@@ -119,6 +119,7 @@ before_install:
   - export SLURP_CROSS=$DOCKCROSS
   - sudo apt-get install p7zip-full -y
   - slurp_common
+  - slurp lapack
   
   - echo $PKG_CONFIG_PATH
   - popd
