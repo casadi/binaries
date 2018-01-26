@@ -161,20 +161,12 @@ before_install:
   - export SLURP_OS=trusty
   - export SLURP_CROSS=mingw
   
-  - slurp swig
+  - slurp swig_matlab
   
   # Fix for #1477 (part 1)
   - swig_patch_pyobject
 
-  - slurp ecos
-  - slurp clang
-  - slurp ipopt
-  - slurp bonmin
-  - slurp worhp
-  #- slurp gurobi
-  - slurp lapack
-  - slurp hsl
-  - slurp slicot
+  - slurp_common
 
   - popd
   
