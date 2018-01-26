@@ -2,11 +2,9 @@
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - SNOPT=/home/travis/build/snopt75
     - OCTAVEPATH=/home/travis/build/octave-install
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
-    - GUROBI_HOME=/home/travis/build/gurobi
 
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1"
@@ -63,19 +61,8 @@ before_install:
   - sudo apt-get install octave liboctave-dev -y
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
-  - slurp ecos
-  - slurp hsl
-  - slurp clang
-  - travis_retry testbot/recipes/fetch.sh snopt75.tar.gz && mkdir snopt75 && tar -xvf snopt75.tar.gz -C snopt75
-  - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
-  - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
-  - mkdir -p /home/travis/build/casadi/testbot
-  - slurp ipopt
-  - slurp bonmin
+  - slurp_common
   - slurp swig_matlab
-  - slurp cplex
-  - slurp worhp
-  - slurp slicot
   - popd
   - sudo apt-get update -qq
   - sudo apt-get install -y binutils git cmake gfortran-4.8 liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
