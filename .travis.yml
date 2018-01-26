@@ -1,7 +1,6 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 env: 
   global: 
-    - DYLD_LIBRARY_PATH=/Users/travis/build/snopt7/lib:/Users/travis/build/mosek/7/tools/platform/linux64x86/bin/
     - MATLABRELEASE=R2015a
     - MOSEKLM_LICENSE_FILE=/Users/travis/build/testbot/restricted/mosek.lic
     - SLURP_GCC=4.9
@@ -67,11 +66,7 @@ before_install:
   - sudo pip install pysftp cryptography 2>/dev/null
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   - export SLURP_OS=osx
-  - slurp hsl
-  - slurp worhp
-  - travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
-  - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
-  - slurp gurobi
+  - slurp_common_test
   - sudo rm -rf /usr/local/lib/gcc/*darwin*/*
   - sudo rm -rf /usr/local/Cellar/gcc/*/lib/gcc/*darwin*/*
   
