@@ -6,9 +6,7 @@ language: generic
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - SNOPT=/home/travis/build/snopt7
     - OCTAVEPATH=/home/travis/build/octave-install
-    - GUROBI_HOME=/home/travis/build/gurobi
     - OCTAVE_VERSION=4.2.1
 
   matrix:
@@ -105,20 +103,9 @@ before_install:
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
   - export SLURP_CROSS=mingwoct
-  - #slurp ecos
-  - slurp lapack
   - slurp swig_matlab
-  - slurp ipopt
-  - slurp bonmin
-  - slurp worhp
-  - slurp mingw_octave
-  - slurp clang  
+  - slurp_common
   - ${compilerprefix}-g++ -v
-  - slurp hsl
-  - #travis_retry testbot/recipes/fetch.sh gurobi650_mingw64.zip && mkdir gurobi && unzip gurobi650_mingw64.zip -d gurobi
-  - #travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xf snopt7.tar.gz -C snopt7
-  - #pushd testbot/restricted/cplex && mkdir cplex && tar -xf cplex12.4.tar.gz -C cplex && mkdir concert && tar -xf cplex12.4-concert.tar.gz -C concert && popd
-  - #pushd testbot/restricted && mkdir -p worhp && cd  worhp && 7za e ../libworhp_debian7_amd64_gcc47_1.7-12970f3.7z -y && popd
   - popd
   - sudo apt-get update
   - sudo apt-get install -y binutils git cmake cmake-data python-dev gfortran # trick cmake into looking for fortran support
