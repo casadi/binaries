@@ -59,6 +59,7 @@ before_install:
   - export SLURP_OS=trusty
   - sudo apt-get install p7zip-full -y
   - slurp_common
+  - slurp swig_matlab
   - popd
   - sudo apt-get install -y binutils libslicot-dev gcc g++ gfortran git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
   - sudo apt-get install -y fakeroot rpm alien
