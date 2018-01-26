@@ -2,12 +2,10 @@
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - SNOPT=/home/travis/build/snopt75
     - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
-    - GUROBI_HOME=/home/travis/build/gurobi
 
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2014b
@@ -80,7 +78,7 @@ before_install:
   - slurp hsl
   - slurp clang
   - slurp snopt
-  - travis_retry testbot/recipes/fetch.sh gurobi650.tar.gz && mkdir gurobi && tar -xf gurobi650.tar.gz -C gurobi && rm gurobi650.tar.gz
+  - slurp gurobi
   - travis_retry testbot/recipes/fetch.sh mosek7.tar.bz2 && tar -xvf mosek7.tar.bz2
   - mkdir -p /home/travis/build/casadi/testbot
   - slurp ipopt
