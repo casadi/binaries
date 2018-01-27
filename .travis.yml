@@ -35,6 +35,8 @@ script:
   - ls /home/travis/.wine/drive_c/Python$PYTHONVERSION/Lib/site-packages/
   - which cmake
   - ls /usr/local/cmake-3.9.2/
+  - ls /usr/local/cmake-3.9.2/share
+  - ls /usr/local/cmake-3.9.2/share/Modules
   - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /usr/local/cmake-3.9.2/share/Modules/FindLAPACK.cmake
   - |
     cat <<EOF >toolchain.cmake
