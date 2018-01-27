@@ -171,6 +171,7 @@ before_install:
   - swig_patch_pyobject
 
   - slurp_common
+  - export casadi_build_flags="$casadi_build_flags -DWITH_CPLEX=OFF"  
 
   - popd
   
