@@ -87,6 +87,10 @@ before_install:
   #- brew install findutils --with-default-names
   #- sudo updatedb
   #- locate libgfortran
+  - export CC=gcc-$SLURP_GCC
+  - export CXX=g++-$SLURP_GCC
+  - export FC=gfortran-$SLURP_GCC
+  - export F77=gfortran-$SLURP_GCC
   - ls /usr/local/lib/gcc/4.9
   - which gobjdump
   - pwd
