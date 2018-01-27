@@ -172,7 +172,7 @@ before_install:
 
   - slurp_common
   - export casadi_build_flags="$casadi_build_flags -DWITH_CPLEX=OFF"  
-
+  - slurp lapack
   - popd
   
   - sudo apt-get update -qq
