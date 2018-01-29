@@ -105,7 +105,8 @@ script:
   - popd
   
   - cmake $casadi_build_flags -DWITH_COMMON=ON -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
-  - cat /home/travis/build/casadi/binaries/casadi/build/casadi/interfaces/snopt/@CMakeFiles/casadi_nlpsol_snopt.dir/linklibs.rsp
+  - ls /home/travis/build/casadi/binaries/casadi/build/casadi/interfaces/snopt/
+  - cat /home/travis/build/casadi/binaries/casadi/build/casadi/interfaces/snopt/CMakeFiles/casadi_nlpsol_snopt.dir/linklibs.rsp
   - make VERBOSE=1
   - make install
   
