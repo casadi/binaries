@@ -87,10 +87,7 @@ before_install:
   - slurp swig_matlab
   - slurp_common
   - popd
-  - brew update
-  - brew tap homebrew/science
-  - brew reinstall gcc49 --with-fortran
-  #- brew doctor
+  - osx_gcc49_setup
   - sudo easy_install pip
   - sudo pip install pysftp cryptography
   #==1.2.1
