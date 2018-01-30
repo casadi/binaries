@@ -105,6 +105,7 @@ before_install:
   - export SLURP_CROSS=mingwoct
   - slurp swig_matlab
   - slurp_common
+  - slurp mingw_octave
   - ${compilerprefix}-g++ -v
   - popd
   - sudo apt-get update
