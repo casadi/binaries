@@ -81,16 +81,7 @@ branches:
 
 before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  - brew update
-  - brew install binutils
-  - brew reinstall gcc49 --with-fortran
-  #- brew install findutils --with-default-names
-  #- sudo updatedb
-  #- locate libgfortran
-  - export CC=gcc-$SLURP_GCC
-  - export CXX=g++-$SLURP_GCC
-  - export FC=gfortran-$SLURP_GCC
-  - export F77=gfortran-$SLURP_GCC
+  - osx_gcc49_setup
   - ls /usr/local/lib/gcc/4.9
   - which gobjdump
   - pwd
