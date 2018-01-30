@@ -88,10 +88,8 @@ before_install:
   - slurp swig_matlab
   - slurp_common
   - popd
-  - brew update
-  - brew tap homebrew/science
+  - osx_gcc49_setup
   - brew install octave
-  - brew reinstall gcc49 --with-fortran
   #- brew doctor
   - sudo easy_install pip
   - sudo pip install pysftp cryptography
