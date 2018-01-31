@@ -5,7 +5,6 @@ os: osx
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - SNOPT=/Users/travis/build/snopt7
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
     - SLURP_GCC=4.9
@@ -93,18 +92,12 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh && popd
-  - osx_gcc49_setup
-  - ls /usr/local/lib/gcc/4.9
-  - which gobjdump
-  - python_setup
-  #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
-  - mkdir -p /Users/travis/build/casadi/testbot
+  - osx_gcc49_setup || remote_access
+  - python_setup || remote_access
+  - mkdir -p /Users/travis/build/casadi/testbot || remote_access
   - export SLURP_OS=osx
   - slurp_common
   - slurp swig_matlab
   - popd
-  - brew update
-  - brew tap homebrew/science
-  #- brew doctor
   
 language: cpp
