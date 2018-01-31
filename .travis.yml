@@ -12,10 +12,11 @@ env:
     - OCTAVEPATH=/Users/travis/build/octave-install
     - SLURP_GCC=4.9
     - TESTCOMMIT="1"
+    - KEEP_GOING=1
 
   
 before_script:
-  - set -e
+  - #set -e
 
 compiler: clang
 
