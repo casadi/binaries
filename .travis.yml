@@ -22,7 +22,7 @@ env:
     - GUROBI_HOME=/Users/travis/build/gurobi
     
 before_script:
-  - set -e
+  - #set -e
   - sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist
 
 compiler: clang
