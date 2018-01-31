@@ -106,6 +106,7 @@ before_install:
   - slurp swig_matlab
   - slurp_common
   - slurp mingw_octave
+  - slurp lapack
   - ${compilerprefix}-g++ -v
   - popd
   - sudo apt-get update
