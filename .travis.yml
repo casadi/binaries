@@ -136,6 +136,7 @@ before_install:
   - export SLURP_CROSS=mingw
   - slurp_common
   - slurp swig_matlab
+  - slurp lapack
   - popd
   - sudo apt-get update
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake cmake-data liblapack-dev ipython python-dev libxml2-dev
