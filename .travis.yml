@@ -9,6 +9,7 @@ env:
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
     - SLURP_GCC=4.9
+    - KEEP_GOING=1
     
   matrix:
     - TRAVIS_PYTHON_VERSION=2.7 NUMPYVERSION=1.9 TESTCOMMIT=ON
@@ -16,7 +17,14 @@ env:
     - TRAVIS_PYTHON_VERSION=3.6 NUMPYVERSION=1.11
 
 before_script:
-  - set -e
+  - |
+    if [ -n "$KEEP_GOING" ];
+    then
+      echo "Keep going"
+      set -e -E
+    else
+      echo "break early"
+    fi
 
 compiler: clang
 
