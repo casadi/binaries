@@ -30,6 +30,8 @@ script:
   - mkdir build
   - pushd build
   - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /usr/local/cmake-3.9.2/share/cmake-3.9/Modules/FindLAPACK.cmake
+  - cat /usr/local/cmake-3.9.2/share/cmake-3.9/Modules/FindLAPACK.cmake
+  - echo $MINGW_ROOT
   - |
     cat <<EOF >toolchain.cmake
     # this one is important
@@ -58,6 +60,7 @@ script:
     set(CMAKE_SHARED_LIBRARY_SUFFIX "dll")
     EOF
   - echo $CMAKE_LIBRARY_PATH
+  - cmake --version
   - cmake -DFORTRAN_REQUIRED=ON -DWITH_COMMON=ON $casadi_build_flags -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-${OCTAVE_VERSION}/include/octave-${OCTAVE_VERSION}/octave/ -DOCTAVE_LIBRARIES="$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctinterp-4.dll;$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctave-4.dll" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF .. || remote_access 
   - make install -j2 VERBOSE=1
   #- cp $MINGW_ROOT/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
@@ -110,7 +113,7 @@ before_install:
   - ${compilerprefix}-g++ -v
   - popd
   - sudo apt-get update
-  - sudo apt-get install -y binutils git cmake cmake-data python-dev gfortran # trick cmake into looking for fortran support
+  - #sudo apt-get install -y binutils git python-dev gfortran # trick cmake into looking for fortran support
   - sudo pip install pysftp
   - source /home/travis/build/testbot/restricted/env.sh
   - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
