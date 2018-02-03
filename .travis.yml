@@ -50,6 +50,7 @@ before_install:
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   - export SLURP_OS=osx
   - slurp_common_test
+  - bake_my_library_path
   - sudo rm -rf /usr/local/lib/gcc/*darwin*/*
   - sudo rm -rf /usr/local/Cellar/gcc/*/lib/gcc/*darwin*/*
   
