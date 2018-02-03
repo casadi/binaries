@@ -127,11 +127,8 @@ install:
   - echo USE_SERVER >> C:\projects\binaries\matlab\licenses\network.lic
   - dir C:\projects\binaries\matlab\bin
   # -wait -logfile out.txt 
-  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),mex -setup c, savepath,exit"
-  - matlab.exe -nodisplay -nosplash -nodesktop -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),mex -setup c, savepath,exit"
-  - matlab.exe -nodisplay -nosplash -nodesktop -wait -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),mex -setup c, savepath,exit"
-  - matlab.exe -nodisplay -nosplash -nodesktop -r "addpath('C:\\projects\\binaries\\casadimatlab'),a=1,save('test.mat'),mex -setup c, savepath,exit"
-  - ping -n 60 127.0.0.1 >nul
+  - matlab.exe -nodisplay -nosplash -nodesktop -nojvm  -wait -r "addpath('C:\\projects\\binaries\\casadimatlab'),disp(123),mex -setup c, savepath,exit"
+  - #ping -n 60 127.0.0.1 >nul
   - make matlab
 
 branches: 
