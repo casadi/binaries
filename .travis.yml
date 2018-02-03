@@ -98,6 +98,7 @@ before_install:
   - export SLURP_OS=osx
   - slurp_common
   - slurp swig_matlab
+  - bake_my_library_path
   - popd
   
 language: cpp
