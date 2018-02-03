@@ -52,6 +52,7 @@ install:
  # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install pysftp
   - pip install requests==2.6.0
+  - echo "" >> c:\Windows\System32\Drivers\etc\hosts
   - echo 127.0.0.1 %FLEX_SERVER% >> c:\Windows\System32\Drivers\etc\hosts
   - echo 127.0.0.1 %FLEX_HOSTNAME% >> c:\Windows\System32\Drivers\etc\hosts
   #- ps: |
