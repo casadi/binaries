@@ -85,6 +85,7 @@ before_install:
   - export SLURP_OS=osx
   - slurp swig_matlab
   - slurp_common
+  - bake_my_library_path
   - popd
   - osx_gcc49_setup
   - sudo easy_install pip
