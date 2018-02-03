@@ -20,9 +20,9 @@ before_script:
     if [ -n "$KEEP_GOING" ];
     then
       echo "Keep going"
-      set -e -E
     else
-      echo "break early"
+      echo "Break early"
+      set -e -E
     fi
 
 compiler: clang
