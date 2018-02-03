@@ -28,15 +28,15 @@ before_script:
 compiler: clang
 
 script:
-  - pkg-config --libs --cflags ipopt
+  - pkg-config --libs --cflags ipopt || remote_access
   - pushd casadi
   #- grep -v PYTHON_LIBRARIES swig/python/CMakeLists.txt > tmp && mv tmp swig/python/CMakeLists.txt
   # echo "set_target_properties(_casadi PROPERTIES LINK_FLAGS \"-undefined dynamic_lookup\")" >> swig/python/CMakeLists.txt
   # - echo "swig_link_libraries(casadi casadi)" >> swig/python/CMakeLists.txt
   - mkdir build
   - pushd build
-  - cmake --version
-  - cmake $casadi_build_flags -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - cmake --version || remote_access
+  - cmake $casadi_build_flags -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install .. || remote_access
   - osx_rpath
   - make VERBOSE=1
   - make install
@@ -96,9 +96,9 @@ before_install:
   - python_setup || remote_access
   - mkdir -p /Users/travis/build/casadi/testbot || remote_access
   - export SLURP_OS=osx
-  - slurp_common
-  - slurp swig_matlab
-  - bake_my_library_path
+  - slurp_common || remote_access
+  - slurp swig_matlab || remote_access
+  - bake_my_library_path || remote_access
   - popd
   
 language: cpp
