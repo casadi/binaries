@@ -9,6 +9,7 @@ env:
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
     - SLURP_GCC=4.9
+    - SLURP_OS=osx
     - KEEP_GOING=1
     
   matrix:
@@ -95,11 +96,11 @@ before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh || remote_access && popd
   - osx_gcc49_setup || remote_access
+  - slurp swig_matlab || remote_access
   - python_setup || remote_access
   - mkdir -p /Users/travis/build/casadi/testbot || remote_access
-  - export SLURP_OS=osx
   - slurp_common || remote_access
-  - slurp swig_matlab || remote_access
+
   - bake_my_library_path || remote_access
   - popd
   
