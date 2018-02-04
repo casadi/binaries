@@ -26,7 +26,7 @@ before_script:
       set -e -E
     fi
 
-compiler: clang
+compiler: cpp
 
 script:
   - pkg-config --libs --cflags ipopt || remote_access
@@ -37,6 +37,7 @@ script:
   - mkdir build
   - pushd build
   - cmake --version || remote_access
+  - echo  $casadi_build_flags
   - cmake $casadi_build_flags -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install .. || remote_access
   - osx_rpath
   - make VERBOSE=1
@@ -102,4 +103,4 @@ before_install:
   - bake_my_library_path || remote_access
   - popd
   
-language: cpp
+language: generic
