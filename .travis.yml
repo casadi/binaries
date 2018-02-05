@@ -38,6 +38,7 @@ script:
   # - echo "swig_link_libraries(casadi casadi)" >> swig/python/CMakeLists.txt
   - mkdir build
   - pushd build
+  - pwd
   - cmake --version
   - which cmake
   - echo  $casadi_build_flags
