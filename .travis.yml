@@ -5,6 +5,7 @@ env:
     - MOSEKLM_LICENSE_FILE=/Users/travis/build/testbot/restricted/mosek.lic
     - SLURP_GCC=4.9
     - SLURP_OS=osx
+    - TRAVIS_PYTHON_VERSION=2.7
 
 before_script:
   - set -e
