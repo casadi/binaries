@@ -28,7 +28,7 @@ matrix:
         - pushd casadi
         - mkdir build
         - pushd build
-        - cmake -DWITH_OPENMP=OFF -DWITH_ECOS=OFF -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=OFF -DWITH_SLICOT=OFF -DWITH_PYTHON=OFF -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../install ..
+        - bash -c "cmake $casadi_build_flags -DWITH_OPENMP=OFF -DWITH_ECOS=OFF -DOLD_LLVM=ON -DWITH_CLANG=OFF -DWITH_PYTHON=ON -DWITH_MOSEK=OFF -DWITH_WORHP=OFF -DWITH_SLICOT=OFF -DWITH_PYTHON=OFF -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../install .."
         - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
         - echo "::$HVERSION::"
         - grep -i ipopt CMakeCache.txt
