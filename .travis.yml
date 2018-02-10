@@ -16,7 +16,15 @@ env:
     - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014a
   
 before_script:
-  - #set -e
+  - |
+    if [ -n "$KEEP_GOING" ];
+    then
+      echo "Keep going"
+    else
+      echo "Break early"
+      set -e -E
+    fi
+
 
 compiler: clang
 
@@ -69,28 +77,18 @@ branches:
   except:
     - /.*appveyor.*/
 
-before_install:
-  - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  # travis-wait seems to stop at 20 mins, regardless if output is being generated
-  - (while true ; do sleep 60 ; echo "ping" ; done ) &
-  
-  - brew update
-  - brew install binutils # pcre
-  - which gobjdump
+before_install:  - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && source recipes/setup.sh && popd
-  #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
-  - mkdir -p /Users/travis/build/casadi/testbot
-  - export SLURP_OS=osx
-  - slurp swig_matlab
-  - slurp_common
-  - bake_my_library_path
+  - pushd testbot && source recipes/setup.sh || remote_access && popd
+  - osx_gcc49_setup || remote_access
+  - slurp swig_matlab || remote_access
+  - python_setup || remote_access
+  - mkdir -p /Users/travis/build/casadi/testbot || remote_access
+  - slurp_common || remote_access
+
+  - bake_my_library_path || remote_access
   - popd
-  - osx_gcc49_setup
-  - sudo easy_install pip
-  - sudo pip install pysftp cryptography
-  #==1.2.1
   
-language: cpp
+language: generic
