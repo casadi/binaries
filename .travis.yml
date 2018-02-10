@@ -4,6 +4,7 @@ env:
     - PYTHONVERSION=27
     - MOSEKLM_LICENSE_FILE=/Users/travis/build/testbot/restricted/mosek.lic
     - SLURP_GCC=4.9
+    - SLURP_OS=osx
 
 before_script:
   - set -e
@@ -43,24 +44,18 @@ script:
 branches:
   except:
     - /.*appveyor.*/
-
+  
 before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
+  - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh && popd
-  - brew update
-  - brew tap homebrew/science
-  - brew install p7zip
-  #- brew doctor
-  - sudo easy_install pip
-  - sudo pip install matplotlib numpy scipy pysftp cryptography==1.2.1 2>/dev/null
-  - sudo pip install pysftp
-  - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts
-  - export SLURP_OS=osx
+  - osx_gcc49_setup
+  - python_setup
   - slurp_common_test
   - bake_my_library_path
-  - echo $DYLD_LIBRARY_PATH
+  - popd
   - sudo rm -rf /usr/local/lib/gcc/*darwin*/* 
   - sudo rm -rf /usr/local/Cellar/gcc/*/lib/gcc/*darwin*/*
 
