@@ -1,6 +1,7 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 os: osx
 
+osx_image: xcode7.3
 
 env: 
   global: 
@@ -73,28 +74,20 @@ branches:
   except:
     - /.*appveyor.*/
 
-before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  - brew update
-  - brew install binutils #pcre
-  - which gobjdump
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && source recipes/setup.sh && popd
-  - brew install p7zip
-  #- travis_retry testbot/recipes/fetch.sh snopt7.tar.gz && mkdir snopt7 && tar -xvf snopt7.tar.gz -C snopt7
-  - mkdir -p /Users/travis/build/casadi/testbot
-  - export SLURP_OS=osx
-  - slurp swig_matlab
-  - slurp_common
-  - bake_my_library_path
-  - popd
-  - osx_gcc49_setup
+  - pushd testbot && source recipes/setup.sh || remote_access && popd
+  - osx_gcc49_setup || remote_access
+  - slurp swig_matlab || remote_access
+  - python_setup || remote_access
+  - mkdir -p /Users/travis/build/casadi/testbot || remote_access
+  - slurp_common || remote_access
+
+  - bake_my_library_path || remote_access
   - brew install octave
-  #- brew doctor
-  - sudo easy_install pip
-  - sudo pip install pysftp cryptography
-  #==1.2.1
+  - popd
   
-language: cpp
+language: generic
+
