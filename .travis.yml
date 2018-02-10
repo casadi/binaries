@@ -11,6 +11,8 @@ before_script:
 
 os: osx
 
+osx_image: xcode7.3
+
 script:
   - ls
   - pushd casadi
@@ -59,4 +61,4 @@ before_install:
   - sudo rm -rf /usr/local/lib/gcc/*darwin*/* 
   - sudo rm -rf /usr/local/Cellar/gcc/*/lib/gcc/*darwin*/*
 
-language: cpp
+language: generic
