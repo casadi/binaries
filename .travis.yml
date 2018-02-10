@@ -103,7 +103,7 @@ script:
   - $compilerprefix-dlltool --input-def python$PYTHONVERSION.def --dllname  /home/travis/.wine/drive_c/Python$PYTHONVERSION/python$PYTHONVERSION.dll --output-lib libpython$PYTHONVERSION.a
   - popd
   
-  - cmake $casadi_build_flags -DWITH_COMMON=ON -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - bash -c "cmake $casadi_build_flags -DWITH_COMMON=ON -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install .."
   - ls /home/travis/build/casadi/binaries/casadi/build/casadi/interfaces/snopt/
   - cat /home/travis/build/casadi/binaries/casadi/build/casadi/interfaces/snopt/CMakeFiles/casadi_nlpsol_snopt.dir/linklibs.rsp
   - make VERBOSE=1
