@@ -75,6 +75,7 @@ branches:
   except:
     - /.*appveyor.*/
 
+before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
