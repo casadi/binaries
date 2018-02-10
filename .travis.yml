@@ -30,7 +30,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake -DWITH_COMMON=ON $casadi_build_flags -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=$OCTAVEPATH ..
+  - bash -c "cmake $casadi_build_flags -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=$OCTAVEPATH .."
   - osx_rpath
   - make VERBOSE=1
   - make install
