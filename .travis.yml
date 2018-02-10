@@ -19,7 +19,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake $casadi_build_flags -DCPACK_GENERATOR=DEB -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+  - bash -c "cmake $casadi_build_flags -DCPACK_GENERATOR=DEB -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install .."
   - make 
   - make json
   - make package
