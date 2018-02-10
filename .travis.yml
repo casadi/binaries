@@ -48,12 +48,12 @@ before_install:
   - osx_gcc49_setup
   - python_setup_light
   - slurp_common_test
-
+  - brew install octave
   - bake_my_library_path
   - popd
   - sudo rm -rf /usr/local/lib/gcc/*darwin*/*
   - sudo rm -rf /usr/local/Cellar/gcc/*/lib/gcc/*darwin*/*
   
-  - brew install octave
+
   
 language: cpp
