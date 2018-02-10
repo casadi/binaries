@@ -12,6 +12,7 @@ env:
     - GUROBI_HOME=/Users/travis/build/gurobi
     - OCTAVEPATH=/Users/travis/build/octave-install
     - SLURP_GCC=4.9
+    - SLURP_OS=osx
     - TESTCOMMIT="1"
     - KEEP_GOING=1
 
