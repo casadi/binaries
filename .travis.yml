@@ -8,6 +8,7 @@ env:
     - MATLABPATH=/Users/travis/build/matlab-install
     - MATLAB_ROOT=/Users/travis/build/matlab
     - SLURP_GCC=4.9
+    - KEEP_GOING=1
     
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" MATLABRELEASE=R2015a
@@ -15,7 +16,7 @@ env:
     - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014a
   
 before_script:
-  - set -e
+  - #set -e
 
 compiler: clang
 
