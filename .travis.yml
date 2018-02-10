@@ -32,7 +32,7 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - cmake $casadi_build_flags -DWITH_OPENMP=OFF  -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH ..
+  - bash -c "cmake $casadi_build_flags -DWITH_OPENMP=OFF  -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH .."
   - osx_rpath
   - make VERBOSE=1
   - make install
