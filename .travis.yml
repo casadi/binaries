@@ -16,16 +16,8 @@ os: osx
 osx_image: xcode7.3
 
 script:
-  - echo $MATLABRELEASE
-  - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
-  - ls
-  - mkdir matlab
-  - travis_wait unzip matlab${MATLABRELEASE}_osx.zip -d matlab > /dev/null
-  - popd
   - matlabtunnel
   - ls
-  - pushd casadi
-  - popd
   - |
     cat <<EOF > download.py
     import pysftp
@@ -70,8 +62,13 @@ before_install:
   - slurp_common_test
 
   - bake_my_library_path
-  - popd
   - sudo rm -rf /usr/local/lib/gcc/*darwin*/*
   - sudo rm -rf /usr/local/Cellar/gcc/*/lib/gcc/*darwin*/*
+  - echo $MATLABRELEASE
+  - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
+  - ls
+  - mkdir matlab
+  - travis_wait unzip matlab${MATLABRELEASE}_osx.zip -d matlab > /dev/null
+  - popd
   
 language: cpp
