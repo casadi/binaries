@@ -30,7 +30,7 @@ script:
   - mkdir build
   - mkdir -p build/swig/matlab/ && touch build/swig/matlab/SwigGet.m
   - pushd build
-  - cmake -DWITH_OPENMP=OFF -DWITH_COMMON=ON -DWITH_SELFCONTAINED=ON -DCMAKE_INSTALL_PREFIX=$MATLABPATH -DWITH_DEEPBIND=ON -DWITH_MATLAB=ON $casadi_build_flags -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON ..
+  - bash -c "cmake $casadi_build_flags -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DCMAKE_INSTALL_PREFIX=$MATLABPATH -DWITH_DEEPBIND=ON -DWITH_MATLAB=ON  -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON .."
   - make
   - make install
   - popd
