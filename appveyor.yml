@@ -12,7 +12,6 @@ environment:
     MATLABRELEASE: "R2014b"
     GIT_ALLOW_PROTOCOL: "file:git:http:https:ssh:ext"
     VisualStudioVersion: 12.0
-    BITNESS: 64
 
 image: Visual Studio 2013
 
@@ -41,8 +40,6 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install requests
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
-  - dir
-  - call testbot/fetch_common.bat
   - dir
  # - dir C:\MinGW\msys\1.0
  # - tree C:\MinGW\msys\1.0
