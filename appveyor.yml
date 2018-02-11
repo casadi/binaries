@@ -34,7 +34,6 @@ install:
   - set BITNESS=32
   - call testbot/fetch_common.bat
   - echo %PATH%
-  - dir "C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\compiler"
   - set PATH=%PATH%;C:\projects\binaries
   - dir
   - dir C:\MinGW\msys\1.0
