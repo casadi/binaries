@@ -108,8 +108,8 @@ before_install:
   - export SLURP_OS=trusty
   - export SLURP_CROSS=mingwoct
   - slurp swig_matlab
-  - slurp_common
   - slurp mingw_octave
+  - slurp_common
   - slurp lapack
   - ${compilerprefix}-g++ -v
   - popd
