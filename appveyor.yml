@@ -43,6 +43,8 @@ install:
   - dir
   - python -c "from restricted import *; download('hsl_mingw64_trusty.zip')"
   - 7z x -y "hsl_mingw64_trusty.zip" > nul
+  - python -c "from restricted import *; download('gurobi650_mingw64_trusty.zip')"
+  - 7z x -y "gurobi650_mingw64_trusty.zip" > nul
   - set PATH=%PATH%;C:\projects\binaries
   - dir
  # - dir C:\MinGW\msys\1.0
