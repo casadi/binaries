@@ -33,6 +33,7 @@ install:
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - set BITNESS=32
   - call testbot/fetch_common.bat
+  - ping 127.0.0.1 -n 1200 > nul
   - set PATH=%PATH%;C:\projects\binaries
   - dir
   - dir C:\MinGW\msys\1.0
