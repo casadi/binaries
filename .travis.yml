@@ -54,12 +54,15 @@ script:
   - otool -l $GCC_FULL
 
   - cp $GCC_FULL $QUADMATH_FULL $FORTRAN_FULL $CXX_FULL /Users/travis/build/casadi/binaries/casadi/python_install/casadi
+  
+  - sudo install_name_tool -change $GCC_FULL_ALT "@rpath/libgcc_s.1.dylib" python_install/casadi/_casadi.so
+  - sudo install_name_tool -change $GCC_FULL_ALT "@rpath/libgcc_s.1.dylib" python_install/casadi/*.dylib
 
   - otool -l python_install/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
   - otool -l python_install/casadi/libgcc_s.1.dylib | grep /usr/local || assertfail
   - otool -l python_install/casadi/libquadmath.0.dylib | grep /usr/local || assertfail
-  - otool -l python_install/casadi/libcasadi.dylib
-  - otool -l python_install/casadi/_casadi.so
+  - otool -l python_install/casadi/libcasadi.dylib | grep /usr/local || assertfail
+  - otool -l python_install/casadi/_casadi.so | grep /usr/local || assertfail
   
   - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
   - pushd python_install && tar -czf ../bundle.tar.gz . && popd
