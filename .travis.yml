@@ -55,7 +55,7 @@ script:
     
     # where is the target environment 
     SET(CMAKE_FIND_ROOT_PATH  /usr/$compilerprefix)
-    SET(CMAKE_CXX_FLAGS "$EXTRA_FLAGS" CACHE STRING "" FORCE)
+    SET(CMAKE_CXX_FLAGS "$EXTRA_FLAGS $CPPFLAGS" CACHE STRING "" FORCE)
   
     #SET(CMAKE_CXX_FLAGS "$EXTRA_FLAGS -DWITH_OPENMP -fopenmp" CACHE STRING "" FORCE)
     #SET(CMAKE_C_FLAGS "-DWITH_OPENMP -fopenmp" CACHE STRING "" FORCE)
