@@ -38,6 +38,7 @@ script:
   - make install
   - popd
   - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $CXX_FULL $OCTAVEPATH/casadi
+  - osx_rpath_patch $OCTAVEPATH/casadi
   
   - otool -l $OCTAVEPATH/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
   - otool -l $OCTAVEPATH/casadi/libgcc_s.1.dylib | grep /usr/local || assertfail
