@@ -49,6 +49,7 @@ script:
   - make install
   - popd
   - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $CXX_FULL $MATLABPATH/casadi
+  - osx_rpath_patch $MATLABPATH/casadi
   - pushd $MATLABPATH/casadi && tar -czf ../../bundle.tar.gz .  && popd
   - export RESULT_TAR="$MATLABPATH/../bundle.tar.gz"
   - |
