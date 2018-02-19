@@ -55,8 +55,7 @@ script:
 
   - cp $GCC_FULL $QUADMATH_FULL $FORTRAN_FULL $CXX_FULL /Users/travis/build/casadi/binaries/casadi/python_install/casadi
   
-  - sudo install_name_tool -change $GCC_FULL_ALT "@rpath/libgcc_s.1.dylib" python_install/casadi/_casadi.so
-  - sudo install_name_tool -change $GCC_FULL_ALT "@rpath/libgcc_s.1.dylib" python_install/casadi/*.dylib
+  - osx_rpath_patch python_install
 
   - otool -l python_install/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
   - otool -l python_install/casadi/libgcc_s.1.dylib | grep /usr/local || assertfail
