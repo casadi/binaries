@@ -78,7 +78,7 @@ script:
     
     # where is the target environment 
     SET(CMAKE_FIND_ROOT_PATH  /usr/$compilerprefix)
-    SET(CMAKE_CXX_FLAGS " -fno-ipa-cp-clone" CACHE STRING "" FORCE)
+    SET(CMAKE_CXX_FLAGS "$CPPFLAGS -fno-ipa-cp-clone" CACHE STRING "" FORCE)
     SET(CMAKE_C_FLAGS " -fno-ipa-cp-clone" CACHE STRING "" FORCE)
     
     # search for programs in the build host directories
@@ -138,6 +138,8 @@ before_install:
   - slurp_common
   - slurp swig_matlab
   - slurp lapack
+  - git clone git@github.com:meganz/mingw-std-threads.git
+  - export CPPFLAGS="$CPPFLAGS -I$(pwd)/mingw-std-threads"
   - popd
   - sudo apt-get update
   - sudo apt-get install -y binutils gcc g++ gfortran git cmake cmake-data liblapack-dev ipython python-dev libxml2-dev
