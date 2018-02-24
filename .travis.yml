@@ -46,7 +46,8 @@ script:
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - export WHEEL=`python $HOME/build/testbot/create_wheel_local.py $COMMIT $PYTHONVERSION linux $BITNESS python_install`
   - echo $WHEEL
-  - dockcross "git clone https://github.com/jgillis/auditwheel && pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && $MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -L . --no-update-tags -w . $WHEEL"
+  - git clone https://github.com/jgillis/auditwheel
+  - dockcross "pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && $MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -L . --no-update-tags -w . $WHEEL"
   - rm -rf python_install
   - unzip $WHEEL -d python_install
   - rm -rf python_install/*dist-info
