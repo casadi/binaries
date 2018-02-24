@@ -11,6 +11,7 @@ env:
     - MATLAB_ROOT=/home/travis/build/matlab
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/home/travis/build/gurobi
+    - KEEP_GOING=1
     
   matrix:
     - BUILD_TYPE=Release PYTHONVERSION=27 PYTHONVERSIONDOT=2.7 NAME_SUFFIX="" compilerprefix=i686-w64-mingw32 BITNESS=32 NUMPYSUFFIX=win32 EXTRA_FLAGS="" WINEENV=py27 TESTCOMMIT="1"
