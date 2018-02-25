@@ -19,10 +19,11 @@ script:
   - pushd casadi
   - mkdir build
   - pushd build
-  - bash -c "cmake $casadi_build_flags -DCPACK_GENERATOR=DEB -DWITH_PYTHON=ON -DWITH_JSON=ON  -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install .."
+  - bash -c "cmake $casadi_build_flags -DCPACK_GENERATOR=DEB -DWITH_PYTHON=ON -DWITH_JSON=ON .."
   - make 
   - make json
   - make package
+  - dpkg-deb -c *.deb
   - popd
   - ls
   - export RESULT_DEB=`ls build/*.deb`
