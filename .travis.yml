@@ -26,7 +26,7 @@ script:
   - popd
   
 before_deploy:
-  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-octave-$COMMIT$NAME_SUFFIX'" > $OCTAVEPATH/dummy.txt
+  #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-octave-$COMMIT$NAME_SUFFIX'" > $OCTAVEPATH/dummy.txt
   - export RESULT="$HOME/casadi-linux-octave-$COMMIT$NAME_SUFFIX.tar.gz"
   - pushd $OCTAVEPATH/casadi && tar -czf $RESULT .  && popd
   - git tag "commit-$COMMIT" 
