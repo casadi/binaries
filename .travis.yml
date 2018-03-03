@@ -50,28 +50,20 @@ script:
   - popd
   - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $CXX_FULL $MATLABPATH/casadi
   - osx_rpath_patch $MATLABPATH/casadi
-  - pushd $MATLABPATH/casadi && tar -czf ../../bundle.tar.gz .  && popd
-  - export RESULT_TAR="$MATLABPATH/../bundle.tar.gz"
-  - |
-    cat <<EOF > upload.py
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/Users/travis/build/testbot/id_rsa_travis')
-    
-    binaries_dir = '/home/jg/binaries'
-    
-    
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('commits')
-      with sftp.cd('commits'):
-        sftp.makedirs("$COMMIT")
-        with sftp.cd("$COMMIT"):
-          sftp.makedirs('osx')
-          with sftp.cd('osx'):
-            sftp.put("$RESULT_TAR","casadi-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.tar.gz")
-    EOF
-  - python upload.py
+  
+before_deploy:
+  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-osx-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX'" > $MATLABPATH/dummy.txt
+  - export RESULT="$HOME/casadi-osx-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.tar.gz"
+  - pushd $MATLABPATH/casadi && tar -czf $RESULT .  && popd
+  - git tag "commit-$COMMIT" 
+
+deploy:
+  provider: releases
+  api_key: $github_token
+  file: $RESULT
+  skip_cleanup: true
+  on:
+    all_branches: true
 
 after_success:
   - test_commit test-osx-matlab
