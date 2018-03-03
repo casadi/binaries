@@ -18,22 +18,9 @@ script:
   - ls
   - pushd casadi
   - popd
-  - |
-    cat <<EOF > download.py
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/Users/travis/build/testbot/id_rsa_travis')
-                          
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      with sftp.cd('commits'):
-        with sftp.cd("$COMMIT"):
-          with sftp.cd('osx'):
-            sftp.get("casadi-py$PYTHONVERSION-$COMMIT.tar.gz")
-    EOF
-  - python download.py
+  - wget https://github.com/casadi/binaries/releases/download/commit-${COMMIT}/casadi-osx-py$PYTHONVERSION-$COMMIT.tar.gz -O casadi.tar.gz
   - mkdir casadi_python
-  - tar -xvf casadi-py$PYTHONVERSION-$COMMIT.tar.gz -C casadi_python
+  - tar -xvf casadi.tar.gz -C casadi_python
   - echo "$PWD/casadi_python"
   - export PYTHONPATH=$PYTHONPATH:$PWD/casadi_python
   - echo $DYLD_LIBRARY_PATH
