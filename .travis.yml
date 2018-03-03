@@ -26,27 +26,19 @@ script:
   - dpkg-deb -c *.deb
   - popd
   - ls
-  - export RESULT_DEB=`ls build/*.deb`
-  - |
-    cat <<EOF > upload.py
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/home/travis/build/testbot/id_rsa_travis')
-    
-    binaries_dir = '/home/jg/binaries'
-    
-    
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('commits')
-      with sftp.cd('commits'):
-        sftp.makedirs("$COMMIT")
-        with sftp.cd("$COMMIT"):
-          sftp.makedirs('linux')
-          with sftp.cd('linux'):
-            sftp.put("$RESULT_DEB","libcasadi-$COMMIT.deb")
-    EOF
-  - python upload.py
+  
+before_deploy:
+  - export RESULT=$HOME/libcasadi-$COMMIT.deb
+  - mv `ls build/*.deb` $RESULT
+  - git tag "commit-$COMMIT" 
+
+deploy:
+  provider: releases
+  api_key: $github_token
+  file: $RESULT
+  skip_cleanup: true
+  on:
+    all_branches: true
   
 branches:
   except:
