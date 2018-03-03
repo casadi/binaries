@@ -72,7 +72,7 @@ script:
   - popd
 
 before_deploy:
-  - export RESULT="$HOME/casadi-octave-${OCTAVE_VERSION}-w${BITNESS}-$COMMIT$NAME_SUFFIX.zip"
+  - export RESULT="$HOME/casadi-windows-octave-${OCTAVE_VERSION}-w${BITNESS}-$COMMIT$NAME_SUFFIX.zip"
   - pushd octave_install/casadi && zip -r $RESULT . && popd
   - git tag "commit-$COMMIT" 
 
