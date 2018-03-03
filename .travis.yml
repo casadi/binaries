@@ -127,28 +127,21 @@ script:
   #- apt-file search cmath
   
   - popd
-  - export RESULT_ZIP="bundle.zip"
-  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
-  - pushd python_install
-  - zip -r9 ../bundle.zip .
-  - popd
-  - |
-    cat <<EOF > upload.py
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/home/travis/build/testbot/id_rsa_travis')
-                          
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('commits')
-      with sftp.cd('commits'):
-        sftp.makedirs("$COMMIT")
-        with sftp.cd("$COMMIT"):
-          sftp.makedirs('windows')
-          with sftp.cd('windows'):
-            sftp.put("$RESULT_ZIP","casadi-py$PYTHONVERSION-$COMMIT$NAME_SUFFIX.zip")
-    EOF
-  - python upload.py
+
+before_deploy:
+  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-windows-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
+  - export RESULT="$HOME/casadi-windows-py$PYTHONVERSION-$COMMIT$NAME_SUFFIX.zip"
+  - pushd python_install && zip -r9 $RESULT . && popd
+  - git tag "commit-$COMMIT" 
+
+deploy:
+  provider: releases
+  api_key: $github_token
+  file: $RESULT
+  skip_cleanup: true
+  on:
+    all_branches: true
+
 
 after_success:
   - test_commit test-windows
