@@ -63,29 +63,19 @@ script:
   - otool -l python_install/casadi/libcasadi.dylib | grep /usr/local || assertfail
   - otool -l python_install/casadi/_casadi.so | grep /usr/local || assertfail
   
-  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
-  - pushd python_install && tar -czf ../bundle.tar.gz . && popd
-  - export RESULT_TAR="$PWD/bundle.tar.gz"
-  - |
-    cat <<EOF > upload.py
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/Users/travis/build/testbot/id_rsa_travis')
-    
-    binaries_dir = '/home/jg/binaries'
-    
-    
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('commits')
-      with sftp.cd('commits'):
-        sftp.makedirs("$COMMIT")
-        with sftp.cd("$COMMIT"):
-          sftp.makedirs('osx')
-          with sftp.cd('osx'):
-            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-$COMMIT.tar.gz")
-    EOF
-  - python upload.py
+before_deploy:
+  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-osx-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
+  - export RESULT="$HOME/casadi-osx-py$PYTHONVERSION-$COMMIT.tar.gz"
+  - pushd python_install && tar -czf $RESULT . && popd
+  - git tag "commit-$COMMIT" 
+
+deploy:
+  provider: releases
+  api_key: $github_token
+  file: $RESULT
+  skip_cleanup: true
+  on:
+    all_branches: true
 
 after_success:
   - test_commit test-osx
