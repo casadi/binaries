@@ -72,6 +72,8 @@ deploy:
   api_key: $github_token
   file: $RESULT
   skip_cleanup: true
+  on:
+    all_branches: true
 
 python: 3.2
 
