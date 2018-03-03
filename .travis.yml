@@ -45,29 +45,19 @@ script:
   - otool -l $OCTAVEPATH/casadi/libquadmath.0.dylib | grep /usr/local || assertfail
   #- otool -l /Users/travis/build/casadi/binaries/casadi/build/lib/libcasadi_nlpsolver_ipopt.dylib
   #- otool -l $MATLABPATH/libcasadi_nlpsolver_ipopt.dylib
+  
+before_deploy:
+  - export RESULT="$HOME/casadi-osx-octave-$COMMIT$NAME_SUFFIX.tar.gz"
+  - pushd $OCTAVEPATH/casadi && tar -czf $RESULT .  && popd
+  - git tag "commit-$COMMIT" 
 
-  - pushd $OCTAVEPATH/casadi && tar -czf ../../bundle.tar.gz .  && popd
-  - export RESULT_TAR="$OCTAVEPATH/../bundle.tar.gz"
-  - |
-    cat <<EOF > upload.py
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/Users/travis/build/testbot/id_rsa_travis')
-    
-    binaries_dir = '/home/jg/binaries'
-    
-    
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('commits')
-      with sftp.cd('commits'):
-        sftp.makedirs("$COMMIT")
-        with sftp.cd("$COMMIT"):
-          sftp.makedirs('osx')
-          with sftp.cd('osx'):
-            sftp.put("$RESULT_TAR","casadi-octave-$COMMIT$NAME_SUFFIX.tar.gz")
-    EOF
-  - python upload.py
+deploy:
+  provider: releases
+  api_key: $github_token
+  file: $RESULT
+  skip_cleanup: true
+  on:
+    all_branches: true
 
 after_success:
   - test_commit test-osx-octave
