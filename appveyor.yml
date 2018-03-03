@@ -62,7 +62,8 @@ install:
   # earlier in this session, or in a previous session.
   - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
   - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
-  - Invoke-WebRequest https://github.com/casadi/binaries/releases/download/commit-%COMMIT%/casadi-windows-py%PYTHONVERSION%-%COMMIT%.zip -OutFile casadi.zip
+  - ps: |
+        Invoke-WebRequest https://github.com/casadi/binaries/releases/download/commit-$Env:COMMIT/casadi-windows-py$Env:PYTHONVERSION-$Env:COMMIT.zip -OutFile casadi.zip
   - 7z x casadi.zip -ocasadipython
   - "SET PYTHONPATH=%PYTHONPATH%;C:\\projects\\binaries\\casadipython"
   - cd casadi\\test
