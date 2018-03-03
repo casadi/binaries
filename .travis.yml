@@ -93,6 +93,7 @@ after_success:
 branches:
   except:
     - /.*appveyor.*/
+    - /.*commit.*/
 
 before_install:
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
