@@ -57,31 +57,20 @@ script:
   #- python internal/test_py.py python -skipfiles="alltests.py helpers.py complexity.py speed.py"
   - popd
   #- pushd test && make unittests_py && popd
+  
+before_deploy:
+  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
+  - export RESULT="$HOME/casadi-linux-py$PYTHONVERSION-$COMMIT-${BITNESS}bit.tar.gz"
+  - pushd python_install && tar -czf $RESULT . && popd
+  - git tag "commit-$COMMIT" 
 
-after_script:
-  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
-  - pushd python_install && tar -czf ../bundle.tar.gz . && popd
-  - export RESULT_TAR="$PWD/bundle.tar.gz"
-  - |
-    cat <<EOF > upload.py
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/home/travis/build/testbot/id_rsa_travis')
-    
-    binaries_dir = '/home/jg/binaries'
-    
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('commits')
-      with sftp.cd('commits'):
-        sftp.makedirs("$COMMIT")
-        with sftp.cd("$COMMIT"):
-          sftp.makedirs('linux')
-          with sftp.cd('linux'):
-            sftp.put("$RESULT_TAR","casadi-py$PYTHONVERSION-$COMMIT-${BITNESS}bit.tar.gz")
-  - sed -i "s/^\s\s//g" upload.py 
-  - cat upload.py
-  - python upload.py
+deploy:
+  provider: releases
+  api_key: $github_token
+  file: $RESULT
+  skip_cleanup: true
+  on:
+    all_branches: true
 
 python: 3.2
 
