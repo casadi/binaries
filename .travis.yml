@@ -98,24 +98,19 @@ script:
   - cp -R /home/travis/build/clang/include/c++/v1 ../matlab_install/casadi/casadi/jit/mingw/c++
   
   - popd
-  - pushd matlab_install/casadi && zip -r ../../bundle.zip . && popd
-  - |
-    cat <<EOF > upload.py
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/home/travis/build/testbot/id_rsa_travis')
-                          
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('commits')
-      with sftp.cd('commits'):
-        sftp.makedirs("$COMMIT")
-        with sftp.cd("$COMMIT"):
-          sftp.makedirs('windows')
-          with sftp.cd('windows'):
-            sftp.put("bundle.zip","casadi-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.zip")
-    EOF
-  - sudo python upload.py
+
+before_deploy:
+  - export RESULT="$HOME/casadi-windows-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.zip"
+  - pushd matlab_install/casadi && zip -r $RESULT . && popd
+  - git tag "commit-$COMMIT" 
+
+deploy:
+  provider: releases
+  api_key: $github_token
+  file: $RESULT
+  skip_cleanup: true
+  on:
+    all_branches: true
 
 after_success:
   - test_commit test-windows-matlab
