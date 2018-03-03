@@ -19,9 +19,9 @@ script:
   - ls
   - pushd casadi
   - popd
-  - wget https://github.com/casadi/binaries/releases/download/commit-${COMMIT}/casadi-linux-py$PYTHONVERSION-$COMMIT-${BITNESS}bit.tar.gz
+  - wget https://github.com/casadi/binaries/releases/download/commit-${COMMIT}/casadi-linux-py$PYTHONVERSION-$COMMIT-${BITNESS}bit.tar.gz -O casadi.tar.gz
   - mkdir casadi_python
-  - tar -xvf casadi-py$PYTHONVERSION-$COMMIT-${BITNESS}bit.tar.gz -C casadi_python
+  - tar -xvf casadi.tar.gz -C casadi_python
   - echo "$PWD/casadi_python"
   - export PYTHONPATH=$PYTHONPATH:$PWD/casadi_python
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
