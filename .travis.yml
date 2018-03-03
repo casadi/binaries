@@ -59,12 +59,10 @@ script:
   - popd
   #- pushd test && make unittests_py && popd
 
-after_script:
+before_deploy:
   - echo "this file (and the casadi directory) should end up in a folder called 'casadi-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
   - export RESULT="$HOME/casadi-linux-py$PYTHONVERSION-$COMMIT-${BITNESS}bit.tar.gz"
   - pushd python_install && tar -czf $RESULT . && popd
-
-before_deploy:
   - git tag "commit-$COMMIT" 
 
 deploy:
