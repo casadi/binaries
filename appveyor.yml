@@ -43,33 +43,15 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install pysftp
   - pip install requests==2.6.0
-  - "SET ZIPFILE=casadi-octave-%OCTAVEVERSION%-w%BITNESS%-%COMMIT%.zip"
-  - echo %ZIPFILE%
   - ps: |
-        $a = @"
-        import pysftp
-        import os
-        cnopts = pysftp.CnOpts()
-        cnopts.hostkeys = None    # disable host key checking.
-        sftp = pysftp.Connection('web.sourceforge.net', 
-                              username='casaditestbot,casadi',
-                              private_key='id_rsa_travis',cnopts=cnopts)
-        
-        with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-          with sftp.cd('commits'):
-            with sftp.cd("$Env:COMMIT"):
-              with sftp.cd('windows'):
-                sftp.get("$Env:ZIPFILE")
-        "@
-        $a | out-file -Encoding ascii -FilePath download.py
-  - python download.py
+        Invoke-WebRequest https://github.com/casadi/binaries/releases/download/commit-$Env:COMMIT/casadi-windows-octave-$Env:OCTAVEVERSION-w$Env:BITNES-$Env:COMMIT.zip -OutFile casadi.zip
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - ps: |
         Invoke-WebRequest  https://ftp.gnu.org/gnu/octave/windows/octave-$Env:OCTAVEVERSION-w$Env:BITNESS.zip -OutFile octave.zip
   - 7z x -y "octave.zip" -ooctave > nul
   - pwd
   - dir
-  - 7z x %ZIPFILE% -ocasadioctave > nul
+  - 7z x casadi.zip -ocasadioctave > nul
   - pushd casadi\\test
   - dir C:\projects\binaries\octave
   - set OCTAVE_PATH=C:\projects\binaries\casadioctave
