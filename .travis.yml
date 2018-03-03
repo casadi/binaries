@@ -36,7 +36,7 @@ script:
   - popd
   
 before_deploy:
-  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX'" > $MATLABPATH/dummy.txt
+  #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX'" > $MATLABPATH/dummy.txt
   - export RESULT="$HOME/casadi-linux-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.tar.gz"
   - pushd $MATLABPATH/casadi && tar -czf $RESULT .  && popd
   - git tag "commit-$COMMIT" 
