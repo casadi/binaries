@@ -80,26 +80,8 @@ install:
   - echo start plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i testbot/id_rsa_travis.pkk -L 1701:%FLEX_SERVER%:1701 -L 1719:%FLEX_SERVER%:1719 -L 1718:%FLEX_SERVER%:1718 -L 2015:%FLEX_SERVER%:2015 -L 1815:%FLEX_SERVER%:1815 -L 1725:%FLEX_SERVER%:1725 -L 27000:%FLEX_SERVER%:27000 -N > ex.bat
   - ps: "Start-Process -FilePath ex.bat"
 #  - start plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:%FLEX_SERVER%:1701 -L 1719:%FLEX_SERVER%:1719 -L 1718:%FLEX_SERVER%:1718 -L 2015:%FLEX_SERVER%:2015 -L 1815:%FLEX_SERVER%:1815 -L 1715:%FLEX_SERVER%:1715 -N
-  - "SET ZIPFILE=casadi-matlab%MATLABRELEASE%-%COMMIT%.zip"
   - call "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat" x86_amd64
-  - ps: |
-        $a = @"
-        import pysftp
-        import os
-        cnopts = pysftp.CnOpts()
-        cnopts.hostkeys = None    # disable host key checking.
-        sftp = pysftp.Connection('web.sourceforge.net', 
-                              username='casaditestbot,casadi',
-                              private_key='C:/projects/binaries/testbot/id_rsa_travis',cnopts=cnopts)
-        
-        with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-          with sftp.cd('commits'):
-            with sftp.cd("$Env:COMMIT"):
-              with sftp.cd('windows'):
-                sftp.get("$Env:ZIPFILE")
-        "@
-        $a | out-file -Encoding ascii -FilePath download.py
-  - python download.py
+  - Invoke-WebRequest https://github.com/casadi/binaries/releases/download/commit-%COMMIT%/casadi-windows-matlab%MATLABRELEASE%-%COMMIT%.zip -OutFile casadi.zip
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - python -c "from restricted import *; download('matlab%MATLABRELEASE%-win.zip')"
   - 7z x -y "matlab%MATLABRELEASE%-win.zip" -omatlab > nul
@@ -109,7 +91,7 @@ install:
  
   - pwd
   - dir
-  - 7z x %ZIPFILE% -ocasadimatlab > nul
+  - 7z x casadi.zip -ocasadimatlab > nul
   - pushd casadi\\test
   - set PATH=C:\projects\binaries\matlab\bin;%PATH%
   - ps: |
