@@ -45,27 +45,20 @@ script:
   - python -c "import casadi;print casadi.__version__"
   - pushd docs/api && make fulllocal | grep -v "file loc from" && make export && popd
   - sudo apt-get install zip
-  - echo "See also [online documentation](http://docs.casadi.org/commits/$COMMIT/api/html)" > README.md
-  - pushd docs/api/export && zip -q -r9 ../../docs.zip . && popd
-  - |
-    cat <<EOF > upload.py
+  - echo "See also [online documentation](http://docs.casadi.org/commits/$COMMIT/api/html)" > $HOME/README.md
+  - pushd docs/api/export && zip -q -r9 $HOME/casadi-docs-$COMMIT.zip . && popd
+  - mv docs/example_pack/example_pack.zip $HOME/casadi-example_pack-$COMMIT.zip
 
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/home/travis/build/testbot/id_rsa_travis')
-                          
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      sftp.makedirs('commits')
-      with sftp.cd('commits'):
-          sftp.makedirs("$COMMIT")
-          with sftp.cd("$COMMIT"):
-            sftp.put("docs/docs.zip","casadi-docs-$COMMIT.zip")
-            sftp.put("docs/example_pack/example_pack.zip","casadi-example_pack-$COMMIT.zip")
-            sftp.put("README.md","README.md")
-          
-    EOF
-  - python upload.py
+deploy:
+  provider: releases
+  api_key: $github_token
+  file:
+    - $HOME/casadi-docs-$COMMIT.zip
+    - $HOME/casadi-example_pack-$COMMIT.zip
+    - $HOME/README.md
+  skip_cleanup: true
+  on:
+    all_branches: true
 
 before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
