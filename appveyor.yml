@@ -81,7 +81,8 @@ install:
   - ps: "Start-Process -FilePath ex.bat"
 #  - start plink.exe -ssh %USER_GATE%@%GATE_SERVER% -i id_rsa_travis.pkk -L 1701:%FLEX_SERVER%:1701 -L 1719:%FLEX_SERVER%:1719 -L 1718:%FLEX_SERVER%:1718 -L 2015:%FLEX_SERVER%:2015 -L 1815:%FLEX_SERVER%:1815 -L 1715:%FLEX_SERVER%:1715 -N
   - call "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat" x86_amd64
-  - Invoke-WebRequest https://github.com/casadi/binaries/releases/download/commit-%COMMIT%/casadi-windows-matlab%MATLABRELEASE%-%COMMIT%.zip -OutFile casadi.zip
+  - ps: |
+        Invoke-WebRequest https://github.com/casadi/binaries/releases/download/commit-$Env:COMMIT/casadi-windows-matlab$Env:MATLABRELEASE-$Env:COMMIT.zip -OutFile casadi.zip
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - python -c "from restricted import *; download('matlab%MATLABRELEASE%-win.zip')"
   - 7z x -y "matlab%MATLABRELEASE%-win.zip" -omatlab > nul
