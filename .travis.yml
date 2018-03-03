@@ -105,7 +105,8 @@ after_success:
 branches:
   except:
     - /.*appveyor.*/
-
+    - /.*commit.*/
+    
 before_install: 
   - sudo apt-get update
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
