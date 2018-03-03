@@ -158,7 +158,7 @@ after_failure:
 branches:
   except:
     - /.*appveyor.*/
-
+    - /.*commit.*/
 before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
