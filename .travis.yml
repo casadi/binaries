@@ -15,20 +15,7 @@ osx_image: xcode7.3
 
 script:
   - pwd
-  - |
-    cat <<EOF > download.py
-    import pysftp
-    sftp = pysftp.Connection('web.sourceforge.net', 
-                          username='casaditestbot,casadi',
-                          private_key='/Users/travis/build/testbot/id_rsa_travis')
-                          
-    with sftp.cd('/home/pfs/project/c/ca/casadi/CasADi'):
-      with sftp.cd('commits'):
-        with sftp.cd("$COMMIT"):
-          with sftp.cd('osx'):
-            sftp.get("casadi-octave-$COMMIT.tar.gz","octave.tar.gz")
-    EOF
-  - python download.py
+  - wget https://github.com/casadi/binaries/releases/download/commit-${COMMIT}/casadi-octave-$COMMIT.tar.g -O octave.tar.gz
   - echo $DYLD_LIBRARY_PATH
   - mkdir octave && tar -xvf octave.tar.gz -C octave
   
