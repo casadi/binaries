@@ -51,6 +51,7 @@ script:
 branches:
   except:
     - /.*appveyor.*/
+    - /.*commit.*/
 
 before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
