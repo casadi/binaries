@@ -67,11 +67,12 @@ before_deploy:
   - echo "this file (and the casadi directory) should end up in a folder called 'casadi-osx-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
   - export RESULT="$HOME/casadi-osx-py$PYTHONVERSION-$COMMIT.tar.gz"
   - pushd python_install && tar -czf $RESULT . && popd
-  - git tag "commit-$COMMIT" 
+  - export TRAVIS_TAG="commit-$COMMIT"
 
 deploy:
   provider: releases
   api_key: $github_token
+  overwrite: true
   file: $RESULT
   skip_cleanup: true
   on:
