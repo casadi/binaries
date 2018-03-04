@@ -48,6 +48,7 @@ script:
   - echo "See also [online documentation](http://docs.casadi.org/commits/$COMMIT/api/html)" > $HOME/README.md
   - pushd docs/api/export && zip -q -r9 $HOME/casadi-docs-$COMMIT.zip . && popd
   - mv docs/example_pack/example_pack.zip $HOME/casadi-example_pack-$COMMIT.zip
+  - git tag "commit-$COMMIT"
 
 deploy:
   provider: releases
