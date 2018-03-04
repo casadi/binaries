@@ -39,7 +39,6 @@ before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX'" > $MATLABPATH/dummy.txt
   - export RESULT="$HOME/casadi-linux-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.tar.gz"
   - pushd $MATLABPATH/casadi && tar -czf $RESULT .  && popd
-  - git describe --tags --exact-match
   - git push git@github.com:casadi/binaries.git :commit-$COMMIT || true
   - git tag -f "commit-$COMMIT"
   - git push git@github.com:casadi/binaries.git "commit-$COMMIT"
