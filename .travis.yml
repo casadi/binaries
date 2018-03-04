@@ -132,9 +132,10 @@ before_deploy:
   - echo "this file (and the casadi directory) should end up in a folder called 'casadi-windows-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
   - export RESULT="$HOME/casadi-windows-py$PYTHONVERSION-$COMMIT$NAME_SUFFIX.zip"
   - pushd python_install && zip -r9 $RESULT . && popd
-  - git tag "commit-$COMMIT" 
+  - export TRAVIS_TAG="commit-$COMMIT"
 
 deploy:
+  overwrite: true
   provider: releases
   api_key: $github_token
   file: $RESULT
