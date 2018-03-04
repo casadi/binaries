@@ -29,10 +29,11 @@ before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-octave-$COMMIT$NAME_SUFFIX'" > $OCTAVEPATH/dummy.txt
   - export RESULT="$HOME/casadi-linux-octave-$COMMIT$NAME_SUFFIX.tar.gz"
   - pushd $OCTAVEPATH/casadi && tar -czf $RESULT .  && popd
-  - git tag "commit-$COMMIT" 
+  - export TRAVIS_TAG="commit-$COMMIT"
 
 deploy:
   provider: releases
+  overwrite: true
   api_key: $github_token
   file: $RESULT
   skip_cleanup: true
