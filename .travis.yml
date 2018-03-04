@@ -55,9 +55,10 @@ before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-osx-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX'" > $MATLABPATH/dummy.txt
   - export RESULT="$HOME/casadi-osx-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.tar.gz"
   - pushd $MATLABPATH/casadi && tar -czf $RESULT .  && popd
-  - git tag "commit-$COMMIT" 
+  - export TRAVIS_TAG="commit-$COMMIT"
 
 deploy:
+  overwrite: true
   provider: releases
   api_key: $github_token
   file: $RESULT
