@@ -40,9 +40,10 @@ matrix:
 before_deploy:
   - export RESULT="$HOME/libcasadi-linux-gcc$GCCVERSION-$COMMIT.tar.gz"
   - pushd install && tar -czf $RESULT . && popd
-  - git tag "commit-$COMMIT" 
+  - export TRAVIS_TAG="commit-$COMMIT"
 
 deploy:
+  overwrite: true
   provider: releases
   api_key: $github_token
   file: $RESULT
