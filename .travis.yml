@@ -102,9 +102,10 @@ script:
 before_deploy:
   - export RESULT="$HOME/casadi-windows-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.zip"
   - pushd matlab_install/casadi && zip -r $RESULT . && popd
-  - git tag "commit-$COMMIT" 
+  - export TRAVIS_TAG="commit-$COMMIT"
 
 deploy:
+  overwrite: true
   provider: releases
   api_key: $github_token
   file: $RESULT
