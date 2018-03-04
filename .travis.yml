@@ -30,9 +30,10 @@ script:
 before_deploy:
   - export RESULT=$HOME/libcasadi-$COMMIT.deb
   - mv `ls build/*.deb` $RESULT
-  - git tag "commit-$COMMIT" 
+  - export TRAVIS_TAG="commit-$COMMIT"
 
 deploy:
+  overwrite: true
   provider: releases
   api_key: $github_token
   file: $RESULT
