@@ -19,7 +19,7 @@ script:
   - #remote_access
   - matlabtunnel
   - ls
-  - wget http://github.com/casadi/binaries/releases/download/commit-${COMMIT}/casadi-osx-matlab$MATLABRELEASE-$COMMIT.tar.gz -O matlab.tar.gz
+  - wget "http://github.com/casadi/binaries/releases/download/commit-${COMMIT}/casadi-osx-matlab$MATLABRELEASE-$COMMIT.tar.gz" -O matlab.tar.gz
   - mkdir matlab && tar -xvf matlab.tar.gz -C matlab
   
   # We have no gurobi license presently
