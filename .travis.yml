@@ -8,6 +8,6 @@ script:
   - python cleanup.py $github_token
 
 before_install:
-  - pip install github3.py
+  - sudo pip install github3.py
 
 language: cpp
