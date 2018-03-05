@@ -4,6 +4,7 @@ import sys
 
 token = sys.argv[1]
 
+
 repo=login('jgillis',token).repository('casadi','binaries')
 
 for r in repo.iter_releases():
