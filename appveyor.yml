@@ -42,7 +42,7 @@ install:
   - "powershell testbot/helpers/install.ps1"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - ps: |
-        Invoke-WebRequest http://github.com/casadi/binaries/releases/download/commit-$Env:COMMIT/casadi-windows-octave-$Env:OCTAVEVERSION-w$Env:BITNES-$Env:COMMIT.zip -OutFile casadi.zip
+        Invoke-WebRequest http://github.com/casadi/binaries/releases/download/commit-$Env:COMMIT/casadi-windows-octave-$Env:OCTAVEVERSION-w$Env:BITNESS-$Env:COMMIT.zip -OutFile casadi.zip
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - ps: |
         Invoke-WebRequest  https://ftp.gnu.org/gnu/octave/windows/octave-$Env:OCTAVEVERSION-w$Env:BITNESS.zip -OutFile octave.zip
