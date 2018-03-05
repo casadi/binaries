@@ -1,10 +1,3 @@
-# Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
-
-env: 
-  global: 
-    - secure: "Bu8uBe0emUQyEYWCVnEvH8uvJISDPrCTa7KXVzJnR7GUFKLLnq31Uhjg33VG8/88Is4TP4Volp3QcJadI30D0zfTkI7mZTIwF3JqG7/GjwG5LXSsR2uQM+Rt+hssALubRAlua/5Ml4O8w+tm8IZfvgM3Z2QPiVQ2lMM5DUwFXGatumesKb3SaKj96tSiOIswLqYr/NWEnBaWqm4DUuTUEwN/X6mkS13Lq/3/YqB4r+FwFuyQMWNqV8+/OD2/C+uEBMJCw3vJOPtKlP7+vzrbKobP1t44opPL33HRAhKxJg2Z99OL61QygazX2DoadIapAbrE2y6lnk42o9973C8pIG8TEN0xH0fWtPQDpXzzsgTqtx/Xlw+S0j51wUViLP86OcrVgvTRO2Bt7RAOgWYnOBvPvPfUOdnzSrAL/gh8vg2QsB3FeCuTr31Cf+81FOZy2yDQhTsaWOKUwqmJdV2PL0eatzMPinl0lod7pXBRIDwryv8iVzW3oA9AEwpeXMBx/AibX9/ZEu1BSjxYAVMHCKlR+k2/sGsYVOu9QzPthN7T5S/d/reF/RY19wjIm3L3Hvp7ygEV/xGpvOR8F5dTUxtWLb7+DrNgy3g7texU7YcGJS88atre2BAeZWE1a0GbXQHbB9sgjprVahEXZLVVOiyLOdBqaBspUaIfsmOMcRg="
-    - RUN="windows debian debian-standalone docs docs-local debian-matlab windows-matlab osx osx-matlab debian-octave windows-octave osx-octave debian-sa-gcc5"
-    - RETIRE_AGE=14  # days
 
 sudo: required
 
@@ -12,31 +5,9 @@ before_script:
   - set -e
 
 script:
-  - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
-  - cat .git/config
-  - git --version
-  - |
-    for i in `echo $RUN`; do
-      git checkout -b $i github/$i;
-      git commit -a -m "automatic runner commit $COMMIT" || true;
-      git push git@github.com:casadi/binaries.git $i;
-    done
-  - ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net create
-  - |
-    ssh -i /home/travis/build/testbot/id_rsa_travis casaditestbot,casadi@shell.sourceforge.net <<EOF
-    mkdir /home/frs/project/casadi/CasADi/commits/$HASH
-    find /home/frs/project/casadi/CasADi/commits/ -maxdepth 1 -type d -ctime +$RETIRE_AGE | xargs rm -rf
-    find /home/project-web/casadi/htdocs/commits/ -maxdepth 1 -type d -ctime +$RETIRE_AGE | xargs rm -rf
-    python index.py
-    EOF
+  - python cleanup.py $github_token
 
 before_install:
-  - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && source recipes/setup.sh && popd
-  - popd
-  # It is remarkably difficult to fetch all branches
-  # Seems like .git/config change is in order; this is an easy workaround
-  - git remote add github git@github.com:casadi/binaries.git
-  - git fetch github
+  - pip install github3.py
 
 language: cpp
