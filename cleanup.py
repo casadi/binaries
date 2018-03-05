@@ -4,7 +4,6 @@ import sys
 
 token = sys.argv[1]
 
-
 repo=login('jgillis',token).repository('casadi','binaries')
 
 for r in repo.iter_releases():
@@ -13,5 +12,5 @@ for r in repo.iter_releases():
     r.delete()
 
   # Older than 2 weeks?
-  if r.created_at < datetime.datetime.now()-datetime.timedelta(days=14):
+  if r.created_at < datetime.datetime.now(r.created_at.tzinfo)-datetime.timedelta(days=14):
     r.delete()
