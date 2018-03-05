@@ -41,8 +41,6 @@ install:
   - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
   - "powershell testbot/helpers/install.ps1"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - pip install pysftp
-  - pip install requests==2.6.0
   - ps: |
         Invoke-WebRequest http://github.com/casadi/binaries/releases/download/commit-$Env:COMMIT/casadi-windows-octave-$Env:OCTAVEVERSION-w$Env:BITNES-$Env:COMMIT.zip -OutFile casadi.zip
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
