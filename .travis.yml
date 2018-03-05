@@ -15,7 +15,7 @@ osx_image: xcode7.3
 
 script:
   - pwd
-  - wget "http://github.com/casadi/binaries/releases/download/commit-${COMMIT}/casadi-octave-$COMMIT.tar.gz" -O octave.tar.gz
+  - wget "https://github.com/casadi/binaries/releases/download/commit-${COMMIT}/casadi-osx-octave-$COMMIT.tar.gz" -O octave.tar.gz
   - echo $DYLD_LIBRARY_PATH
   - mkdir octave && tar -xvf octave.tar.gz -C octave
   
