@@ -34,6 +34,6 @@ except GitHubError as error:
 
 for a in get_release(commit).assets:
   print(a.name)
-  name = a.name.replace(commit,release_name)
+  name = a.name.replace(commit,"v"+release_name)
   assert a.download("assets/" + name)
   release.upload_asset(a.content_type, name, open("assets/" + name,"rb"))
