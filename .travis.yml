@@ -14,6 +14,7 @@ env:
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - TRAVIS_PYTHON_VERSION=2.7
     - NUMPYVERSION=1.9
+    - KEEP_GOING=1
 
 before_script:
   - set -e
@@ -76,7 +77,7 @@ script:
       with sftp.cd('commits'):
         sftp.makedirs("$COMMIT")
     EOF
-  - travis_wait python upload.py
+  - python upload.py
   - rsync -aqP --delete -e "ssh -i /home/travis/build/testbot/id_rsa_travis" docs/api/export/  casaditestbot,casadi@web.sourceforge.net:/home/groups/c/ca/casadi/htdocs/commits/$COMMIT
  
 branches:
