@@ -32,7 +32,7 @@ except GitHubError as error:
     raise error
 
 
-for a in get_release(commit).assets:
+for a in get_release(commit).assets():
   print(a.name)
   name = a.name.replace(commit,"v"+release_name)
   assert a.download("assets/" + name)
