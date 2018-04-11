@@ -17,7 +17,7 @@ repo_casadi=login('jgillis',token).repository('casadi','casadi')
 
 
 def get_release(commit):
-  for r in repo_binaries.iter_releases():
+  for r in repo_binaries.releases():
     # These are artifacts
     if "commit-" + commit == r.tag_name:
       return r
