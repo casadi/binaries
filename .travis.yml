@@ -23,7 +23,7 @@ before_script:
 compiler: clang
 
 script:
-  - sudo install_name_tool -id "@rpath/liboctinterp.4.dylib" /usr/local/opt/octave/lib/octave/4.2.1/liboctinterp.4.dylib
+  - sudo install_name_tool -id "@rpath/liboctinterp.4.dylib" /usr/local/opt/octave/lib/octave/4.2.2/liboctinterp.4.dylib
   - pushd /Users/travis/build
   - source testbot/shellhelpers
   - ls -al
