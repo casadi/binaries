@@ -10,7 +10,7 @@ environment:
     PYTHON_VERSION: "2.7.8"
     PYTHON_ARCH: "32"
     BITNESS: "32"
-    OCTAVEVERSION: "4.2.1"
+    OCTAVEVERSION: "4.2.2"
 
 install:
   - git submodule init
