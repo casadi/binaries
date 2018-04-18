@@ -37,7 +37,7 @@ script:
   - dockcross "echo \$PKG_CONFIG_PATH"
   - dockcross  "cd $WORHP;make LINK_RT='-Wl,-rpath=../lib -Wl,--unresolved-symbols=ignore-all'"
   - pushd $WORHP && tar -czf $HOME/worhp_compiled.tar.gz . && popd
-  - slurp_put worhp_compiled.tar.gz
+  - pushd $WORHP && slurp_put worhp_compiled.tar.gz && popd
   - dockcross "echo 'set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)' | sudo tee --append  /usr/share/cmake-3.10/Modules/FindLAPACK.cmake;export PKG_CONFIG_PATH=$BACKUP_PKG_CONFIG_PATH;$MANYLINUX_PYTHON_DIR/bin/pip install numpy;cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DSWIG_IMPORT=ON .."
   #- cmake -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF $casadi_build_flags -DCMAKE_BUILD_TYPE=Release -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install ..
   - export HVERSION=`python /home/travis/build/testbot/helpers/extract_hversion.py`
