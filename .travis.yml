@@ -25,6 +25,7 @@ script:
   - echo "$PWD/casadi_python"
   - export PYTHONPATH=$PYTHONPATH:$PWD/casadi_python
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+  - remote_access
   - pushd /home/travis/build/casadi/binaries/casadi/test && make unittests_py && popd
   - sudo apt-get install python-scipy python-matplotlib
   - pushd /home/travis/build/casadi/binaries/casadi/test && make examples_code_py && popd
