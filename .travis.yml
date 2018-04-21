@@ -106,6 +106,7 @@ before_install:
   - export SLURP_CROSS=mingwoct
   - slurp swig_matlab
   - slurp mingw_octave
+  - ls $MINGW_ROOT/$compilerprefix/include
   - slurp_common
   - slurp lapack
   - ${compilerprefix}-g++ -v
