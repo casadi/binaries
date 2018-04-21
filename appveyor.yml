@@ -36,7 +36,7 @@ install:
   - xcopy /Y /i /E tmp C:\tmp
   - set BITNESS=32
   - call testbot/fetch_common.bat
-  - rmdir worhp
+  - rm worhp/bin/worhp.dll
   - pwd
   - ECHO "%PATH%"
   
