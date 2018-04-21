@@ -69,7 +69,7 @@ script:
   #- cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
   - pwd
   - ls ../octave_install/casadi/
-  - cp -RL $MINGW_ROOT/$compilerprefix/include ../octave_install/casadi/jit/mingw || remote_access
+  - cp -RL $MINGW_ROOT/$compilerprefix/include ../octave_install/casadi/casadi/jit/mingw
   #- cp -R /home/travis/build/clang/include/c++/v1 ../octave_install/casadi/jit/mingw/c++
  
   - popd
