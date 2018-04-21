@@ -70,7 +70,7 @@ install:
         Invoke-WebRequest http://github.com/casadi/binaries/releases/download/commit-$Env:COMMIT/casadi-windows-py$Env:PYTHONVERSION-$Env:COMMIT.zip -OutFile casadi.zip
   - 7z x casadi.zip -ocasadipython
   - "SET PYTHONPATH=%PYTHONPATH%;C:\\projects\\binaries\\casadipython"
-  - rm C:\\projects\\binaries\\casadipython\\casadi\\libcasadi_conic_qrqp.dll
+  #- rm C:\\projects\\binaries\\casadipython\\casadi\\libcasadi_conic_qrqp.dll
   - cd casadi\\test
   - echo %WORHP_LICENSE_FILE%
   - dir %WORHP_LICENSE_FILE%
