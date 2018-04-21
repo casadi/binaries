@@ -8,6 +8,7 @@ env:
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
     - OCTAVEPATH=/home/travis/build/octave-install
     - OCTAVE_VERSION=4.2.2
+    - KEEP_GOING=1
 
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32
