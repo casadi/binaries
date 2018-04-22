@@ -8,6 +8,7 @@ env:
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
     - OCTAVEPATH=/home/travis/build/octave-install
     - OCTAVE_VERSION=4.2.2
+    - KEEP_GOING=1
 
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32
@@ -66,7 +67,9 @@ script:
   - make install -j2 VERBOSE=1
   #- cp $MINGW_ROOT/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
   #- cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
-  - cp -RL /usr/$compilerprefix/include ../octave_install/casadi/jit/mingw
+  - pwd
+  - ls ../octave_install/casadi/
+  - cp -RL $MINGW_ROOT/$compilerprefix/include ../octave_install/casadi/casadi/jit/mingw
   #- cp -R /home/travis/build/clang/include/c++/v1 ../octave_install/casadi/jit/mingw/c++
  
   - popd
@@ -105,6 +108,7 @@ before_install:
   - export SLURP_CROSS=mingwoct
   - slurp swig_matlab
   - slurp mingw_octave
+  - ls $MINGW_ROOT/$compilerprefix/include
   - slurp_common
   - slurp lapack
   - ${compilerprefix}-g++ -v
