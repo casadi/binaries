@@ -15,7 +15,7 @@ env:
     - SLURP_OS=osx
     - TESTCOMMIT="1"
     - KEEP_GOING=1
-
+    - EXTRA_SWIG_FLAGS="-deletebugtry"
   
 before_script:
   - #set -e
