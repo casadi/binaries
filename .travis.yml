@@ -170,7 +170,8 @@ before_install:
   - slurp_common
   - #export casadi_build_flags="$casadi_build_flags -DWITH_CPLEX=OFF"  
   - slurp lapack
-  - git clone git@github.com:meganz/mingw-std-threads.git
+  #- git clone git@github.com:meganz/mingw-std-threads.git
+  - git clone git@github.com:jgillis/mingw-std-threads.git
   - export CPPFLAGS="$CPPFLAGS -I$(pwd)/mingw-std-threads"
   - echo $CPPFLAGS
   - popd
