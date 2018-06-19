@@ -18,7 +18,7 @@ environment:
       PYTHON_ARCH: "64"
       PYTHON_VERSION: "2.7"
       PYTHONVERSION: "27"
-      MINICONDA: C:\Miniconda
+      MINICONDA: C:\Miniconda-x64
 #init:
 #  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
