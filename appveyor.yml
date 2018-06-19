@@ -34,7 +34,7 @@ install:
   #- "powershell testbot/helpers/install.ps1"
   - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
   - conda config --set always_yes yes --set changeps1 no
-  - conda create test python=%PYTHON_VERSION% numpy requests
+  - conda create -n test python=%PYTHON_VERSION% numpy requests
   - activate test
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
   - xcopy /Y /i /E tmp C:\tmp
