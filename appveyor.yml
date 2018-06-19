@@ -6,7 +6,6 @@ environment:
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\testbot\\helpers\\run_with_env.cmd"
     PYTHON: "C:\\Python27"
     PYTHON_VERSION: "2.7.8"
-    PYTHON_ARCH: "32"
     PYTHONVERSION: "27"
     NUMPYVERSION: "1.9.1"
     keyA:
@@ -15,8 +14,9 @@ environment:
 
   matrix:
     - BITNESS: 32
+      PYTHON_ARCH: "32"
     - BITNESS: 64
-
+      PYTHON_ARCH: "64"
 #init:
 #  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
