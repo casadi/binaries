@@ -38,7 +38,7 @@ install:
   - python -c "from restricted import *; download('prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip')"
   - 7z x -y "prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip" > nul
   - xcopy /Y /i /E tmp C:\tmp
-  - set BITNESS=32
+  - set BITNESS_SUFFIX=32
   - call testbot/fetch_common.bat
 
   - pwd
@@ -71,7 +71,13 @@ install:
   - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
   - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
   - ps: |
-        Invoke-WebRequest http://github.com/casadi/binaries/releases/download/commit-$Env:COMMIT/casadi-windows-py$Env:PYTHONVERSION-$Env:COMMIT.zip -OutFile casadi.zip
+        if ($Env:BITNESS -like "64") {
+          echo 123
+          Invoke-WebRequest http://github.com/casadi/binaries/releases/download/commit-$Env:COMMIT/casadi-windows-py$Env:PYTHONVERSION-$Env:COMMIT-64bit.zip -OutFile casadi.zip
+        } else {
+          echo 456
+          Invoke-WebRequest http://github.com/casadi/binaries/releases/download/commit-$Env:COMMIT/casadi-windows-py$Env:PYTHONVERSION-$Env:COMMIT.zip -OutFile casadi.zip
+        }
   - 7z x casadi.zip -ocasadipython
   - "SET PYTHONPATH=%PYTHONPATH%;C:\\projects\\binaries\\casadipython"
   - ren C:\\projects\\binaries\\casadipython\\casadi\\libcasadi_conic_qrqp.dll libcasadi_conic_qrqp_inert.dll
