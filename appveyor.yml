@@ -4,10 +4,6 @@ environment:
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\testbot\\helpers\\run_with_env.cmd"
-    PYTHON: "C:\\Python27"
-    PYTHON_VERSION: "2.7.8"
-    PYTHONVERSION: "27"
-    NUMPYVERSION: "1.9.1"
     keyA:
       secure: 44jgfY+doJx9eHLCweOl6Mf7qoeeRlA2Dch0cLUGbvRorXaqr6bs8tVsJ/KXGPVIA4DrXLlpaEeb2eJ5LM4Mdeq5Ux2txHsQpTAnBDSihWQ=
     GIT_ALLOW_PROTOCOL: "file:git:http:https:ssh:ext"
@@ -15,8 +11,12 @@ environment:
   matrix:
     - BITNESS: 32
       PYTHON_ARCH: "32"
+      PYTHON_VERSION: "2.7"
+      MINICONDA: C:\Miniconda
     - BITNESS: 64
       PYTHON_ARCH: "64"
+      PYTHON_VERSION: "2.7"
+      MINICONDA: C:\Miniconda
 #init:
 #  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
@@ -31,44 +31,16 @@ install:
   - cd ..
   - git clone https://github.com/casadi/testbot.git
   - cd testbot && call recipes\setup.bat && cd ..
-  - "powershell testbot/helpers/install.ps1"
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - pip install requests
+  #- "powershell testbot/helpers/install.ps1"
+  - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
+  - conda config --set always_yes yes --set changeps1 no
+  - conda create test python=%PYTHON_VERSION% numpy requests
+  - activate test
   - set PYTHONPATH=%PYTHONPATH%;C:\projects\binaries\testbot\helpers
-  - python -c "from restricted import *; download('prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip')"
-  - 7z x -y "prereq_%PYTHON_VERSION%_%PYTHON_ARCH%.zip" > nul
   - xcopy /Y /i /E tmp C:\tmp
-  - set BITNESS_SUFFIX=32
   - call testbot/fetch_common.bat
-
   - pwd
   - ECHO "%PATH%"
-  
-  - ECHO "Installed SDKs:"
-  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
-
-  # Install Python (from the official .msi of http://python.org) and pip when
-  # not already installed.
-  - "powershell testbot/helpers/install.ps1"
-
-  # Prepend newly installed Python to the PATH of this build (this cannot be
-  # done from inside the powershell script as it would require to restart
-  # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-
-  # Check that we have the expected version and architecture for Python
-  - "python --version"
-  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
-
-  - "%CMD_IN_ENV% pip install wheel"
-
-  # Now that wheel has been installed, check to see if a numpy wheel has been
-  # made yet. If it hasn't, compile it and put it in C:\tmp.
-  - "powershell testbot/helpers/install_numpy.ps1"
-  
-  # This is where I install numpy from the pre-built wheel I compiled either
-  # earlier in this session, or in a previous session.
-  - "%CMD_IN_ENV% pip install --no-index --find-links=c:\\tmp numpy"
   - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin;C:\tools\MinGW\bin
   - ps: |
         if ($Env:BITNESS -like "64") {
