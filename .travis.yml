@@ -87,6 +87,8 @@ matrix:
       env: BITNESS=64
     - python: 3.6
       env: BITNESS=64
+    - python: 3.7
+      env: BITNESS=64
   exclude:
     - python: 3.2
   
