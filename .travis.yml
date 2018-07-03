@@ -134,7 +134,7 @@ before_install:
   - slurp_common
   - slurp swig_matlab
   - slurp lapack
-  - git clone git@github.com:meganz/mingw-std-threads.git
+  - git clone git@github.com:jgillis/mingw-std-threads.git
   - export CPPFLAGS="$CPPFLAGS -I$(pwd)/mingw-std-threads"
   - popd
   - sudo apt-get update
