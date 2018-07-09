@@ -7,13 +7,14 @@ env:
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
     - OCTAVEPATH=/home/travis/build/octave-install
-    - OCTAVE_VERSION=4.4.0
     - KEEP_GOING=1
     - EXTRA_SWIG_FLAGS="-nodelete"
 
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 TESTCOMMIT="1" 
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32 OCTAVE_VERSION=4.4.0 OCTAVE_API_VERSION=5
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 TESTCOMMIT="1" OCTAVE_VERSION=4.4.0 OCTAVE_API_VERSION=5
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32 OCTAVE_VERSION=4.2.2 OCTAVE_API_VERSION=4
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 TESTCOMMIT="1" OCTAVE_VERSION=4.2.2 OCTAVE_API_VERSION=4
 
 before_script:
   - set -e
@@ -27,6 +28,7 @@ script:
 
   - wget https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w${BITNESS}.zip
   - unzip octave-${OCTAVE_VERSION}-w${BITNESS}.zip > /dev/null
+  - cp -R octave-${OCTAVE_VERSION}-w${BITNESS} octave-${OCTAVE_VERSION} || ECHO "ignore error"
   - popd
   - pushd casadi
   - mkdir build
@@ -63,7 +65,7 @@ script:
     EOF
   - echo $CMAKE_LIBRARY_PATH
   - cmake --version
-  - bash -c "cmake -DFORTRAN_REQUIRED=ON -DWITH_COMMON=ON $casadi_build_flags -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-${OCTAVE_VERSION}/include/octave-${OCTAVE_VERSION}/octave/ -DOCTAVE_LIBRARIES=\"$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctinterp-4.dll;$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctave-4.dll\" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF .." || remote_access 
+  - bash -c "cmake -DFORTRAN_REQUIRED=ON -DWITH_COMMON=ON $casadi_build_flags -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-${OCTAVE_VERSION}/include/octave-${OCTAVE_VERSION}/octave/ -DOCTAVE_LIBRARIES=\"$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctinterp-${OCTAVE_API_VERSION}.dll;$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctave-${OCTAVE_API_VERSION}.dll\" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF .." || remote_access 
   - cat /home/travis/build/casadi/binaries/casadi/build/casadi/interfaces/lapack/CMakeFiles/casadi_linsol_lapackqr.dir/linklibs.rsp
   - make install -j2 VERBOSE=1
   #- cp $MINGW_ROOT/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
