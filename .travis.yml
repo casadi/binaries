@@ -5,7 +5,8 @@ env:
     - OCTAVEPATH=/home/travis/build/octave-install
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
-
+    - EXTRA_SWIG_FLAGS="-nodelete"
+    
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1"
 
