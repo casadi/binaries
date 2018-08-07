@@ -28,7 +28,7 @@ script:
 
   - wget https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w${BITNESS}.zip
   - unzip octave-${OCTAVE_VERSION}-w${BITNESS}.zip > /dev/null
-  - cp -R octave-${OCTAVE_VERSION}-w${BITNESS} octave-${OCTAVE_VERSION} || ECHO "ignore error"
+  - cp -R octave-${OCTAVE_VERSION}-w${BITNESS} octave-${OCTAVE_VERSION} || allowfail 1
   - popd
   - pushd casadi
   - mkdir build
