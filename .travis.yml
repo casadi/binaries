@@ -28,13 +28,11 @@ script:
 
   - wget https://ftp.gnu.org/gnu/octave/windows/octave-${OCTAVE_VERSION}-w${BITNESS}.zip
   - unzip octave-${OCTAVE_VERSION}-w${BITNESS}.zip > /dev/null
-  - cp -R octave-${OCTAVE_VERSION}-w${BITNESS} octave-${OCTAVE_VERSION} || ECHO "ignore error"
+  - cp -R octave-${OCTAVE_VERSION}-w${BITNESS} octave-${OCTAVE_VERSION} || allowfail 1
   - popd
   - pushd casadi
   - mkdir build
   - pushd build
-  - echo "set(LAPACK_LIBRARIES \${LAPACK_LIBRARIES} gfortran)" | sudo tee --append  /home/travis/build/mingw_octave${BITNESS}/usr/share/cmake-3.10/Modules/FindLAPACK.cmake
-  #- cat /usr/local/cmake-3.10.2/share/cmake-3.10/Modules/FindLAPACK.cmake
   - echo $MINGW_ROOT
   - |
     cat <<EOF >toolchain.cmake
