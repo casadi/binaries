@@ -87,9 +87,6 @@ script:
       NO_SYSTEM_ENVIRONMENT_PATH
     )
     set(PYTHON_EXECUTABLE /home/travis/.wine/drive_c/Python$PYTHONVERSION/python.exe)
-    set(NUMPY_INCLUDE_DIR /home/travis/.wine/drive_c/Python$PYTHONVERSION/Lib/site-packages/numpy-1.9.1-py$PYTHONVERSIONDOT-$NUMPYSUFFIX.egg/numpy/core/include)
-    set(NUMPY_INCLUDED_DIRS /home/travis/.wine/drive_c/Python$PYTHONVERSION/Lib/site-packages/numpy-1.9.1-py$PYTHONVERSIONDOT-$NUMPYSUFFIX.egg/numpy/core/include/numpy)
-    set(NUMPY_PATH /home/travis/.wine/drive_c/Python$PYTHONVERSION/Lib/site-packages/numpy-1.9.1-py$PYTHONVERSIONDOT-$NUMPYSUFFIX.egg/numpy/core/include/numpy)
     EOF
   
   # Avoid checking python version
