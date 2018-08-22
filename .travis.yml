@@ -136,12 +136,6 @@ deploy:
   on:
     all_branches: true
 
-
-after_success:
-  - test_commit test-windows
-after_failure:
-  - echo "oops"
-  - sleep 10
 branches:
   except:
     - /.*appveyor.*/
@@ -183,3 +177,8 @@ before_install:
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   - mingw_setup
 
+
+jobs:
+  include:
+    - stage: firetest
+      script: test_commit test-windows
