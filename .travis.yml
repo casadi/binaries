@@ -182,3 +182,5 @@ jobs:
   include:
     - stage: firetest
       script: test_commit test-windows
+      before_install: echo "before_install"
+      
