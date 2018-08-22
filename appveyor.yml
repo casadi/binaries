@@ -9,8 +9,17 @@ environment:
     PYTHON: "C:\\Python27"
     PYTHON_VERSION: "2.7.8"
     PYTHON_ARCH: "32"
-    BITNESS: "32"
-    OCTAVEVERSION: "4.2.2"
+
+    
+   matrix:
+    - BITNESS: "32"
+      OCTAVEVERSION: "4.2.2"
+    - BITNESS: "64"
+      OCTAVEVERSION: "4.2.2"
+    - BITNESS: "32"
+      OCTAVEVERSION: "4.4.0"
+    - BITNESS: "64"
+      OCTAVEVERSION: "4.4.0"
 
 install:
   - git submodule init
