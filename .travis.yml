@@ -182,5 +182,7 @@ jobs:
   include:
     - stage: firetest
       script: test_commit test-windows
-      before_install: echo "before_install"
+      before_install:
+        - pushd ../../ && git clone https://github.com/casadi/testbot.git
+        - pushd testbot && source recipes/setup.sh && popd
       
