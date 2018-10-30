@@ -18,6 +18,9 @@ before_script:
   - set -e
 
 script:
+  - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
+  - echo 'export PATH="$HOME/.linuxbrew/bin:$PATH"' >>~/.bash_profile
+  - brew install homebrew/science/octave
   - pushd casadi
   - mkdir build
   - pushd build
