@@ -55,7 +55,7 @@ before_install:
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh && popd
   - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
-  - echo 'export PATH="$HOME/.linuxbrew/bin:$PATH"' >>~/.bash_profile
+  - export PATH="$HOME/.linuxbrew/bin:$PATH"
   - brew install homebrew/science/octave
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
