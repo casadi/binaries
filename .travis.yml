@@ -56,7 +56,7 @@ before_install:
   - pushd testbot && source recipes/setup.sh && popd
   - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
   - export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-  - brew install homebrew/science/octave
+  - brew install octave
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
   - slurp_common
