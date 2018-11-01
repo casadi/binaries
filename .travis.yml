@@ -54,9 +54,7 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh && popd
-  - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
-  - export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-  - brew install octave
+  - docker run ubuntu:18.10 bash -c "apt-get update && apt-get install octave octave-dev"
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
   - slurp_common
