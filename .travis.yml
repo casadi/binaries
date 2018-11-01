@@ -7,8 +7,10 @@ env:
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - EXTRA_SWIG_FLAGS="-nodelete"
     
+    
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1"
+    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" OCTAVE_VERSION=4.2.2
+    - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.4.1
 
 os: linux
 dist: trusty
@@ -28,7 +30,7 @@ script:
   
 before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-octave-$COMMIT$NAME_SUFFIX'" > $OCTAVEPATH/dummy.txt
-  - export RESULT="$HOME/casadi-linux-octave-$COMMIT$NAME_SUFFIX.tar.gz"
+  - export RESULT="$HOME/casadi-linux-octave-${OCTAVE_VERSION}-$COMMIT$NAME_SUFFIX.tar.gz"
   - pushd $OCTAVEPATH/casadi && tar -czf $RESULT .  && popd
   - export TRAVIS_TAG="commit-$COMMIT"
 
@@ -54,9 +56,17 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh && popd
-  - sudo apt-add-repository ppa:octave/stable -y
-  - sudo apt-get update -qq
-  - sudo apt-get install octave liboctave-dev -y
+  - |
+    if [ "${OCTAVE_VERSION}" == "4.2.2" ]; then
+      sudo apt-add-repository ppa:octave/stable -y
+      sudo apt-get update -qq
+      sudo apt-get install octave liboctave-dev -y
+    fi
+  - |
+    if [ "${OCTAVE_VERSION}" == "4.4.1" ]; then
+      export casadi_build_flags="$casadi_build_flags -DOCTAVE_ROOT_DIR=$HOME/octave -DOCTAVE_BIN_PATHS=$HOME/octave/bin -DOCTAVE_LIBRARIES_PATHS=$HOME/octave/lib -DOCTAVE_INCLUDE_PATHS=$HOME/octave/include"
+      docker run --rm -v $HOME/octave:/host/octave ubuntu:18.10 bash -c "apt-get update && apt-get -y install octave liboctave-dev; mkdir /host/octave/bin && mkdir /host/octave/include && mkdir /host/octave/lib && cp /usr/bin/*oct* /host/octave/bin && cp -R /usr/include/octave-4.4.1/octave/* /host/octave/include && cp /usr/lib/x86_64-linux-gnu/*oct* /host/octave/lib" || echo 1
+    fi
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
   - slurp_common
