@@ -54,7 +54,7 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh && popd
-  - docker run --rm -v $HOME/octave:/host/octave ubuntu:18.10 bash -c "apt-get update && apt-get -y install octave octave-dev; mkdir /host/octave/bin && mkdir /host/octave/include && mkdir /host/octave/lib && cp /usr/bin/*oct* /host/octave/bin && cp -R /usr/include/octave-4.4.1/octave/* /host/octave/include && cp /usr/lib/x86_64-linux-gnu/*oct* /host/octave/lib"
+  - docker run --rm -v $HOME/octave:/host/octave ubuntu:18.10 bash -c "apt-get update && apt-get -y install octave liboctave-dev; mkdir /host/octave/bin && mkdir /host/octave/include && mkdir /host/octave/lib && cp /usr/bin/*oct* /host/octave/bin && cp -R /usr/include/octave-4.4.1/octave/* /host/octave/include && cp /usr/lib/x86_64-linux-gnu/*oct* /host/octave/lib"
   - tree $HOME/octave
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
