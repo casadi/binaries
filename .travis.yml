@@ -62,7 +62,8 @@ before_install:
   - slurp swig_matlab
   - popd
   - sudo apt-get update -qq
-  - sudo apt-get install -y binutils git cmake gfortran-4.8 liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
+  - sudo apt-get install -y binutils gfortran git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
   - gfortran --version
+  #- export FCC=gfortran-4.8
   - sudo apt-get install fakeroot rpm alien
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
