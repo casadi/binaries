@@ -16,6 +16,9 @@ env:
     - TESTCOMMIT="1"
     - KEEP_GOING=1
     - EXTRA_SWIG_FLAGS="-nodelete"
+    - OCTAVE_VERSION="4.4.1"
+    - OCTAVE_FULL_VERSION="4.4.1_1"
+    - OCTAVE_API_VERSION=6
   
 before_script:
   - #set -e
@@ -25,7 +28,7 @@ compiler: clang
 script:
   - sudo /usr/libexec/locate.updatedb
   - locate liboctinterp
-  - sudo install_name_tool -id "@rpath/liboctinterp.5.dylib" /usr/local/Cellar/octave/4.4.0_2/lib/octave/4.4.0/liboctinterp.5.dylib
+  - sudo install_name_tool -id "@rpath/liboctinterp.${OCTAVE_API_VERSION}.dylib" /usr/local/Cellar/octave/${OCTAVE_FULL_VERSION}/lib/octave/${OCTAVE_VERSION}/liboctinterp.${OCTAVE_API_VERSION}.dylib
   - pushd /Users/travis/build
   - source testbot/shellhelpers
   - ls -al
@@ -49,7 +52,7 @@ script:
   #- otool -l $MATLABPATH/libcasadi_nlpsolver_ipopt.dylib
   
 before_deploy:
-  - export RESULT="$HOME/casadi-osx-octave-$COMMIT$NAME_SUFFIX.tar.gz"
+  - export RESULT="$HOME/casadi-osx-octave-${OCTAVE_VERSION}-$COMMIT$NAME_SUFFIX.tar.gz"
   - pushd $OCTAVEPATH/casadi && tar -czf $RESULT .  && popd
   - export TRAVIS_TAG="commit-$COMMIT"
 
