@@ -16,10 +16,10 @@ environment:
       OCTAVEVERSION: "4.4.1"
     - BITNESS: "64"
       OCTAVEVERSION: "4.4.1"
-    - BITNESS: "32"
-      OCTAVEVERSION: "4.2.2"
-    - BITNESS: "64"
-      OCTAVEVERSION: "4.2.2"
+    #- BITNESS: "32"
+    #  OCTAVEVERSION: "4.2.2"
+    #- BITNESS: "64"
+    #  OCTAVEVERSION: "4.2.2"
     - BITNESS: "32"
       OCTAVEVERSION: "4.4.0"
     - BITNESS: "64"
@@ -65,9 +65,9 @@ install:
   - 7z x casadi.zip -ocasadioctave > nul
   - pushd casadi\\test
   - dir C:\projects\binaries\octave
-  - dir C:\projects\binaries\octave\octave-%OCTAVEVERSION%-w%BITNESS%
   - set OCTAVE_PATH=C:\projects\binaries\casadioctave
   - set PATH=C:\projects\binaries\octave\octave-%OCTAVEVERSION%\bin;C:\projects\binaries\octave\octave-%OCTAVEVERSION%-w%BITNESS%\bin;C:\projects\binaries\casadioctave;%PATH%
+  - copy C:\projects\binaries\octave\octave-%OCTAVEVERSION%-w%BITNESS%\bin\octave-cli.exe C:\projects\binaries\octave\octave-%OCTAVEVERSION%-w%BITNESS%\bin\octave.exe
   - make octave
 
 branches: 
