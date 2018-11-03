@@ -65,6 +65,7 @@ install:
   - 7z x casadi.zip -ocasadioctave > nul
   - pushd casadi\\test
   - dir C:\projects\binaries\octave
+  - dir C:\projects\binaries\octave\octave-%OCTAVEVERSION%-w%BITNESS%
   - set OCTAVE_PATH=C:\projects\binaries\casadioctave
   - set PATH=C:\projects\binaries\octave\octave-%OCTAVEVERSION%\bin;C:\projects\binaries\octave\octave-%OCTAVEVERSION%-w%BITNESS%\bin;C:\projects\binaries\casadioctave;%PATH%
   - make octave
