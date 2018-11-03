@@ -14,16 +14,22 @@ environment:
   matrix:
     - BITNESS: "32"
       OCTAVEVERSION: "4.4.1"
+      FULLNAME: "Octave-4.4.1-w32"
     - BITNESS: "64"
       OCTAVEVERSION: "4.4.1"
+      FULLNAME: "Octave-4.4.1-w64"
     - BITNESS: "32"
       OCTAVEVERSION: "4.2.2"
+      FULLNAME: "Octave-4.2.2"
     - BITNESS: "64"
+      FULLNAME: "Octave-4.2.2"
       OCTAVEVERSION: "4.2.2"
     - BITNESS: "32"
       OCTAVEVERSION: "4.4.0"
+      FULLNAME: "Octave-4.4.0-w32"
     - BITNESS: "64"
       OCTAVEVERSION: "4.4.0"
+      FULLNAME: "Octave-4.4.0-w64"
 
 install:
   - git submodule init
@@ -66,7 +72,7 @@ install:
   - pushd casadi\\test
   - dir C:\projects\binaries\octave
   - set OCTAVE_PATH=C:\projects\binaries\casadioctave
-  - set PATH=C:\projects\binaries\octave\octave-%OCTAVEVERSION%\bin;C:\projects\binaries\casadioctave;%PATH%
+  - set PATH=C:\projects\binaries\octave\%FULLNAME%\bin;C:\projects\binaries\casadioctave;%PATH%
   - make octave
 
 branches: 
