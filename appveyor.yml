@@ -13,6 +13,10 @@ environment:
     
   matrix:
     - BITNESS: "32"
+      OCTAVEVERSION: "4.4.1"
+    - BITNESS: "64"
+      OCTAVEVERSION: "4.4.1"
+    - BITNESS: "32"
       OCTAVEVERSION: "4.2.2"
     - BITNESS: "64"
       OCTAVEVERSION: "4.2.2"
