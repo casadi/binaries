@@ -84,6 +84,7 @@ before_install:
   - python_setup || remote_access
   - mkdir -p /Users/travis/build/casadi/testbot || remote_access
   - slurp_common || remote_access
+  - brew install gnu-sed pkg-config gmp isl mpfr libmpc gcc automake gettext
   - brew install --ignore-dependencies octave
   - bake_my_library_path || remote_access
   - popd
