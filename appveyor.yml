@@ -11,7 +11,7 @@ environment:
     PYTHON_ARCH: "32"
 
     
-   matrix:
+  matrix:
     - BITNESS: "32"
       OCTAVEVERSION: "4.2.2"
     - BITNESS: "64"
