@@ -22,6 +22,16 @@ environment:
 
     - BITNESS: 32
       PYTHON_ARCH: "32"
+      PYTHON_VERSION: "3.6"
+      PYTHONVERSION: "36"
+      MINICONDA: C:\Miniconda
+    - BITNESS: 64
+      PYTHON_ARCH: "64"
+      PYTHON_VERSION: "3.6"
+      PYTHONVERSION: "36"
+      MINICONDA: C:\Miniconda-x64
+    - BITNESS: 32
+      PYTHON_ARCH: "32"
       PYTHON_VERSION: "3.7"
       PYTHONVERSION: "37"
       MINICONDA: C:\Miniconda
