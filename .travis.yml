@@ -9,7 +9,7 @@ env:
     
     
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" TESTCOMMIT="1" OCTAVE_VERSION=4.2.2
+    - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.2.2 #TESTCOMMIT="1"
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.4.1
 
 os: linux
