@@ -54,13 +54,7 @@ deploy:
     all_branches: true
 
 after_success:
-  - cd /home/travis/build/casadi/binaries
-  - git remote add github git@github.com:casadi/binaries.git
-  - git fetch github
-  - git checkout test-debian-matlab
-  - git add casadi
-  - git commit -m "automatic test commit $COMMIT" || true
-  - if [ $TESTCOMMIT ]; then git push git@github.com:casadi/binaries.git test-debian-matlab; fi
+  - test_commit test-debian-matlab
   
 branches:
   except:
