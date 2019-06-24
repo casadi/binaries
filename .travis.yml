@@ -11,6 +11,7 @@ env:
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.2.2 #TESTCOMMIT="1"
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.4.1
+    - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=5.1.0
 
 os: linux
 dist: trusty
@@ -66,6 +67,14 @@ before_install:
     if [ "${OCTAVE_VERSION}" == "4.4.1" ]; then
       export casadi_build_flags="$casadi_build_flags -DOCTAVE_ROOT_DIR=$HOME/octave -DOCTAVE_BIN_PATHS=$HOME/octave/bin -DOCTAVE_LIBRARIES_PATHS=$HOME/octave/lib -DOCTAVE_INCLUDE_PATHS=$HOME/octave/include"
       docker run --rm -v $HOME/octave:/host/octave ubuntu:18.10 bash -c "apt-get update && apt-get -y install octave liboctave-dev; mkdir /host/octave/bin && mkdir /host/octave/include && mkdir /host/octave/lib && cp /usr/bin/*oct* /host/octave/bin && cp -R /usr/include/octave-4.4.1/octave/* /host/octave/include && cp /usr/lib/x86_64-linux-gnu/*oct* /host/octave/lib" || echo 1
+    fi
+  - |
+    if [ "${OCTAVE_VERSION}" == "5.1.0" ]; then
+       sudo add-apt-repository ppa:alexlarsson/flatpak
+       sudo apt update
+       sudo apt install -y flatpak
+       flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+       flatpak install flathub org.octave.Octave
     fi
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
