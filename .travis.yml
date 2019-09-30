@@ -74,7 +74,7 @@ before_install:
        sudo apt update
        sudo apt install -y flatpak
        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-       flatpak install flathub org.octave.Octave
+       flatpak install -y flathub org.octave.Octave
     fi
   - sudo apt-get install p7zip-full -y
   - export SLURP_OS=trusty
