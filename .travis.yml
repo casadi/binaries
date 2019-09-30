@@ -11,7 +11,7 @@ env:
 
   matrix:
   
-    - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=x86_64-w64-mingw32 BITNESS=64 MATLABRELEASE=R2014b
+    - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=x86_64-w64-mingw32 BITNESS=64 MATLABRELEASE=R2014b TESTCOMMIT="1"
     - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=x86_64-w64-mingw32 BITNESS=64 MATLABRELEASE=R2016a
     - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=x86_64-w64-mingw32 BITNESS=64 MATLABRELEASE=R2014a
     - BUILD_TYPE=Release NAME_SUFFIX="" compilerprefix=x86_64-w64-mingw32 BITNESS=64 MATLABRELEASE=R2013a
