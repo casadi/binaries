@@ -52,6 +52,7 @@ script:
   
   - export MATPLOTLIBRC=$HOME/.matplotlib
   - python -c "import matplotlib;print(matplotlib.get_backend())"
+  - pushd docs/users_guide && make users_guide.pdf && popd  
   - pushd docs/api && make full | grep -v "file loc from" && make export && popd
   - pip install pysftp
   - |
