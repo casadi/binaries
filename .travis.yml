@@ -35,7 +35,7 @@ script:
   - sudo apt-get install graphviz -y
   - git clone https://github.com/jgillis/pyreport.git
   - pushd pyreport && python setup.py install && popd
-  - sudo apt-get install latex2html texlive-science texlive-latex-base texlive-fonts-recommended texlive-latex-recommended texlive-latex-extra -y
+  - sudo apt-get install latex2html latexmk texlive-science texlive-latex-base texlive-fonts-recommended texlive-latex-recommended texlive-latex-extra -y
   - pip install -r docs/users_guide/requirements.txt
   - sudo add-apt-repository -y ppa:techzilla/doxygen-backport
   - sudo apt-get update -q
