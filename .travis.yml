@@ -71,7 +71,9 @@ before_install:
   - |
     if [ "${OCTAVE_VERSION}" == "5.1.0" ]; then
        export OCTAVE_ROOT=/var/lib/flatpak/app/org.octave.Octave/x86_64/stable/active/files/
+       ls $OCTAVE_ROOT
        export casadi_build_flags="$casadi_build_flags -DOCTAVE_ROOT_DIR=$OCTAVE_ROOT -DOCTAVE_BIN_PATHS=$OCTAVE_ROOT/bin -DOCTAVE_LIBRARIES_PATHS=$OCTAVE_ROOT/lib -DOCTAVE_INCLUDE_PATHS=$OCTAVE_ROOT/include"
+       echo $casadi_build_flags
        sudo add-apt-repository -y ppa:alexlarsson/flatpak
        sudo apt update
        sudo apt install -y flatpak
