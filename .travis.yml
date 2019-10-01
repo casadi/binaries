@@ -9,12 +9,12 @@ env:
     
     
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.2.2 #TESTCOMMIT="1"
+    - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.2.2 TESTCOMMIT="1"
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.4.1
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=5.1.0
 
 os: linux
-dist: trusty
+dist: xenial
 language: generic
 
 before_script:
