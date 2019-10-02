@@ -88,6 +88,7 @@ branches:
     - /.*commit.*/
 
 before_install:
+  - (while true ; do sleep 60 ; echo "ping" ; done ) &
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - pwd
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
