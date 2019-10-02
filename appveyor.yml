@@ -82,6 +82,7 @@ install:
   - "SET PYTHONPATH=%PYTHONPATH%;C:\\projects\\binaries\\casadipython"
   - #ren C:\\projects\\binaries\\casadipython\\casadi\\libcasadi_conic_qrqp.dll libcasadi_conic_qrqp_inert.dll
   - cd casadi\\test
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - echo %WORHP_LICENSE_FILE%
   - dir %WORHP_LICENSE_FILE%
   - make unittests_py
