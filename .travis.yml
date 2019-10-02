@@ -34,6 +34,7 @@ script:
   - make VERBOSE=1
   - make install VERBOSE=1
   - popd
+  - remote_access
   
 before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX'" > $MATLABPATH/dummy.txt
