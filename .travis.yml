@@ -11,13 +11,13 @@ env:
     - EXTRA_SWIG_FLAGS="-nodelete"
 
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32 OCTAVE_VERSION=4.4.0 OCTAVE_API_VERSION=5 OCTAVE_PREFIX=""
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 OCTAVE_VERSION=4.4.0 OCTAVE_API_VERSION=5 OCTAVE_PREFIX=""
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32 OCTAVE_VERSION=4.4.1 OCTAVE_API_VERSION=6 OCTAVE_PREFIX=""
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 OCTAVE_VERSION=4.4.1 OCTAVE_API_VERSION=6 OCTAVE_PREFIX=""
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32 OCTAVE_VERSION=5.1.0 OCTAVE_API_VERSION=7 OCTAVE_PREFIX="mingw32/"
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 OCTAVE_VERSION=5.1.0 OCTAVE_API_VERSION=7 OCTAVE_PREFIX="mingw64/"
-    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32 OCTAVE_VERSION=4.2.2 OCTAVE_API_VERSION=4 OCTAVE_PREFIX=""
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32 OCTAVE_VERSION=4.4.0 OCTAVE_API_VERSION=5
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 OCTAVE_VERSION=4.4.0 OCTAVE_API_VERSION=5
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32 OCTAVE_VERSION=4.4.1 OCTAVE_API_VERSION=6
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 OCTAVE_VERSION=4.4.1 OCTAVE_API_VERSION=6
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32 OCTAVE_VERSION=5.1.0 OCTAVE_API_VERSION=6
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 OCTAVE_VERSION=5.1.0 OCTAVE_API_VERSION=6
+    - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=32 compilerprefix=i686-w64-mingw32 OCTAVE_VERSION=4.2.2 OCTAVE_API_VERSION=4
     - BUILD_TYPE=Release NAME_SUFFIX="" BITNESS=64 compilerprefix=x86_64-w64-mingw32 TESTCOMMIT="1" OCTAVE_VERSION=4.2.2 OCTAVE_API_VERSION=4
 
 before_script:
@@ -67,9 +67,12 @@ script:
     EOF
   - echo $CMAKE_LIBRARY_PATH
   - cmake --version
-  - bash -c "cmake -DFORTRAN_REQUIRED=ON -DWITH_COMMON=ON $casadi_build_flags -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-${OCTAVE_VERSION}/${OCTAVE_PREFIX}include/octave-${OCTAVE_VERSION}/octave/ -DOCTAVE_LIBRARIES=\"$HOME/build/octave-${OCTAVE_VERSION}/${OCTAVE_PREFIX}bin/liboctinterp-${OCTAVE_API_VERSION}.dll;$HOME/build/octave-${OCTAVE_VERSION}/${OCTAVE_PREFIX}bin/liboctave-${OCTAVE_API_VERSION}.dll\" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF .." || remote_access 
+  - bash -c "cmake -DFORTRAN_REQUIRED=ON -DWITH_COMMON=ON $casadi_build_flags -DOCTAVE_INCLUDE_DIRS=$HOME/build/octave-${OCTAVE_VERSION}/include/octave-${OCTAVE_VERSION}/octave/ -DOCTAVE_LIBRARIES=\"$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctinterp-${OCTAVE_API_VERSION}.dll;$HOME/build/octave-${OCTAVE_VERSION}/bin/liboctave-${OCTAVE_API_VERSION}.dll\" -DWITH_OCTAVE_IMPORT=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWITH_SELFCONTAINED=ON -DBLA_STATIC=ON -DBLA_VENDOR=Generic -DBLA_DIR=/home/travis/build/lapack -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DENABLE_STATIC=OFF -DENABLE_SHARED=ON -DWITH_DEEPBIND=ON -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_INSTALL_PREFIX=../octave_install -DWITH_EXAMPLES=OFF .." || remote_access 
   - cat /home/travis/build/casadi/binaries/casadi/build/casadi/interfaces/lapack/CMakeFiles/casadi_linsol_lapackqr.dir/linklibs.rsp
   - make install -j2 VERBOSE=1
+  - $compilerprefix-dlltool --input-def ../casadi/core/casadi.def --dllname ../octave_install/casadi/libcasadi.dll  --output-lib ../octave_install/casadi/casadi.lib
+  - $compilerprefix-dlltool --input-def ../external_packages/osqp/osqp.def --dllname ../octave_install/casadi/libosqp.dll  --output-lib ../octave_install/casadi/osqp.lib
+  
   #- cp $MINGW_ROOT/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
   #- cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
   - pwd
