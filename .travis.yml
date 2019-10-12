@@ -1,7 +1,7 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 os: osx
 
-osx_image: xcode8.3
+osx_image: xcode11.2
 
 env: 
   global: 
