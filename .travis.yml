@@ -81,8 +81,9 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh || remote_access && popd
-  - wget https://gcc.gnu.org/bugzilla/attachment.cgi?id=46480 -O my.patch
-  - sudo patch -N -f -d /Applications/Xcode-11.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -p1 < my.patch
+  #- wget https://gcc.gnu.org/bugzilla/attachment.cgi?id=46480 -O my.patch
+  #- sudo patch -N -f -d /Applications/Xcode-11.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -p1 < my.patch
+
   - osx_gcc7_setup || remote_access
   - slurp swig_matlab || remote_access
   - python_setup || remote_access
