@@ -46,6 +46,8 @@ script:
   - mkdir build
   - pushd build
   # $casadi_build_flags
+  - gcc --version
+  - conda activate condaenv_build
   - bash -c "cmake -DWITH_OPENMP=OFF  -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH .."
   - osx_rpath_gcc7
   - make VERBOSE=1
@@ -89,6 +91,7 @@ before_install:
 
   - python_setup || remote_access
   - osx_gcc7_setup || remote_access
+  - gcc --version
   - slurp swig_matlab || remote_access
 
   - mkdir -p /Users/travis/build/casadi/testbot || remote_access
