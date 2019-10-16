@@ -47,7 +47,7 @@ script:
   - pushd build
   # $casadi_build_flags
   - gcc --version
-  - conda activate condaenv_build
+  - source activate condaenv_build
   - gcc --version
   - bash -c "cmake -DWITH_OPENMP=OFF  -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH .."
   - osx_rpath_gcc7
