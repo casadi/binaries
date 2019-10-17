@@ -12,7 +12,7 @@ env:
     - MATLAB_ROOT=/Users/travis/build/matlab
     - SLURP_GCC=4.9
     - SLURP_OS=osx
-    - KEEP_GOING=1
+    #- KEEP_GOING=1
     - PYTHON_VERSION=3.7
     
   matrix:
