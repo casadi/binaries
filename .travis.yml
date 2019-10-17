@@ -56,7 +56,7 @@ script:
   - make VERBOSE=1
   - make install
   - popd
-  - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $CXX_FULL $MATLABPATH/casadi
+  - cp_libs_gcc7
   - osx_rpath_patch $MATLABPATH/casadi
   
 before_deploy:
