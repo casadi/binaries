@@ -50,7 +50,7 @@ script:
   - gcc --version
   - source activate condaenv_build
   - gcc --version
-  - bash -c "cmake $casadi_build_flags -DWITH_OPENMP=OFF  -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH .."
+  - bash -c "cmake $casadi_build_flags -DWITH_BUILD_HPMPC=OFF -DWITH_HPMPC=OFF -DWITH_BUILD_BLASFEO=OFF -DWITH_BLASFEO=OFF -DWITH_OPENMP=OFF  -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH .."
   - osx_rpath_gcc7
   - make VERBOSE=1
   - make install
