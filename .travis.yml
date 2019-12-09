@@ -144,7 +144,7 @@ before_install:
   - mingw_setup
   - sudo pip install pysftp
   - source /home/travis/build/testbot/restricted/env.sh
-  - ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
+  #- ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
 
 language: cpp
 
