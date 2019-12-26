@@ -104,8 +104,8 @@ script:
   #- cat /home/travis/build/casadi/binaries/casadi/build/casadi/interfaces/snopt/CMakeFiles/casadi_nlpsol_snopt.dir/linklibs.rsp
   - make VERBOSE=1
   - make install
-  #- $compilerprefix-dlltool --input-def ../casadi/core/casadi.def --dllname ../python_install/casadi/libcasadi.dll  --output-lib ../python_install/casadi/casadi.lib
-  #- $compilerprefix-dlltool --input-def ../external_packages/osqp/osqp.def --dllname ../python_install/casadi/libosqp.dll  --output-lib ../python_install/casadi/osqp.lib
+  - $compilerprefix-dlltool --input-def ../casadi/core/casadi.def --dllname ../python_install/casadi/libcasadi.dll  --output-lib ../python_install/casadi/casadi.lib
+  - $compilerprefix-dlltool --input-def ../external_packages/osqp/osqp.def --dllname ../python_install/casadi/libosqp.dll  --output-lib ../python_install/casadi/osqp.lib
   
   # Fix for #1477 (part 2)
   - sed -i -e "s/'SwigPyObject'/'SwigPyCasadiObject'/g" ../python_install/casadi/casadi.py
