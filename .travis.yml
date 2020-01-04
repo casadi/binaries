@@ -85,7 +85,7 @@ before_install:
   - (while true ; do sleep 60 ; echo "ping" ; done ) &
   - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
   - pwd
-  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
+  - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh || remote_access && popd
   #- wget https://gcc.gnu.org/bugzilla/attachment.cgi?id=46480 -O my.patch
