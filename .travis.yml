@@ -53,7 +53,9 @@ script:
   - bash -c "cmake $casadi_build_flags -DWITH_BUILD_HPMPC=OFF -DWITH_HPMPC=OFF -DWITH_BUILD_BLASFEO=OFF -DWITH_BLASFEO=OFF -DWITH_OPENMP=OFF  -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH .."
   - osx_rpath_gcc7
   - make VERBOSE=1
-  - sudo make install
+  - sudo mkdir -p /ColPack_libs
+  - sudo chmod 777 /ColPack_libs
+  - make install
   - popd
   - cp_libs_gcc7
   - osx_rpath_patch $MATLABPATH/casadi
