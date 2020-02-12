@@ -32,7 +32,7 @@ script:
   - pushd build
   - bash -c "cmake $casadi_build_flags -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DCMAKE_INSTALL_PREFIX=$MATLABPATH -DWITH_DEEPBIND=ON -DWITH_MATLAB=ON  -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON .."
   - make VERBOSE=1
-  - make install VERBOSE=1
+  - sudo make install VERBOSE=1
   - popd
   
 before_deploy:
