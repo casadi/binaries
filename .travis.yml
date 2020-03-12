@@ -78,4 +78,5 @@ before_install:
   - export FC=gfortran-4.7
   - ls /usr/lib/x86_64-linux-gnu
   - sudo apt-get install fakeroot rpm alien
+  - sudo pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
