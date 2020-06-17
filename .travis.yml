@@ -176,6 +176,7 @@ before_install:
   - wget https://raw.githubusercontent.com/casadi/python-lib-template/master/.travis-setup.sh && chmod +x .travis-setup.sh
   - "./.travis-setup.sh"
   - wget -O numpy.exe https://github.com/casadi/testbot/releases/download/perpetual/numpy-$NUMPYVERSION-sse2.exe
+  - tree /home/travis/.wine/drive_c/Python$PYTHONVERSION
   - /opt/wine-staging/bin/wine C:/Python$PYTHONVERSION/Scripts/easy_install.exe numpy.exe && rm numpy.exe
   - pip install pysftp
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
