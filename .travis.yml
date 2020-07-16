@@ -74,8 +74,8 @@ before_install:
        sudo apt update
        sudo apt install -y flatpak
        sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-       sudo flatpak update --commit=5d975550fc59a93fdddae167d3c9fb5ef9fa675b org.octave.Octave # lastest 4.4.1 per https://github.com/flathub/org.octave.Octave/commits/master
        sudo flatpak install -y flathub org.octave.Octave
+       sudo flatpak update -y --commit=5d975550fc59a93fdddae167d3c9fb5ef9fa675b org.octave.Octave # lastest 4.4.1 per https://github.com/flathub/org.octave.Octave/commits/master
        ls $OCTAVE_ROOT_TMP
     fi
   - |
@@ -102,8 +102,8 @@ before_install:
        sudo apt update
        sudo apt install -y flatpak
        sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-       sudo flatpak update --commit=07bc55d3c81304bcfebf2372ecfa255ded8f8367 org.octave.Octave # lastest 5.2.0 per https://github.com/flathub/org.octave.Octave/commits/master
        sudo flatpak install -y flathub org.octave.Octave
+       sudo flatpak update -y --commit=07bc55d3c81304bcfebf2372ecfa255ded8f8367 org.octave.Octave # lastest 5.2.0 per https://github.com/flathub/org.octave.Octave/commits/master
        ls $OCTAVE_ROOT_TMP
     fi
   - sudo apt-get install p7zip-full -y
