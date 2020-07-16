@@ -89,7 +89,7 @@ before_install:
        sudo apt install -y flatpak
        sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
        sudo flatpak install -y flathub org.octave.Octave
-       sudo flatpak update --commit=ac5a3b892fcb5ce79164380e1d0d4e8fe4290ab3 org.octave.Octave # lastest 5.1.0 per https://github.com/flathub/org.octave.Octave/commits/master
+       sudo flatpak update -y --commit=ac5a3b892fcb5ce79164380e1d0d4e8fe4290ab3 org.octave.Octave # lastest 5.1.0 per https://github.com/flathub/org.octave.Octave/commits/master
        ls $OCTAVE_ROOT_TMP
     fi
   - |
