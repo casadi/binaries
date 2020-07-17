@@ -33,6 +33,9 @@ script:
   - source testbot/shellhelpers
   - ls -al
   - popd
+  - echo $PKG_CONFIG_PATH
+  - ls $HOME/ipopt-install/lib/pkgconfig
+  - export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/ipopt-install/lib/pkgconfig
   - pkg-config --libs --cflags ipopt
   - pushd casadi
   - mkdir build
