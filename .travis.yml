@@ -11,7 +11,7 @@ env:
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
     - OCTAVEPATH=/Users/travis/build/octave-install
-    - SLURP_GCC=4.9
+    - SLURP_GCC=7
     - SLURP_OS=osx
     - TESTCOMMIT="1"
     - KEEP_GOING=1
@@ -41,11 +41,11 @@ script:
   - mkdir build
   - pushd build
   - bash -c "cmake $casadi_build_flags -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=$OCTAVEPATH .."
-  - osx_rpath
+  - osx_rpath_gcc7
   - make VERBOSE=1
   - make install
   - popd
-  - cp $FORTRAN_FULL $QUADMATH_FULL $GCC_FULL $CXX_FULL $OCTAVEPATH/casadi
+  - cp_libs_gcc7
   - osx_rpath_patch $OCTAVEPATH/casadi
   
   - otool -l $OCTAVEPATH/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
