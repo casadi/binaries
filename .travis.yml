@@ -46,7 +46,7 @@ script:
   - make VERBOSE=1
   - make install
   - popd
-  - cp_libs_gcc7
+  - cp_libs_gcc7 $OCTAVEPATH/casadi
   - osx_rpath_patch $OCTAVEPATH/casadi
   
   - otool -l $OCTAVEPATH/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
