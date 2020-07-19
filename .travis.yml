@@ -7,7 +7,7 @@ env:
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
     - SNOPT=/Users/travis/build/snopt7
-    - PYTHONVERSION=27
+    - PYTHON_VERSION=3.7
     - NUMPYVERSION=1.9.1
     - GUROBI_HOME=/Users/travis/build/gurobi
     - OCTAVEPATH=/Users/travis/build/octave-install
@@ -37,6 +37,7 @@ script:
   - ls $HOME/ipopt-install/lib/pkgconfig
   - export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/ipopt-install/lib/pkgconfig
   - pkg-config --libs --cflags ipopt
+  - source activate condaenv_build
   - pushd casadi
   - mkdir build
   - pushd build
@@ -83,8 +84,8 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh || remote_access && popd
-  - osx_gcc7_setup || remote_access
   - python_setup || remote_access
+  - osx_gcc7_setup || remote_access
   - slurp swig_matlab || remote_access
   - mkdir -p /Users/travis/build/casadi/testbot || remote_access
   - slurp_common || remote_access
