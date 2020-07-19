@@ -57,7 +57,7 @@ script:
   - sudo chmod 777 /ColPack_libs
   - make install
   - popd
-  - cp_libs_gcc7
+  - cp_libs_gcc7 $MATLABPATH/casadi
   - osx_rpath_patch $MATLABPATH/casadi
   
 before_deploy:
