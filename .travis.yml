@@ -48,7 +48,7 @@ script:
   - export WHEEL=`python $HOME/build/testbot/create_wheel_local.py $COMMIT $PYTHONVERSION linux $BITNESS python_install`
   - echo $WHEEL
   - git clone https://github.com/jgillis/auditwheel
-  - dockcross "pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && $MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -e '.*snopt.*' -L . --no-update-tags -w . $WHEEL"
+  - dockcross "$MANYLINUX_PYTHON3_BIN/pip install pyelftools wheel==0.31.1 && pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && echo "$MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -e '.*snopt.*' -L . --no-update-tags -w . $WHEEL" && $MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -e '.*snopt.*' -L . --no-update-tags -w . $WHEEL"
   - rm -rf python_install
   - unzip $WHEEL -d python_install
   - rm -rf python_install/*dist-info
@@ -108,8 +108,8 @@ before_install:
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
   - pushd ../../ && git clone https://github.com/casadi/testbot.git
   - pushd testbot && source recipes/setup.sh && popd
-  - dockcross_setup_start
   - python_setup
+  - dockcross_setup_start
   - export SLURP_OS=trusty
   - slurp swig_matlab
   - export SLURP_OS=dockcross
@@ -122,3 +122,4 @@ before_install:
   - popd
   - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
   
+
