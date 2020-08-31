@@ -85,47 +85,27 @@ branches:
 before_install:
   - wget https://raw.githubusercontent.com/casadi/testbot/master/before_install.sh && source before_install.sh
   - before_install_debian
+  - export OCTAVE_ROOT_TMP=/var/lib/flatpak/app/org.octave.Octave/x86_64/stable/active/files # versions: see https://github.com/flathub/org.octave.Octave
+  - export casadi_build_flags="$casadi_build_flags -DOCTAVE_ROOT_DIR=$OCTAVE_ROOT_TMP -DOCTAVE_BIN_PATHS=$OCTAVE_ROOT_TMP/bin -DOCTAVE_LIBRARIES_PATHS=$OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION -DOCTAVE_INCLUDE_PATHS=$OCTAVE_ROOT_TMP/include/octave-$OCTAVE_VERSION/octave"
+  - echo $casadi_build_flags
+  - sudo add-apt-repository -y ppa:alexlarsson/flatpak
+  - sudo apt update
+  - sudo apt install -y flatpak
+  - sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  - sudo flatpak install -y flathub org.octave.Octave
   - |
     if [ "${OCTAVE_VERSION}" == "4.4.1" ]; then
-       # versions: see https://github.com/flathub/org.octave.Octave
-       export OCTAVE_ROOT_TMP=/var/lib/flatpak/app/org.octave.Octave/x86_64/stable/active/files
-       export casadi_build_flags="$casadi_build_flags -DOCTAVE_ROOT_DIR=$OCTAVE_ROOT_TMP -DOCTAVE_BIN_PATHS=$OCTAVE_ROOT_TMP/bin -DOCTAVE_LIBRARIES_PATHS=$OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION -DOCTAVE_INCLUDE_PATHS=$OCTAVE_ROOT_TMP/include/octave-$OCTAVE_VERSION/octave"
-       echo $casadi_build_flags
-       sudo add-apt-repository -y ppa:alexlarsson/flatpak
-       sudo apt update
-       sudo apt install -y flatpak
-       sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-       sudo flatpak install -y flathub org.octave.Octave
        sudo flatpak update -y --commit=3b8ca7a6dbe7ee7b8aeb0f4294f85e5ebf0745e55af19f1aedeb9ad128ae9eb4 org.octave.Octave
        ls $OCTAVE_ROOT_TMP
     fi
   - |
     if [ "${OCTAVE_VERSION}" == "5.1.0" ]; then
-       # versions: see https://github.com/flathub/org.octave.Octave
-       export OCTAVE_ROOT_TMP=/var/lib/flatpak/app/org.octave.Octave/x86_64/stable/active/files
-       export casadi_build_flags="$casadi_build_flags -DOCTAVE_ROOT_DIR=$OCTAVE_ROOT_TMP -DOCTAVE_BIN_PATHS=$OCTAVE_ROOT_TMP/bin -DOCTAVE_LIBRARIES_PATHS=$OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION -DOCTAVE_INCLUDE_PATHS=$OCTAVE_ROOT_TMP/include/octave-$OCTAVE_VERSION/octave"
-       echo $casadi_build_flags
-       sudo add-apt-repository -y ppa:alexlarsson/flatpak
-       sudo apt update
-       sudo apt install -y flatpak
-       sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-       sudo flatpak install -y flathub org.octave.Octave
        # from flatpak remote-info --log flathub org.octave.Octave: ac5a3b892fcb5ce79164380e1d0d4e8fe4290ab3 (https://github.com/flathub/org.octave.Octave/commits/master) -> 0aafd2e30314432fbf610775ef04ab96affb29bf192f609065bfac414ddd262d
        sudo flatpak update -y --commit=0aafd2e30314432fbf610775ef04ab96affb29bf192f609065bfac414ddd262d org.octave.Octave
-       ls $OCTAVE_ROOT_TMP
     fi
   - |
     if [ "${OCTAVE_VERSION}" == "5.2.0" ]; then
-       # versions: see https://github.com/flathub/org.octave.Octave
-       export OCTAVE_ROOT_TMP=/var/lib/flatpak/app/org.octave.Octave/x86_64/stable/active/files
-       export casadi_build_flags="$casadi_build_flags -DOCTAVE_ROOT_DIR=$OCTAVE_ROOT_TMP -DOCTAVE_BIN_PATHS=$OCTAVE_ROOT_TMP/bin -DOCTAVE_LIBRARIES_PATHS=$OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION -DOCTAVE_INCLUDE_PATHS=$OCTAVE_ROOT_TMP/include/octave-$OCTAVE_VERSION/octave"
-       echo $casadi_build_flags
-       sudo add-apt-repository -y ppa:alexlarsson/flatpak
-       sudo apt update
-       sudo apt install -y flatpak
-       sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-       sudo flatpak install -y flathub org.octave.Octave
        sudo flatpak update -y --commit=ecdeb157c47f1d08f0d9f2abe48e147892c5b7c71a5c0b15cc88a3a26ba332c5 org.octave.Octave
-       ls $OCTAVE_ROOT_TMP
     fi
+  - ls $OCTAVE_ROOT_TMP
 
