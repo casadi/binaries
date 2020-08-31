@@ -29,35 +29,7 @@ before_script:
   - set -e
 
 script:
-  - pushd casadi
-  - mkdir build_temp
-  - pushd build_temp
-  - bash -c "cmake $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON  -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=/host$OCTAVEPATH -DSWIG_EXPORT=ON .."
-  - make matlab_source
-  - popd
-
-
-  - mkdir build
-  - pushd build
-  - export BACKUP_PKG_CONFIG_PATH=$PKG_CONFIG_PATH
-  - dockcross_setup_finish
-  - grep "CONFIG_PATH" $HOME/env.txt
-  - echo $casadi_build_flags
-  - dockcross "echo \$PKG_CONFIG_PATH"
-  - dockcross "export CASADI_EXTRA_LIBRARIES_LAPACK=gfortran;export PKG_CONFIG_PATH=$BACKUP_PKG_CONFIG_PATH;cmake -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=/host$OCTAVEPATH -DSWIG_IMPORT=ON .."
-  - dockcross  "make install VERBOSE=1"
-  - popd
-  
-  - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-  - export WHEEL=`python $HOME/build/testbot/create_wheel_local.py $COMMIT $PYTHONVERSION linux $BITNESS $OCTAVEPATH`
-  - echo $WHEEL
-  - git clone https://github.com/jgillis/auditwheel
-  - dockcross "$MANYLINUX_PYTHON3_BIN/pip install pyelftools wheel==0.31.1 && pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && echo "$MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -e '.*snopt.*' -L . --no-update-tags -w . $WHEEL" && $MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -e '.*snopt.*' -L . --no-update-tags -w . $WHEEL"
-  - rm -rf $OCTAVEPATH
-  - unzip $WHEEL -d $OCTAVEPATH
-  - rm -rf $OCTAVEPATH/*dist-info
-  - pushd $OCTAVEPATH/casadi/jit && bash get_system_includes.sh gcc-4.8 c++ >  system_includes.txt && popd 
-  - popd
+  - scripts_debian $OCTAVEPATH "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON  -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=/host$OCTAVEPATH" matlab_source
   
 before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-octave-$COMMIT$NAME_SUFFIX'" > $OCTAVEPATH/dummy.txt
