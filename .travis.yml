@@ -10,7 +10,7 @@ env:
     - BITNESS=64
 
 os: linux
-dist: trusty
+dist: xenial
 language: python
 
 services:
