@@ -5,19 +5,25 @@ env:
     - OCTAVEPATH=/home/travis/build/octave-install
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
+    - DEBIAN_FRONTEND=noninteractive
     - EXTRA_SWIG_FLAGS="-nodelete"
+    - DOCKCROSS=manylinux
+    - BITNESS=64
     
   matrix:
-    - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.2.2 TESTCOMMIT="1"
-    - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.4.1
+    - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.4.1 TESTCOMMIT="1"
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=5.1.0
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=5.2.0
     
-python: 3.6
 
 os: linux
-dist: xenial
-language: generic
+dist: trusty
+language: python
+
+python: 3.6
+
+services:
+  - docker
 
 before_script:
   - set -e
@@ -27,7 +33,7 @@ script:
   - mkdir build_temp
   - pushd build_temp
   - bash -c "cmake $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON  -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=/host$OCTAVEPATH -DSWIG_EXPORT=ON .."
-  - make python_source
+  - make matlab_source
   - popd
 
 
@@ -80,12 +86,6 @@ before_install:
   - wget https://raw.githubusercontent.com/casadi/testbot/master/before_install.sh && source before_install.sh
   - before_install_debian
   - |
-    if [ "${OCTAVE_VERSION}" == "4.2.2" ]; then
-      sudo apt-add-repository ppa:octave/stable -y
-      sudo apt-get update -qq
-      sudo apt-get install octave liboctave-dev -y
-    fi
-  - |
     if [ "${OCTAVE_VERSION}" == "4.4.1" ]; then
        # versions: see https://github.com/flathub/org.octave.Octave
        export OCTAVE_ROOT_TMP=/var/lib/flatpak/app/org.octave.Octave/x86_64/stable/active/files
@@ -128,3 +128,4 @@ before_install:
        sudo flatpak update -y --commit=ecdeb157c47f1d08f0d9f2abe48e147892c5b7c71a5c0b15cc88a3a26ba332c5 org.octave.Octave
        ls $OCTAVE_ROOT_TMP
     fi
+
