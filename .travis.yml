@@ -7,13 +7,14 @@ env:
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - EXTRA_SWIG_FLAGS="-nodelete"
     
-    
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.2.2 TESTCOMMIT="1"
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=4.4.1
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=5.1.0
     - BUILD_TYPE=Release NAME_SUFFIX="" OCTAVE_VERSION=5.2.0
     
+python: 3.6
+
 os: linux
 dist: xenial
 language: generic
@@ -23,11 +24,33 @@ before_script:
 
 script:
   - pushd casadi
+  - mkdir build_temp
+  - pushd build_temp
+  - bash -c "cmake $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON  -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=/host$OCTAVEPATH -DSWIG_EXPORT=ON .."
+  - make python_source
+  - popd
+
+
   - mkdir build
   - pushd build
-  - bash -c "cmake $casadi_build_flags -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DCMAKE_INSTALL_PREFIX=$OCTAVEPATH -DWITH_DEEPBIND=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON .."
-  - make
-  - make install
+  - export BACKUP_PKG_CONFIG_PATH=$PKG_CONFIG_PATH
+  - dockcross_setup_finish
+  - grep "CONFIG_PATH" $HOME/env.txt
+  - echo $casadi_build_flags
+  - dockcross "echo \$PKG_CONFIG_PATH"
+  - dockcross "export CASADI_EXTRA_LIBRARIES_LAPACK=gfortran;export PKG_CONFIG_PATH=$BACKUP_PKG_CONFIG_PATH;cmake -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=/host$OCTAVEPATH -DSWIG_IMPORT=ON .."
+  - dockcross  "make install VERBOSE=1"
+  - popd
+  
+  - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+  - export WHEEL=`python $HOME/build/testbot/create_wheel_local.py $COMMIT $PYTHONVERSION linux $BITNESS $OCTAVEPATH`
+  - echo $WHEEL
+  - git clone https://github.com/jgillis/auditwheel
+  - dockcross "$MANYLINUX_PYTHON3_BIN/pip install pyelftools wheel==0.31.1 && pushd auditwheel && $MANYLINUX_PYTHON3 setup.py install && popd && echo "$MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -e '.*snopt.*' -L . --no-update-tags -w . $WHEEL" && $MANYLINUX_PYTHON3_BIN/auditwheel repair -g quadmath -g gfortran -e '.*snopt.*' -L . --no-update-tags -w . $WHEEL"
+  - rm -rf $OCTAVEPATH
+  - unzip $WHEEL -d $OCTAVEPATH
+  - rm -rf $OCTAVEPATH/*dist-info
+  - pushd $OCTAVEPATH/casadi/jit && bash get_system_includes.sh gcc-4.8 c++ >  system_includes.txt && popd 
   - popd
   
 before_deploy:
@@ -54,10 +77,8 @@ branches:
     - /.*commit.*/
 
 before_install:
-  - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
-  - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && source recipes/setup.sh && popd
+  - wget https://raw.githubusercontent.com/casadi/testbot/master/before_install.sh && source before_install.sh
+  - before_install_debian
   - |
     if [ "${OCTAVE_VERSION}" == "4.2.2" ]; then
       sudo apt-add-repository ppa:octave/stable -y
@@ -107,16 +128,3 @@ before_install:
        sudo flatpak update -y --commit=ecdeb157c47f1d08f0d9f2abe48e147892c5b7c71a5c0b15cc88a3a26ba332c5 org.octave.Octave
        ls $OCTAVE_ROOT_TMP
     fi
-  - sudo apt-get install p7zip-full -y
-  - export SLURP_OS=trusty
-  - slurp_common
-  - slurp swig_matlab
-  - popd
-  - sudo apt-get update -qq
-  - sudo apt-get install -y binutils gfortran-4.8 g++-4.8 gcc-4.8 git cmake liblapack-dev libmumps-seq-dev libblas-dev liblapack-dev libxml2-dev
-  - gfortran-4.8 --version
-  - export FC=gfortran-4.8
-  - export CC=gcc-4.8
-  - export CXX=g++-4.8
-  - sudo apt-get install fakeroot rpm alien
-  - ssh-keyscan web.sourceforge.net >> ~/.ssh/known_hosts 
