@@ -88,7 +88,7 @@ before_install:
   - export OCTAVE_ROOT_TMP=/var/lib/flatpak/app/org.octave.Octave/x86_64/stable/active/files # versions: see https://github.com/flathub/org.octave.Octave
   - export casadi_build_flags="$casadi_build_flags -DOCTAVE_ROOT_DIR=$OCTAVE_ROOT_TMP -DOCTAVE_BIN_PATHS=$OCTAVE_ROOT_TMP/bin -DOCTAVE_LIBRARIES_PATHS=$OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION -DOCTAVE_INCLUDE_PATHS=$OCTAVE_ROOT_TMP/include/octave-$OCTAVE_VERSION/octave"
   - echo $casadi_build_flags
-  - sudo apt update
+  - sudo apt update || allowfail 1
   - sudo add-apt-repository -y ppa:alexlarsson/flatpak
   - sudo apt install -y flatpak
   - sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
