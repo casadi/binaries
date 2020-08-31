@@ -17,7 +17,7 @@ env:
     
 
 os: linux
-dist: trusty
+dist: xenial # needed for flatpack
 language: python
 
 python: 3.6
