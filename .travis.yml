@@ -30,7 +30,7 @@ before_script:
 
 script:
   - dockcross "echo $OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION; ls $OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION"
-  - script_debian octave_install "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=../octave-install" matlab_source
+  - script_debian octave_install "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=../octave_install" matlab_source
   
 before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-octave-$COMMIT$NAME_SUFFIX'" > $OCTAVEPATH/dummy.txt
