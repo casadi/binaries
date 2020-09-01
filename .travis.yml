@@ -2,7 +2,6 @@
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - OCTAVEPATH=/home/travis/build/octave-install
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - DEBIAN_FRONTEND=noninteractive
@@ -30,13 +29,13 @@ before_script:
   - set -e
 
 script:
-  - dockcross "echo $OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION; ls $OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION; echo /host$OCTAVEPATH; ls /host$OCTAVEPATH"
-  - script_debian $OCTAVEPATH "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=/host$OCTAVEPATH" matlab_source
+  - dockcross "echo $OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION; ls $OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION"
+  - script_debian octave_install "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=../octave-install" matlab_source
   
 before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-octave-$COMMIT$NAME_SUFFIX'" > $OCTAVEPATH/dummy.txt
   - export RESULT="$HOME/casadi-linux-octave-${OCTAVE_VERSION}-$COMMIT$NAME_SUFFIX.tar.gz"
-  - pushd $OCTAVEPATH/casadi && tar -czf $RESULT .  && popd
+  - pushd octave_install/casadi && tar -czf $RESULT .  && popd
   - export TRAVIS_TAG="commit-$COMMIT"
 
 deploy:
