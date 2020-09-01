@@ -15,7 +15,7 @@ env:
 
 os: linux
 dist: trusty
-language: generic
+language: python
 
 services:
   - docker
