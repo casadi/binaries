@@ -31,10 +31,6 @@ script:
   - mkdir matlab
   - travis_wait tar -xf matlab$MATLABRELEASE.tar.gz -C matlab
   - popd
-
-  - pushd casadi
-  - mkdir -p build/swig/matlab/ && touch build/swig/matlab/SwigGet.m
-  - popd
   
   - script_debian $MATLABPATH "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DCMAKE_INSTALL_PREFIX=/host$MATLABPATH" matlab_source
   
