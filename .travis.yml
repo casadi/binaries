@@ -2,7 +2,6 @@
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - MATLABPATH=/home/travis/build/matlab-install
     - MATLAB_ROOT=/home/travis/build/matlab
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
@@ -32,12 +31,12 @@ script:
   - travis_wait tar -xf matlab$MATLABRELEASE.tar.gz -C matlab
   - popd
   
-  - script_debian $MATLABPATH "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DCMAKE_INSTALL_PREFIX=/host$MATLABPATH" matlab_source
+  - script_debian matlab_path "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DCMAKE_INSTALL_PREFIX=../matlab_path" matlab_source
   
 before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX'" > $MATLABPATH/dummy.txt
   - export RESULT="$HOME/casadi-linux-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.tar.gz"
-  - pushd $MATLABPATH/casadi && tar -czf $RESULT .  && popd
+  - pushd matlab_path/casadi && tar -czf $RESULT .  && popd
   #- git push git@github.com:casadi/binaries.git :commit-$COMMIT || true
   - export TRAVIS_TAG="commit-$COMMIT"
   #- git push git@github.com:casadi/binaries.git "commit-$COMMIT"
