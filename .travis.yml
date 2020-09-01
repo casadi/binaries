@@ -33,12 +33,12 @@ script:
   - travis_wait tar -xf matlab$MATLABRELEASE.tar.gz -C matlab
   - popd
   
-  - script_debian matlab_path "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DCMAKE_INSTALL_PREFIX=../matlab_path" matlab_source
+  - script_debian matlab_install "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DCMAKE_INSTALL_PREFIX=../matlab_install" matlab_source
   
 before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX'" > $MATLABPATH/dummy.txt
   - export RESULT="$HOME/casadi-linux-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX.tar.gz"
-  - pushd matlab_path/casadi && tar -czf $RESULT .  && popd
+  - pushd matlab_install/casadi && tar -czf $RESULT .  && popd
   #- git push git@github.com:casadi/binaries.git :commit-$COMMIT || true
   - export TRAVIS_TAG="commit-$COMMIT"
   #- git push git@github.com:casadi/binaries.git "commit-$COMMIT"
