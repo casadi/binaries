@@ -25,11 +25,9 @@ before_script:
   - set -e
 
 script:
-  - pushd /home/travis/build/
   - testbot/recipes/fetch.sh matlab$MATLABRELEASE.tar.gz
   - mkdir matlab
   - travis_wait tar -xf matlab$MATLABRELEASE.tar.gz -C matlab
-  - popd
   
   - script_debian matlab_path "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DCMAKE_INSTALL_PREFIX=../matlab_path" matlab_source
   
