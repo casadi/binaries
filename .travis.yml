@@ -6,7 +6,9 @@ env:
     - MATLAB_ROOT=/home/travis/build/matlab
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
-
+    - DOCKCROSS=manylinux
+    - BITNESS=64
+    
   matrix:
     - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014b TESTCOMMIT="1"
     - BUILD_TYPE=Release NAME_SUFFIX="" MATLABRELEASE=R2014a
@@ -15,6 +17,10 @@ os: linux
 dist: trusty
 language: generic
 
+services:
+  - docker
+  
+python: 3.6
 
 before_script:
   - set -e
