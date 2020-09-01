@@ -5,7 +5,6 @@ env:
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - DEBIAN_FRONTEND=noninteractive
-    - casadi_build_flags=-DWITH_COMMON=ON
     - DOCKCROSS=manylinux
     - BITNESS=64
 
@@ -20,7 +19,7 @@ before_script:
   - set -e
  
 script:
-  - script_debian python_install "-DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install" python_source
+  - script_debian python_install "-DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_DEEPBIND=ON -DCMAKE_INSTALL_PREFIX=../python_install" python_source
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
   - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
   - python -c "from casadi import *;x = MX.sym('x');solver = nlpsol('solver','worhp',dict(x=x,g=x**2,f=x**6),dict(worhp=dict(MaxIter=2)));solver(lbg=1,ubg=2)"
