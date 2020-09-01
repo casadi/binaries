@@ -30,6 +30,7 @@ before_script:
   - set -e
 
 script:
+  - dockcross "echo $OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION; ls $OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION; echo /host$OCTAVEPATH; ls /host$OCTAVEPATH"
   - script_debian $OCTAVEPATH "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_DEEPBIND=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=/host$OCTAVEPATH" matlab_source
   
 before_deploy:
@@ -86,5 +87,4 @@ before_install:
     if [ "${OCTAVE_VERSION}" == "5.2.0" ]; then
        sudo flatpak update -y --commit=ecdeb157c47f1d08f0d9f2abe48e147892c5b7c71a5c0b15cc88a3a26ba332c5 org.octave.Octave
     fi
-  - dockcross "echo $OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION; ls $OCTAVE_ROOT_TMP/lib/octave/$OCTAVE_VERSION"
 
