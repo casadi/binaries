@@ -1,14 +1,12 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 os: osx
 
-osx_image: xcode7.3
+osx_image: xcode9.4
 
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - MATLABPATH=/Users/travis/build/matlab-install
-    - MATLAB_ROOT=/Users/travis/build/matlab
-    - SLURP_GCC=4.9
+    - SLURP_GCC=7
     - SLURP_OS=osx
     - KEEP_GOING=1
     
@@ -45,7 +43,7 @@ script:
   - which cmake
   - echo  $casadi_build_flags
   - bash -c "cmake $casadi_build_flags -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install .."
-  - osx_rpath
+  - osx_rpath_gcc7
   - make VERBOSE=1
   - make install
   - popd
@@ -57,6 +55,7 @@ script:
 
   - cp $GCC_FULL $QUADMATH_FULL $FORTRAN_FULL $CXX_FULL /Users/travis/build/casadi/binaries/casadi/python_install/casadi
   
+  - cp_libs_gcc7 python_install/casadi
   - osx_rpath_patch python_install
 
   - otool -l python_install/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
@@ -89,19 +88,7 @@ branches:
     - /.*commit.*/
 
 before_install:
-  - (while true ; do sleep 60 ; echo "ping" ; done ) &
-  - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  - pwd
-  - pushd casadi && export COMMIT=`git rev-parse --short HEAD` && popd
-  - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && source recipes/setup.sh || remote_access && popd
-  - osx_gcc49_setup || remote_access
-  - slurp swig_matlab || remote_access
-  - python_setup || remote_access
-  - mkdir -p /Users/travis/build/casadi/testbot || remote_access
-  - slurp_common || remote_access
-
-  - bake_my_library_path || remote_access
-  - popd
+  - wget https://raw.githubusercontent.com/casadi/testbot/master/before_install.sh && source before_install.sh
+  - before_install_osx
   
 language: generic
