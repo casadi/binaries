@@ -38,27 +38,12 @@ script:
   - pushd /Users/travis/build
   - echo $MATLABRELEASE
   - testbot/recipes/fetch.sh matlab${MATLABRELEASE}_osx.zip
-  - source testbot/shellhelpers
+  #- source testbot/shellhelpers
   - ls -al
   - mkdir matlab
   - unzip matlab${MATLABRELEASE}_osx.zip -d matlab > /dev/null || allowfail 2
   - popd
-  - pkg-config --libs --cflags ipopt
-  - pushd casadi
-  - mkdir build
-  - pushd build
-  - gcc --version
-  - source activate condaenv_build
-  - gcc --version
-  - bash -c "cmake $casadi_build_flags -DWITH_BUILD_HPMPC=OFF -DWITH_HPMPC=OFF -DWITH_BUILD_BLASFEO=OFF -DWITH_BLASFEO=OFF -DWITH_OPENMP=OFF  -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH .."
-  - osx_rpath_gcc7
-  - make VERBOSE=1
-  - sudo mkdir -p /ColPack_libs
-  - sudo chmod 777 /ColPack_libs
-  - make install
-  - popd
-  - cp_libs_gcc7 $MATLABPATH/casadi
-  - osx_rpath_patch $MATLABPATH/casadi
+  - script_osx $MATLABPATH "-DWITH_BUILD_HPMPC=OFF -DWITH_HPMPC=OFF -DWITH_BUILD_BLASFEO=OFF -DWITH_BLASFEO=OFF -DWITH_OPENMP=OFF  -DWITH_SELFCONTAINED=ON -DWITH_MATLAB=ON  -DCMAKE_INSTALL_PREFIX=$MATLABPATH"
   
 before_deploy:
   #- echo "this file (and the casadi directory) should end up in a folder called 'casadi-osx-matlab$MATLABRELEASE-$COMMIT$NAME_SUFFIX'" > $MATLABPATH/dummy.txt
@@ -84,24 +69,7 @@ branches:
     - /.*commit.*/
     
 before_install:
-  - (while true ; do sleep 60 ; echo "ping" ; done ) &
-  - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  - pwd
-  - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
-  - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && source recipes/setup.sh || remote_access && popd
-  #- wget https://gcc.gnu.org/bugzilla/attachment.cgi?id=46480 -O my.patch
-  #- sudo patch -N -f -d /Applications/Xcode-11.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -p1 < my.patch
+  - wget https://raw.githubusercontent.com/casadi/testbot/master/before_install.sh && source before_install.sh
+  - before_install_osx
 
-  - python_setup || remote_access
-  - osx_gcc7_setup || remote_access
-  - gcc --version
-  - slurp swig_matlab || remote_access
-
-  - mkdir -p /Users/travis/build/casadi/testbot || remote_access
-  - slurp_common || remote_access
-
-  - bake_my_library_path || remote_access
-  - popd
-  
 language: generic
