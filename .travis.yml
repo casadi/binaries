@@ -6,10 +6,8 @@ osx_image: xcode9.4
 env: 
   global: 
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - SNOPT=/Users/travis/build/snopt7
     - PYTHON_VERSION=3.7
     - NUMPYVERSION=1.9.1
-    - GUROBI_HOME=/Users/travis/build/gurobi
     - OCTAVEPATH=/Users/travis/build/octave-install
     - SLURP_GCC=7
     - SLURP_OS=osx
@@ -30,30 +28,12 @@ script:
   - locate liboctinterp
   - sudo install_name_tool -id "@rpath/liboctinterp.${OCTAVE_API_VERSION}.dylib" /usr/local/Cellar/octave/${OCTAVE_FULL_VERSION}/lib/octave/${OCTAVE_VERSION}/liboctinterp.${OCTAVE_API_VERSION}.dylib
   - pushd /Users/travis/build
-  - source testbot/shellhelpers
+  #- source testbot/shellhelpers
   - ls -al
   - popd
-  - echo $PKG_CONFIG_PATH
-  - ls $HOME/ipopt-install/lib/pkgconfig
-  - export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/ipopt-install/lib/pkgconfig
-  - pkg-config --libs --cflags ipopt
-  - source activate condaenv_build
-  - pushd casadi
-  - mkdir build
-  - pushd build
-  - bash -c "cmake $casadi_build_flags -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=$OCTAVEPATH .."
-  - osx_rpath_gcc7
-  - make VERBOSE=1
-  - make install
-  - popd
-  - cp_libs_gcc7 $OCTAVEPATH/casadi
-  - osx_rpath_patch $OCTAVEPATH/casadi
+  - script_osx $OCTAVEPATH "-DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DCMAKE_INSTALL_PREFIX=$OCTAVEPATH"
   
-  - otool -l $OCTAVEPATH/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
-  - otool -l $OCTAVEPATH/casadi/libgcc_s.1.dylib | grep /usr/local || assertfail
-  - otool -l $OCTAVEPATH/casadi/libquadmath.0.dylib | grep /usr/local || assertfail
-  #- otool -l /Users/travis/build/casadi/binaries/casadi/build/lib/libcasadi_nlpsolver_ipopt.dylib
-  #- otool -l $MATLABPATH/libcasadi_nlpsolver_ipopt.dylib
+
   
 before_deploy:
   - export RESULT="$HOME/casadi-osx-octave-${OCTAVE_VERSION}-$COMMIT$NAME_SUFFIX.tar.gz"
@@ -78,21 +58,10 @@ branches:
     - /.*commit.*/
     
 before_install:
-  - (while true ; do sleep 60 ; echo "ping" ; done ) &
-  - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
-  - pwd
-  - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && popd
-  - pushd ../../ && git clone https://github.com/casadi/testbot.git
-  - pushd testbot && source recipes/setup.sh || remote_access && popd
-  - python_setup || remote_access
-  - osx_gcc7_setup || remote_access
-  - slurp swig_matlab || remote_access
-  - mkdir -p /Users/travis/build/casadi/testbot || remote_access
-  - slurp_common || remote_access
+  - wget https://raw.githubusercontent.com/casadi/testbot/master/before_install.sh && source before_install.sh
+  - before_install_osx
   - brew install gnu-sed pkg-config gmp isl mpfr libmpc automake gettext || echo 123
   - brew install --ignore-dependencies octave
-  - bake_my_library_path || remote_access
-  - popd
   
 language: generic
 
