@@ -12,7 +12,7 @@ env:
     - SLURP_GCC=7
     - SLURP_OS=osx
     - TESTCOMMIT="1"
-    - KEEP_GOING=1
+    #- KEEP_GOING=1
     - EXTRA_SWIG_FLAGS="-nodelete"
     - OCTAVE_VERSION="5.2.0"
     - OCTAVE_FULL_VERSION="5.2.0_9"
