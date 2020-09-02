@@ -11,11 +11,11 @@ env:
     - KEEP_GOING=1
     
   matrix:
-    - TRAVIS_PYTHON_VERSION=2.7 NUMPYVERSION=1.9 TESTCOMMIT=ON
-    - TRAVIS_PYTHON_VERSION=3.5 NUMPYVERSION=1.9
-    - TRAVIS_PYTHON_VERSION=3.6 NUMPYVERSION=1.11
-    - TRAVIS_PYTHON_VERSION=3.7 NUMPYVERSION=1.11
-    - TRAVIS_PYTHON_VERSION=3.8 NUMPYVERSION=1.11
+    - TRAVIS_PYTHON_VERSION=2.7 TESTCOMMIT=ON
+    - TRAVIS_PYTHON_VERSION=3.5 
+    - TRAVIS_PYTHON_VERSION=3.6
+    - TRAVIS_PYTHON_VERSION=3.7
+    - TRAVIS_PYTHON_VERSION=3.8
 
 before_script:
   - |
@@ -27,41 +27,11 @@ before_script:
       set -e -E
     fi
 
-compiler: cpp
+compiler: clang
 
 script:
-  - pkg-config --libs --cflags ipopt
-  - pkg-config --libs --cflags bonmin
-  - pushd casadi
-  #- grep -v PYTHON_LIBRARIES swig/python/CMakeLists.txt > tmp && mv tmp swig/python/CMakeLists.txt
-  # echo "set_target_properties(_casadi PROPERTIES LINK_FLAGS \"-undefined dynamic_lookup\")" >> swig/python/CMakeLists.txt
-  # - echo "swig_link_libraries(casadi casadi)" >> swig/python/CMakeLists.txt
-  - mkdir build
-  - pushd build
-  - pwd
-  - cmake --version
-  - which cmake
-  - echo  $casadi_build_flags
-  - bash -c "cmake $casadi_build_flags -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install .."
-  - osx_rpath_gcc7
-  - make VERBOSE=1
-  - make install
-  - popd
+  - script_osx python_install "-DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_OPENMP=OFF -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install"
   - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-  #- otool -l /Users/travis/build/casadi/binaries/casadi/python_install/casadi/libcasadi_nlpsolver_ipopt.dylib
-  - otool -l $FORTRAN_FULL
-  - otool -l $QUADMATH_FULL
-  - otool -l $GCC_FULL
-
-  - cp $GCC_FULL $QUADMATH_FULL $FORTRAN_FULL $CXX_FULL /Users/travis/build/casadi/binaries/casadi/python_install/casadi
-  
-  - cp_libs_gcc7 python_install/casadi
-  - osx_rpath_patch python_install
-
-  - otool -l python_install/casadi/libgfortran.3.dylib | grep /usr/local || assertfail
-  - otool -l python_install/casadi/libgcc_s.1.dylib | grep /usr/local || assertfail
-  - otool -l python_install/casadi/libquadmath.0.dylib | grep /usr/local || assertfail
-  - otool -l python_install/casadi/libcasadi.dylib | grep /usr/local || assertfail
   - otool -l python_install/casadi/_casadi.so | grep /usr/local || assertfail
   
 before_deploy:
