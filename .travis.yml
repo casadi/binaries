@@ -24,8 +24,8 @@ before_script:
 compiler: clang
 
 script:
-  - sudo /usr/libexec/locate.updatedb
-  - locate liboctinterp
+  #- sudo /usr/libexec/locate.updatedb
+  #- locate liboctinterp
   - sudo install_name_tool -id "@rpath/liboctinterp.${OCTAVE_API_VERSION}.dylib" /usr/local/Cellar/octave/${OCTAVE_FULL_VERSION}/lib/octave/${OCTAVE_VERSION}/liboctinterp.${OCTAVE_API_VERSION}.dylib
   - pushd /Users/travis/build
   #- source testbot/shellhelpers
