@@ -8,7 +8,7 @@ env:
     - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
     - SLURP_GCC=7
     - SLURP_OS=osx
-    #- KEEP_GOING=1
+    - KEEP_GOING=1
     
   matrix:
     - TRAVIS_PYTHON_VERSION=2.7 TESTCOMMIT=ON
