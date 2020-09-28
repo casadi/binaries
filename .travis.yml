@@ -5,8 +5,7 @@ env:
     - MOSEK=/home/travis/build/mosek
     - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
     - DEBIAN_FRONTEND=noninteractive
-    - DOCKCROSS=manylinux
-    - BITNESS=64
+    - ARCH=manylinux2014-aarch64
 
 os: linux
 dist: trusty
@@ -29,7 +28,7 @@ script:
   
 before_deploy:
   - echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
-  - export RESULT="$HOME/casadi-linux-py$PYTHONVERSION-$COMMIT-${BITNESS}bit.tar.gz"
+  - export RESULT="$HOME/casadi-linux-py$PYTHONVERSION-$COMMIT-$ARCH.tar.gz"
   - pushd python_install && tar -czf $RESULT . && popd
   - export TRAVIS_TAG="commit-$COMMIT"
 
@@ -71,7 +70,7 @@ branches:
     - /.*commit.*/
     
 before_install: 
-  - wget https://raw.githubusercontent.com/casadi/testbot/master/before_install.sh && source before_install.sh
+  - wget https://raw.githubusercontent.com/casadi/testbot/trial/before_install.sh && source before_install.sh
   - before_install_debian
   
 
