@@ -19,12 +19,12 @@ before_script:
  
 script:
   - script_debian python_install "-DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_DEEPBIND=ON -DCMAKE_INSTALL_PREFIX=../python_install" python_source "-DWITH_PYTHON=ON"
-  - export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-  - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-  - python -c "from casadi import *;x = MX.sym('x');solver = nlpsol('solver','worhp',dict(x=x,g=x**2,f=x**6),dict(worhp=dict(MaxIter=2)));solver(lbg=1,ubg=2)"
-  - pushd test
+  #- export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+  #- python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+  #- python -c "from casadi import *;x = MX.sym('x');solver = nlpsol('solver','worhp',dict(x=x,g=x**2,f=x**6),dict(worhp=dict(MaxIter=2)));solver(lbg=1,ubg=2)"
+  #- pushd test
   #- python internal/test_py.py python -skipfiles="alltests.py helpers.py complexity.py speed.py"
-  - popd
+  #- popd
   
 before_deploy:
   - echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
