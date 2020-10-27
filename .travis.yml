@@ -1,12 +1,3 @@
-# Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
-env: 
-  global: 
-    - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
-    - MOSEK=/home/travis/build/mosek
-    - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
-    - DEBIAN_FRONTEND=noninteractive
-    - ARCH=manylinux2014-aarch64
-
 os: linux
 dist: trusty
 language: python
@@ -18,22 +9,20 @@ before_script:
   - set -e
  
 script:
-  - script_debian python_install "-DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$MANYLINUX_PYTHON_INCLUDE_DIR -DWITH_SELFCONTAINED=ON -DWITH_PYTHON=ON -DWITH_DEEPBIND=ON -DCMAKE_INSTALL_PREFIX=../python_install" python_source "-DWITH_PYTHON=ON"
-  - |
-    if [[ $ARCH == manylinux1-x64 ]]
-    then
-      export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
-      python -c "from casadi.tools import *;loadAllCompiledPlugins()"
-      python -c "from casadi import *;x = MX.sym('x');solver = nlpsol('solver','worhp',dict(x=x,g=x**2,f=x**6),dict(worhp=dict(MaxIter=2)));solver(lbg=1,ubg=2)"
-      pushd test
-      python internal/test_py.py python -skipfiles="alltests.py helpers.py complexity.py speed.py"
-      popd
-    fi
+  - pushd casadi
+  - mkdir build_temp
+  - pushd build_temp
+  - cmake -DSWIG_EXPORT=ON -DWITH_PYTHON=ON ..
+  - make python_source
+  - cmake -DSWIG_EXPORT=ON -DWITH_PYTHON=ON -DWITH_PYTHON3=ON ..
+  - make python_source
+  - popd
+  - rm -rf build_temp
+  - cp ../setup.py ../requirements.txt .
   
 before_deploy:
-  - echo "this file (and the casadi directory) should end up in a folder called 'casadi-linux-py$PYTHONVERSION-$COMMIT'" > python_install/dummy.txt
-  - export RESULT="$HOME/casadi-linux-py$PYTHONVERSION-$COMMIT-$ARCH.tar.gz"
-  - pushd python_install && tar -czf $RESULT . && popd
+  - export RESULT="$HOME/casadi-source-python-$COMMIT.tar.gz"
+  - tar -czf $RESULT .
   - export TRAVIS_TAG="commit-$COMMIT"
 
 deploy:
@@ -47,26 +36,6 @@ deploy:
 
 python: 3.6
 
-matrix:
-  include:
-    - env: ARCH=manylinux1-x64 PYTHON_VERSION=2.7 TESTCOMMIT=1
-    - env: ARCH=manylinux1-x64 PYTHON_VERSION=3.4
-    - env: ARCH=manylinux1-x64 PYTHON_VERSION=3.5
-    - env: ARCH=manylinux1-x64 PYTHON_VERSION=3.6
-    - env: ARCH=manylinux1-x64 PYTHON_VERSION=3.7
-    - env: ARCH=manylinux1-x64 PYTHON_VERSION=3.8
-    - env: ARCH=manylinux1-x64 PYTHON_VERSION=3.9
-    - env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=2.7
-    - env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=3.4
-    - env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=3.5
-    - env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=3.6
-    - env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=3.7
-    - env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=3.8
-    - env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=3.9
-  
-after_success:
-  - test_commit test-debian
-
 
 branches:
   except:
@@ -74,7 +43,7 @@ branches:
     - /.*commit.*/
     
 before_install: 
-  - wget https://raw.githubusercontent.com/casadi/testbot/trial2/before_install.sh && source before_install.sh
+  - wget https://raw.githubusercontent.com/casadi/testbot/master/before_install.sh && source before_install.sh
   - before_install_debian
   
 
