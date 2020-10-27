@@ -22,7 +22,7 @@ script:
   
 before_deploy:
   - export RESULT="$HOME/casadi-source-python-$COMMIT.tar.gz"
-  - tar -czf $RESULT .
+  - tar --exclude=".*" -czf $RESULT .
   - export TRAVIS_TAG="commit-$COMMIT"
 
 deploy:
