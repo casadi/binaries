@@ -12,16 +12,14 @@ script:
   - pushd casadi
   - mkdir build_temp
   - pushd build_temp
-  - cmake -DSWIG_EXPORT=ON -DWITH_PYTHON=ON ..
-  - make python_source
-  - cmake -DSWIG_EXPORT=ON -DWITH_PYTHON=ON -DWITH_PYTHON3=ON ..
-  - make python_source
+  - cmake -DSWIG_EXPORT=ON -DWITH_MATLAB=ON ..
+  - make matlab_source
   - popd
+  - python ../fix.py
   - rm -rf build_temp
-  - cp ../setup.py ../requirements.txt .
   
 before_deploy:
-  - export RESULT="$HOME/casadi-source-python-$COMMIT.tar.gz"
+  - export RESULT="$HOME/casadi-source-matlab-$COMMIT.tar.gz"
   - tar -czf $RESULT .
   - export TRAVIS_TAG="commit-$COMMIT"
 
