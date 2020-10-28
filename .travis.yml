@@ -43,7 +43,7 @@ branches:
     - /.*commit.*/
     
 before_install: 
-  - wget https://raw.githubusercontent.com/casadi/testbot/master/before_install.sh && source before_install.sh
+  - wget https://raw.githubusercontent.com/casadi/testbot/trial2/before_install.sh && source before_install.sh
   - before_install_debian
   
 
