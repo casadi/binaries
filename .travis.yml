@@ -2,8 +2,7 @@ os: linux
 dist: trusty
 language: python
 env:
- - ARCH=manylinux1-x64
- - MATLABRELEASE=R2014a
+ - ARCH=manylinux1-x64 MATLABRELEASE=R2014a
 
 services:
   - docker
