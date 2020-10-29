@@ -3,6 +3,7 @@ dist: trusty
 language: python
 env:
  - ARCH=manylinux1-x64
+ - MATLABRELEASE=R2014a
 
 services:
   - docker
@@ -11,6 +12,12 @@ before_script:
   - set -e
  
 script:
+  - pushd /home/travis/build/
+  - testbot/recipes/fetch.sh matlab$MATLABRELEASE.tar.gz
+  - mkdir matlab
+  - travis_wait tar -xf matlab$MATLABRELEASE.tar.gz -C matlab
+  - popd
+  
   - pushd casadi
   - mkdir build_temp
   - pushd build_temp
