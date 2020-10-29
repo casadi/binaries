@@ -2,7 +2,7 @@ os: linux
 dist: trusty
 language: python
 env:
- - ARCH=manylinx1-x64
+ - ARCH=manylinux1-x64
 
 services:
   - docker
