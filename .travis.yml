@@ -1,8 +1,12 @@
 os: linux
 dist: trusty
 language: python
-env:
- - ARCH=manylinux1-x64 MATLABRELEASE=R2014a
+ 
+env: 
+  global: 
+    - MATLABRELEASE=R2014a
+    - MATLAB_ROOT=/home/travis/build/matlab
+    - ARCH=manylinux1-x64
 
 services:
   - docker
