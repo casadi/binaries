@@ -48,7 +48,7 @@ python: 3.6
 
 matrix:
   include:
-    #- env: ARCH=manylinux1-x64 PYTHON_VERSION=2.7 TESTCOMMIT=1
+    - env: ARCH=manylinux1-x64 PYTHON_VERSION=2.7 TESTCOMMIT=1
     #- env: ARCH=manylinux1-x64 PYTHON_VERSION=3.4
     #- env: ARCH=manylinux1-x64 PYTHON_VERSION=3.5
     #- env: ARCH=manylinux1-x64 PYTHON_VERSION=3.6
@@ -56,13 +56,13 @@ matrix:
     #- env: ARCH=manylinux1-x64 PYTHON_VERSION=3.8
     #- env: ARCH=manylinux1-x64 PYTHON_VERSION=3.9
     #- env: ARCH=manylinux1-x86 PYTHON_VERSION=2.7 TESTCOMMIT=1
-    - env: ARCH=manylinux1-x86 PYTHON_VERSION=3.4
-    - env: ARCH=manylinux1-x86 PYTHON_VERSION=3.5
-    - env: ARCH=manylinux1-x86 PYTHON_VERSION=3.6
-    - env: ARCH=manylinux1-x86 PYTHON_VERSION=3.7
-    - env: ARCH=manylinux1-x86 PYTHON_VERSION=3.8
-    - env: ARCH=manylinux1-x86 PYTHON_VERSION=3.9
-    #- env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=2.7
+    #- env: ARCH=manylinux1-x86 PYTHON_VERSION=3.4
+    #- env: ARCH=manylinux1-x86 PYTHON_VERSION=3.5
+    #- env: ARCH=manylinux1-x86 PYTHON_VERSION=3.6
+    #- env: ARCH=manylinux1-x86 PYTHON_VERSION=3.7
+    #- env: ARCH=manylinux1-x86 PYTHON_VERSION=3.8
+    #- env: ARCH=manylinux1-x86 PYTHON_VERSION=3.9
+    - env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=2.7
     #- env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=3.4
     #- env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=3.5
     #- env: ARCH=manylinux2014-aarch64 PYTHON_VERSION=3.6
