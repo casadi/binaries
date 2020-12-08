@@ -44,7 +44,6 @@ script:
   - echo $MINGW_ROOT
   - ls $MINGW_ROOT
   - ls $MINGW_ROOT/lib/gcc/$compilerprefix/*/*.dll
-  - exit 1
   - |
     cat <<EOF >toolchain.cmake
     # this one is important
@@ -80,8 +79,10 @@ script:
   - $compilerprefix-dlltool --input-def ../casadi/core/casadi.def --dllname ../octave_install/casadi/libcasadi.dll  --output-lib ../octave_install/casadi/casadi.lib
   - $compilerprefix-dlltool --input-def ../external_packages/osqp/osqp.def --dllname ../octave_install/casadi/libosqp.dll  --output-lib ../octave_install/casadi/osqp.lib
   
-  - cp $MINGW_ROOT/lib/gcc/$compilerprefix/*/*.dll ../octave_install
-  - cp $MINGW_ROOT/lib/gcc/$compilerprefix/*.dll ../octave_install
+  - ls $MINGW_ROOT/lib/gcc/$compilerprefix/*/*.dll
+  - cp $MINGW_ROOT/lib/gcc/$compilerprefix/*/*.dll ../octave_install/casadi
+  - cp $MINGW_ROOT/lib/gcc/$compilerprefix/*.dll ../octave_install/casadi
+  - ls ../octave_install/casadi
   #- cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
   #- cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
   #- cp /usr/$compilerprefix/lib/*.dll ../octave_install
