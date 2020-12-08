@@ -79,6 +79,8 @@ script:
   
   #- cp $MINGW_ROOT/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
   #- cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
+  - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
+  - cp /usr/$compilerprefix/lib/*.dll ../octave_install
   - pwd
   - ls ../octave_install/casadi/
   - cp -RL $MINGW_ROOT/$compilerprefix/include ../octave_install/casadi/casadi/jit/mingw
