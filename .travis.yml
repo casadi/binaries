@@ -86,6 +86,6 @@ before_install:
        sudo flatpak update -y --commit=ecdeb157c47f1d08f0d9f2abe48e147892c5b7c71a5c0b15cc88a3a26ba332c5 org.octave.Octave
     fi
   - |
-    if [ "${OCTAVE_VERSION}" == 6.1.0" ]; then
+    if [ "${OCTAVE_VERSION}" == "6.1.0" ]; then
        sudo flatpak update -y --commit=3100a9640f553a54b7a51b7dbab0274199365be6113bab7deaea2d48d29c4949 org.octave.Octave
     fi
