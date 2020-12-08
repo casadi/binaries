@@ -78,7 +78,8 @@ script:
   - $compilerprefix-dlltool --input-def ../external_packages/osqp/osqp.def --dllname ../octave_install/casadi/libosqp.dll  --output-lib ../octave_install/casadi/osqp.lib
   
   - cp $MINGW_ROOT/lib/gcc/$compilerprefix/*/*.dll ../octave_install
-  - cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
+  - cp $MINGW_ROOT/lib/gcc/$compilerprefix/*.dll ../octave_install
+  #- cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
   #- cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
   #- cp /usr/$compilerprefix/lib/*.dll ../octave_install
   - pwd
