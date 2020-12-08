@@ -77,10 +77,10 @@ script:
   - $compilerprefix-dlltool --input-def ../casadi/core/casadi.def --dllname ../octave_install/casadi/libcasadi.dll  --output-lib ../octave_install/casadi/casadi.lib
   - $compilerprefix-dlltool --input-def ../external_packages/osqp/osqp.def --dllname ../octave_install/casadi/libosqp.dll  --output-lib ../octave_install/casadi/osqp.lib
   
-  #- cp $MINGW_ROOT/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
-  #- cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
-  - cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
-  - cp /usr/$compilerprefix/lib/*.dll ../octave_install
+  - cp $MINGW_ROOT/lib/gcc/$compilerprefix/*/*.dll ../octave_install
+  - cp $MINGW_ROOT/$compilerprefix/lib/*.dll ../octave_install
+  #- cp /usr/lib/gcc/$compilerprefix/*win32/*.dll ../octave_install
+  #- cp /usr/$compilerprefix/lib/*.dll ../octave_install
   - pwd
   - ls ../octave_install/casadi/
   - cp -RL $MINGW_ROOT/$compilerprefix/include ../octave_install/casadi/casadi/jit/mingw
