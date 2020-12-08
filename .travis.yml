@@ -60,7 +60,7 @@ branches:
 before_install:
   - wget https://raw.githubusercontent.com/casadi/testbot/master/before_install.sh && source before_install.sh
   - before_install_osx
-  - brew install gnu-sed pkg-config gmp isl mpfr libmpc automake gettext || echo 123
+  #- brew install gnu-sed pkg-config gmp isl mpfr libmpc automake gettext || echo 123
   - brew install --ignore-dependencies octave
   
 language: generic
