@@ -42,6 +42,9 @@ script:
   - mkdir build
   - pushd build
   - echo $MINGW_ROOT
+  - ls $MINGW_ROOT
+  - ls $MINGW_ROOT/lib/gcc/$compilerprefix/*/*.dll
+  - exit 1
   - |
     cat <<EOF >toolchain.cmake
     # this one is important
