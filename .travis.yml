@@ -1,7 +1,7 @@
 # Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
 os: osx
 
-osx_image: xcode9.4
+osx_image: xcode10.2 # first on mojave (oldest release that has 6.1.0 binary bottles https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/octave.rb)
 
 env: 
   global: 
