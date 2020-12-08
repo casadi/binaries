@@ -14,9 +14,9 @@ env:
     - TESTCOMMIT="1"
     - KEEP_GOING=1
     - EXTRA_SWIG_FLAGS="-nodelete"
-    - OCTAVE_VERSION="5.2.0"
-    - OCTAVE_FULL_VERSION="5.2.0_9"
-    - OCTAVE_API_VERSION=7
+    - OCTAVE_VERSION="6.1.0"
+    - OCTAVE_FULL_VERSION="6.1.0"
+    - OCTAVE_API_VERSION=8
   
 before_script:
   - #set -e
