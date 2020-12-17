@@ -127,7 +127,7 @@ before_install:
   - sync
   - free -t -m
   - pushd casadi && export COMMIT=`git rev-parse --short=7 HEAD` && echo $COMMIT && popd
-  - pushd ../../ && git clone https://github.com/casadi/testbot.git
+  - pushd ../../ && git clone https://github.com/casadi/testbot.git && pushd testbot && git checkout armin && popd
   - pushd testbot && source recipes/setup.sh && popd
   - source testbot/shellhelpers
   - sudo apt-get install p7zip-full -y
